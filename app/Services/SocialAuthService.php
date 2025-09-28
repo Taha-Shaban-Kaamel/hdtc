@@ -3,8 +3,8 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use App\Http\Resources\UserResource;
 
 class SocialAuthService
 {
@@ -72,21 +72,8 @@ class SocialAuthService
         $token = $user->createToken($tokenName, $abilities);
         
         return [
-            'access_token' => $token->plainTextToken,
-            'token_type' => 'Bearer',
-            'token_name' => $tokenName,
-            'abilities' => $abilities,
-            'user' => [
-                'id' => $user->id,
-                'first_name' => $user->first_name,
-                'second_name' => $user->second_name,
-                'email' => $user->email,
-                'avatar' => $user->avatar,
-                'provider' => $user->provider,
-                'email_verified' => !is_null($user->email_verified_at),
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
-            ]
+            'token' => $token->plainTextToken,
+            'user' => new UserResource($user)
         ];
     }
 
