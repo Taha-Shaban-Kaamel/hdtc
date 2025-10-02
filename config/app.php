@@ -15,7 +15,10 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'available_locales' => ['en', 'ar'],
+    'available_locales' => [
+        'en',
+        'ar' 
+    ],
 
     'local' => env('APP_LOCAL','en'),
     /*
