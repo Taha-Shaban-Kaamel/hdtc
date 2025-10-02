@@ -5,13 +5,15 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div>
-            <x-input-error :messages="$errors->get('unauthorized')" class="mt-2" />
+            <x-input-error :for="'unauthorized'" :messages="$errors->get('unauthorized')" class="mt-2" />
         </div>
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
                 autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            @if ($errors->has('email'))
+                <x-input-error :for="'email'" :messages="$errors->get('email')" class="mt-2" />
+            @endif
         </div>
 
         <div class="mt-4">
@@ -20,7 +22,9 @@
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
                 autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            @if ($errors->has('password'))
+                <x-input-error :for="'password'" :messages="$errors->get('password')" class="mt-2" />
+            @endif
         </div>
 
         <div class="block mt-4">
