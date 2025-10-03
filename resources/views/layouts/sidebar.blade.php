@@ -57,7 +57,7 @@
                             ''
                         ]">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('courses') }}">
+                            href="{{ route('courses.index') }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <img class="w-5 h-5"
