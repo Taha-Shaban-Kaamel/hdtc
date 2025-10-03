@@ -45,7 +45,7 @@
         html,
         body {
             height: 100%;
-            overflow: hidden;
+            overflow: scroll;
         }
 
         .min-h-screen {
