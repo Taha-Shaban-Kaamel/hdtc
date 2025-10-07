@@ -3,9 +3,12 @@
 use App\Http\Controllers\CourseCategorieController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ChaptersController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer;
 
 Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
     Route::get('/', function () {
@@ -22,28 +25,17 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
             Route::get('show/{id}', [CourseCategorieController::class, 'show'])->name('courses.categories.show');
             Route::delete('delete/{id}', [CourseCategorieController::class, 'destroy'])->name('courses.categories.destroy');
         });
-        Route::get('index', function () {
-            return view('courses.index');
-        })->name('courses.index');
-        Route::get('create', function () {
-            return view('courses.create');
-        })->name('courses.create');
+        Route::resource('courses', CourseController::class);
+    });
 
-        Route::get('{id}/edit', function ($id) {
-            return 'edit';
-        })->name('courses.edit');
 
-        Route::get('{id}/show', function ($id) {
-            return 'show';
-        })->name('courses.show');
-
-        Route::get('{id}/delete', function ($id) {
-            return 'delete';
-        })->name('courses.delete');
-
-        Route::get('store', function () {
-            return 'store';
-        })->name('courses.store');
+    Route::prefix('course/{course_id}')->group(function(){
+        Route::get('chapters', [ChaptersController::class, 'index'])->name('chapters.index');
+        Route::get('chapters/create',[ChaptersController::class,'create'])->name('chapters.create');
+        Route::post('chapters',[ChaptersController::class,'store'])->name('chapters.store');
+        Route::delete('chapters/{id}',[ChaptersController::class,'destroy'])->name('chapters.destroy');
+        Route::get('chapters/{id}/edit',[ChaptersController::class,'edit'])->name('chapters.edit');
+        Route::post('chapters/{id}/update',[ChaptersController::class,'update'])->name('chapters.update');
     });
 
     Route::prefix('instructors')->group(function () {
@@ -51,7 +43,7 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
         Route::get('/create', [InstructorController::class, 'create'])->name('instructors.create');
         Route::post('/', [InstructorController::class, 'store'])->name('instructors.store');
         Route::get('/{instructor}/edit', [InstructorController::class, 'edit'])->name('instructors.edit');
-        Route::put('/{instructor}', [InstructorController::class, 'update'])->name('instructors.update');
+        Route::put('/update/{id}', [InstructorController::class, 'update'])->name('instructors.update');
         Route::get('/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
         Route::delete('/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
     });

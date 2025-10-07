@@ -7,18 +7,21 @@
                     <x-breadcrumb :items="[
                         ['url' => route('dashboard'), 'label' => __('common.dashboard')],
                         ['url' => route('courses.index'), 'label' => __('common.courses')],
-                        ['label' => __('common.create')]
+                        ['label' => __('common.edit') . ': ' . $course->getTranslation('title', app()->getLocale())]
                     ]" />
                 </div>
             </div>
         </div>
-
-        <div class="py-12">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white max-h-[calc(100vh-12rem)] overflow-scroll shadow-sm sm:rounded-lg p-6">
-                {{-- @dd($instructors , $categories) --}}
-       
-                <x-form-stepper :currentStep="1" :totalSteps="3" :instructors="$instructors" :categories="$categories"/>
+                <x-form-stepper 
+                    :course="$course"
+                    :currentStep="1" 
+                    :totalSteps="3" 
+                    :instructors="$instructors" 
+                    :categories="$categories"
+                />
             </div>
         </div>
     </div>

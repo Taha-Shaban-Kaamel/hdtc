@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_types', function (Blueprint $table) {
+        Schema::create('course_instructor', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
+
+            // Ensure no duplicate course-instructor pairs
+            $table->unique(['course_id', 'instructor_id']);
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_types');
+        Schema::dropIfExists('course_instructor');
     }
 };
