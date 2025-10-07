@@ -21,40 +21,46 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
                                         {{ __('instructors.name') }}
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
                                         {{ __('instructors.email') }}
                                     </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
                                         {{ __('instructors.phone') }}
                                     </th>
-                                    <th scope="col" class="relative px-6 py-3">
-                                        <span class="sr-only">{{ __('common.actions') }}</span>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
+                                        {{ __('instructors.specialization') }}
+                                    </th>
+                                    <th scope="col" class="relative px-6 py-3 text-center">
+                                        <span class="sr-only">{{ __('actions') }}</span>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($instructors as $instructor)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
+                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <div class="flex items-center justify-center gap-2">
                                                 <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full" src="{{ $instructor->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&color=7F9CF5&background=EBF4FF' }}" alt="{{ $instructor->name }}">
+                                                    <img class="h-10 w-10 rounded-full" src="{{ $instructor->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->user->first_name).'&color=7F9CF5&background=EBF4FF' }}" alt="{{ $instructor->user->first_name }}">
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900">
-                                                        {{ $instructor->name }}
+                                                        {{ $instructor->user->first_name }} {{ $instructor->user->last_name }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $instructor->email }}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            {{ $instructor->user->email }}    
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $instructor->phone ?? __('common.not_available') }}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            {{ $instructor->user->phone ?? __('common.not_available') }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            {{ $instructor->specialization }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-2">
@@ -80,6 +86,7 @@
                                                 </form>
                                             </div>
                                         </td>
+                                        
                                     </tr>
                                 @empty
                                     <tr>

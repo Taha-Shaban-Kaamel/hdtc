@@ -37,8 +37,9 @@
                     class="mt-1 block w-3/4"
                     placeholder="{{ __('Password') }}"
                 />
-
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                @if ($errors->has('password'))
+                    <x-input-error :for="password" :messages="$errors->get('password')" class="mt-2" />
+                @endif
             </div>
 
             <div class="mt-6 flex justify-end">

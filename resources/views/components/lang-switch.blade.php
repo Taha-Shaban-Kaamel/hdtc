@@ -1,33 +1,20 @@
-@props(['availableLocales' => config('app.available_locales'), 'currentLocale' => app()->getLocale()])
+@php
+    $currentLocale = app()->getLocale();
+    $otherLocale = $currentLocale === 'en' ? 'ar' : 'en';
+    $switchTitle = $currentLocale === 'en' ? 'Switch to Arabic' : 'Switch to English';
+    $displayText = $currentLocale === 'en' ? 'E' : 'ع';
+@endphp
 
-<div class="flex items-center space-x-2 rtl:space-x-reverse">
-    {{-- @foreach ($availableLocales as $locale => $details)
-
-        @if ($locale !== $currentLocale)
-            <a href="{{ route('lang.switch', $locale) }}" 
-               class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
-               title="{{ $details['name'] }}">
-                <span class="text-base">{{ $details['flag'] ?? $locale }}</span>
-            </a>
-        @else
-            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100">
-                <span class="text-base">{{ $details['flag'] ?? $locale }}</span>
-            </span>
-        @endif
-    @endforeach --}}
-
-    <a href="{{ route('lang.switch', 'ar') }}"
+<div class="flex items-center">
+    <a 
+        href="{{ route('lang.switch', $otherLocale) }}"
         class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
-        title="{{ 'ar' }}">
-        <span class="text-base">{{ 'ar' }}</span>
-    </a>
-    <a href="{{ route('lang.switch', 'en') }}"
-        class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
-        title="{{ 'en' }}">
-        <span class="text-base">{{ 'en' }}</span>
+        title="{{ $switchTitle }}"
+        style="border: 1px solid #e5e7eb;"
+    >
+        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-700 text-sm font-bold" 
+              style="font-family: 'Traditional Arabic', Arial, sans-serif; line-height: 1;">
+            {{ $displayText }}
+        </span>
     </a>
 </div>
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
-@endpush

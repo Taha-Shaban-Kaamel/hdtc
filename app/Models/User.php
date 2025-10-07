@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var list<string>
      */
 
-    public $translatable = ['first_name', 'second_name'];
+    public $translatable = ['first_name', 'second_name', 'bio'];
 
     protected $fillable = [
         'user_name',
@@ -52,6 +52,7 @@ class User extends Authenticatable
         'password' => 'hashed',
         'first_name' => 'array',
         'second_name' => 'array',
+        'bio' => 'array',
     ];
 
     /**
@@ -71,4 +72,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
+    }
 }
