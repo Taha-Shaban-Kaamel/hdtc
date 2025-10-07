@@ -7,7 +7,6 @@ return [
     'create_instructor' => 'Create Instructor',
     'edit_instructor' => 'Edit Instructor',
     'update_instructor' => 'Update Instructor',
-    'instructor_information' => 'Instructor Information',
     'create_a_new_instructor' => 'Create a new instructor',
     'update_instructor_details' => 'Update instructor details',
     'no_instructors_found' => 'No instructors found',
@@ -19,15 +18,16 @@ return [
     'instructor_updated' => 'Instructor updated successfully',
     'instructor_deleted' => 'Instructor deleted successfully',
     
-    // Form fields
     'name' => 'Name',
     'email' => 'Email',
     'phone' => 'Phone',
     'bio' => 'Biography',
-    'profile_photo' => 'Profile Photo',
     'update_profile_photo' => 'Update Profile Photo',
     'contact_information' => 'Contact Information',
     
+    'next' => 'next',
+    'previous' => 'previous',
+
     // Stats
     'courses' => 'Courses',
     'students' => 'Students',
@@ -37,4 +37,46 @@ return [
     'view_profile' => 'View Profile',
     'edit_profile' => 'Edit Profile',
     'delete_instructor' => 'Delete Instructor',
+    
+    // Form Stepper
+    'instructor_info' => 'Instructor Information',
+    'instructor_details' => 'Instructor Details',
+    'instructor_contact' => 'Contact Information',
+    'first_name_ar' => 'First Name (Arabic)',
+    'first_name_en' => 'First Name (English)',
+    'second_name_ar' => 'Second Name (Arabic)',
+    'second_name_en' => 'Second Name (English)',
+    'bio_ar' => 'Biography (Arabic)',
+    'bio_en' => 'Biography (English)',
+    'specialization' => 'Specialization',
+    'experience' => 'Experience (years)',
+    'education' => 'Education',
+    'select_gender' => 'Select Gender',
+    'male' => 'Male',
+    'female' => 'Female',
+    'birth_date' => 'Birth Date',
+    'avatar' => 'Profile Picture',
+    'company' => 'Company',
+    'twitter_url' => 'Twitter Profile',
+    'linkedin_url' => 'LinkedIn Profile',
+    'facebook_url' => 'Facebook Profile',
+    'youtube_url' => 'YouTube Channel',
+    
+    // Review Section
+    'review_information' => 'Review Instructor Information',
+    'personal_information' => 'Personal Information',
+    'professional_information' => 'Professional Information',
+    'gender' => 'Gender',
+    'years' => 'years',
+    'confirm_information' => 'I confirm that all the information provided is accurate and complete.',
+    'instructor_profile' => 'Instructor Profile',
+    'no_specialization' => 'No specialization',
+    'years_experience' => 'years experience',
+    'no_education' => 'No education provided',
+    'no_company' => 'No company',
+    'no_bio' => 'No biography available',
+    'about' => 'About',
+    'experience' => 'Experience',
+    'education' => 'Education',
+    'contact_information' => 'Contact Information'
 ];
