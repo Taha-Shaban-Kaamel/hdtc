@@ -21,4 +21,62 @@ return [
     'upload_an_image' => 'Upload an image',
     'png_jpg_gif_up_to_2mb' => 'PNG, JPG, GIF up to 2MB',
     'create' => 'Create',
+    
+    // Form Stepper
+    'review_course' => 'Review Your Course',
+    'basic_information' => 'Basic Information',
+    'learning_objectives' => 'Learning Objectives',
+    'price_usd' => 'Price (USD)',
+    'duration_hours' => 'Duration (hours)',
+    'difficulty_level' => 'Difficulty Level',
+    'select_difficulty' => 'Select Difficulty',
+    'beginner' => 'Beginner',
+    'intermediate' => 'Intermediate',
+    'advanced' => 'Advanced',
+    'video_url' => 'Video URL',
+    'thumbnail' => 'Thumbnail',
+    'thumbnail_help_text' => 'Recommended size: 400x300px, Max: 2MB',
+    'cover_image' => 'Cover Image',
+    'cover_help_text' => 'Recommended size: 400x300px, Max: 2MB',
+    'upload_file' => 'Upload a file',
+    'or_drag_and_drop' => 'or drag and drop',
+    'terms_agreement' => 'I agree to the terms and conditions',
+    'previous' => 'Previous',
+    'next' => 'Next',
+    'submit' => 'Submit',
+    
+    // Course Form
+    'title' => 'Title',
+    'course_title_ar' => 'Course Title (Arabic)',
+    'course_title_en' => 'Course Title (English)',
+    'course_name_ar' => 'Course Name (Arabic)',
+    'course_name_en' => 'Course Name (English)',
+    'short_description_ar' => 'Short Description (Arabic)',
+    'short_description_en' => 'Short Description (English)',
+    'learning_objectives_ar' => 'Learning Objectives (Arabic)',
+    'learning_objectives_en' => 'Learning Objectives (English)',
+    'objectives_help_text' => 'Enter each objective on a new line',
+    'difficulty_level' => 'Difficulty Level',
+    'select_difficulty' => 'Select Difficulty',
+    'beginner' => 'Beginner',
+    'intermediate' => 'Intermediate',
+    'advanced' => 'Advanced',
+    'select_instructors' => 'Select Instructors',
+    'select_categories' => 'Select Categories',
+    
+
+
+
+    // Review Step
+    'review_course' => 'Review Your Course',
+    'course_title' => 'Course Title',
+    'description' => 'Description',
+    'price' => 'Price',
+    'duration' => 'Duration',
+    'confirm_info' => 'I confirm that all information is correct',
+    
+    // Navigation
+    'next' => 'Next',
+    'previous' => 'Previous',
+    'submit' => 'Submit',
 ];

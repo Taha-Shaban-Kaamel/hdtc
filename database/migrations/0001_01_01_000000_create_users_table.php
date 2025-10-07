@@ -20,10 +20,9 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->longText('avatar')->nullable();
-            $table->string('bio')->nullable();
+            $table->json('bio')->nullable();
             $table->string('phone')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->foreignId('user_type_id')->constrained('users_types')->cascadeOnDelete();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

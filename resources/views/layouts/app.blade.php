@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Fonts -->
@@ -45,7 +45,7 @@
         html,
         body {
             height: 100%;
-            overflow: hidden;
+            overflow: scroll;
         }
 
         .min-h-screen {
@@ -84,8 +84,11 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             @include('layouts.navigation')
 
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
-                {{ $slot }}
+
+            <main class="flex-1 bg-gray-50 p-4 md:p-6 overflow-y-auto">
+                <div class="w-full max-w-7xl mx-auto">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </div>

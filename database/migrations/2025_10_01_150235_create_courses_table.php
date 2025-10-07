@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('course_categories')->cascadeOnDelete();
-            $table->foreignId('instructor_id')->constrained('users')->cascadeOnDelete();
             $table->json('title');
             $table->json('name');
             $table->json('description');
+            $table->json('difficulty_degree');
+            $table->json('objectives');
             $table->decimal('price', 10, 2);
             $table->decimal('duration');
-            $table->json('difficulty_degree');
             $table->string('cover');
             $table->string('thumbnail');
             $table->string('video');

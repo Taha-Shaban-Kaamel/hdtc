@@ -1,11 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category Details') }}
-        </h2>
-    </x-slot>
-    
+<x-app-layout>    
     <div class="py-12">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+                <!-- Breadcrumb -->
+                <div class="px-6 py-4">
+                    <x-breadcrumb :items="[
+                        ['url' => route('dashboard'), 'label' => __('common.dashboard')],
+                        ['url' => route('courses.categories.index'), 'label' => __('common.categories')],
+                        ['label' => __('common.show') . ' : ' . $courseCategorie->getTranslation('name', app()->getLocale())],                    ]" />
+                </div>
+            </div>
+        </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-scroll max-h-[calc(100vh-12rem)] shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
