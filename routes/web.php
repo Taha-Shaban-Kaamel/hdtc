@@ -19,7 +19,7 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
     })->name('dashboard');
 
     Route::get('courses',function(){
-    
+
         return view('courses.index');
     })->name('courses');
 
