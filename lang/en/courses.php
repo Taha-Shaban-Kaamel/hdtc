@@ -21,6 +21,8 @@ return [
     'upload_an_image' => 'Upload an image',
     'png_jpg_gif_up_to_2mb' => 'PNG, JPG, GIF up to 2MB',
     'create' => 'Create',
+    'no_courses_found' => 'No courses found',
+    'get_started_by_creating_a_new_course' => 'Get started by creating a new course',
     
     // Form Stepper
     'review_course' => 'Review Your Course',

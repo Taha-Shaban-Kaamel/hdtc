@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="py-4 max-h-[calc(100vh-12rem)]">
-        <div class="px-6 py-4 border-b border-gray-200">
+    <div class="py-5 max-h-[calc(100vh-12rem)]">
+        <div class="px-6 py-4 !pt-9">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
                 <!-- Breadcrumb -->
                 <div class="px-6 py-4">
@@ -179,7 +179,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex items-center space-x-2">
-                                            
+
                                                 <div class="flex space-x-1">
                                                     <a href="{{ route('courses.show', $course['id']) }}"
                                                         class="text-indigo-600 hover:text-indigo-900"
@@ -219,26 +219,44 @@
                                                         </button>
                                                     </form>
                                                     <a href="{{ route('chapters.index', $course['id']) }}"
-                                                    class="text-green-600 hover:text-green-900"
-                                                    title="{{ __('chapters.manage') }}">
-                                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                                    </svg>
-                                                </a>
+                                                        class="text-green-600 hover:text-green-900"
+                                                        title="{{ __('chapters.manage') }}">
+                                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                                        </svg>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
-                                            {{ __('courses.no_courses_found') }}
-                                            <a href="{{ route('courses.create') }}"
-                                                class="text-indigo-600 hover:text-indigo-900 ml-1">
-                                                {{ __('courses.create_one') }}
-                                            </a>
+                                        <td colspan="4" class="px-6 py-8 w-full">
+                                            <div class="text-gray-500 text-center w-full">
+                                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="1.5"
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <p class="mt-2 text-sm font-medium">
+                                                    {{ __('courses.no_courses_found') }}</p>
+                                                <p class="mt-1 text-xs text-gray-500">
+                                                    {{ __('courses.get_started_by_creating_a_new_course') }}</p>
+                                                <div class="mt-4">
+                                                    <a href="{{ route('courses.create') }}"
+                                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        <svg class="-ml-1 mr-2 h-4 w-4" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                        </svg>
+                                                        {{ __('courses.new_category') }}
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforelse
