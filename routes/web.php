@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\ChaptersController;
 use App\Http\Controllers\CourseCategorieController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ChaptersController;
+use App\Http\Controllers\LectureController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -28,16 +29,19 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
         Route::resource('courses', CourseController::class);
     });
 
-
-    Route::prefix('course/{course_id}')->group(function(){
+    Route::prefix('course/{course_id}')->group(function () {
         Route::get('chapters', [ChaptersController::class, 'index'])->name('chapters.index');
-        Route::get('chapters/create',[ChaptersController::class,'create'])->name('chapters.create');
-        Route::post('chapters',[ChaptersController::class,'store'])->name('chapters.store');
-        Route::delete('chapters/{id}',[ChaptersController::class,'destroy'])->name('chapters.destroy');
-        Route::get('chapters/{id}/edit',[ChaptersController::class,'edit'])->name('chapters.edit');
-        Route::post('chapters/{id}/update',[ChaptersController::class,'update'])->name('chapters.update');
+        Route::get('chapters/create', [ChaptersController::class, 'create'])->name('chapters.create');
+        Route::post('chapters', [ChaptersController::class, 'store'])->name('chapters.store');
+        Route::delete('chapters/{id}', [ChaptersController::class, 'destroy'])->name('chapters.destroy');
+        Route::get('chapters/{id}/edit', [ChaptersController::class, 'edit'])->name('chapters.edit');
+        Route::post('chapters/{id}/update', [ChaptersController::class, 'update'])->name('chapters.update');
     });
 
+    Route::prefix('course/{course}/chapter/{chapter}')->group(function () {
+        Route::resource('lectures', LectureController::class)->names('lectures');
+    });
+    
     Route::prefix('instructors')->group(function () {
         Route::get('/', [InstructorController::class, 'index'])->name('instructors.index');
         Route::get('/create', [InstructorController::class, 'create'])->name('instructors.create');
@@ -47,7 +51,6 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
         Route::get('/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
         Route::delete('/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
     });
-    
 });
 
 Route::middleware('auth')->group(function () {
@@ -55,7 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 Route::get('lang/{locale}', function ($locale) {
     $availableLocales = config('app.available_locales', []);

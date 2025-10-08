@@ -98,6 +98,16 @@
                                                         </svg>
                                                     </button>
                                                 </form>
+                                                <a href="{{ route('lectures.index',[$course->id , $chapter->id]) }}"
+                                                class="text-green-600 hover:text-green-900"
+                                                title="{{ __('chapters.manage') }}">
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                                </svg>
+                                            </a>
+                                                
                                             </div>
                                         </td>
                                     </tr>
