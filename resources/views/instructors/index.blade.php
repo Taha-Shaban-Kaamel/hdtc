@@ -1,11 +1,18 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('instructors.instructors') }}
-        </h2>
-    </x-slot>
+    <div class="py-5 max-h-[calc(100vh-12rem)]">
+        <div class="px-6 py-4 mt-6 !pt-9">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+                <!-- Breadcrumb -->
+                <div class="px-6 py-4">
+                    <x-breadcrumb :items="[
+                        ['url' => route('dashboard'), 'label' => __('common.dashboard')],
+                        ['label' => __('common.instructors')],
+                    ]" />
+                </div>
+            </div>
+        </div>
 
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -89,11 +96,25 @@
                                         
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
-                                            {{ __('instructors.no_instructors_found') }}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center">
+                                        <div class="text-gray-500">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <p class="mt-2 text-sm font-medium">{{ __('common.not_found') }}</p>
+                                            <p class="mt-1 text-xs text-gray-500">{{ __('common.create_new') }}</p>
+                                            <div class="mt-4">
+                                                <a href="{{ route('instructors.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                                    </svg>
+                                                    {{ __('common.create') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
