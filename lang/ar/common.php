@@ -25,6 +25,7 @@ return [
     'no_results' => 'لا توجد نتائج',
     'delete_confirmation' => 'تأكيد الحذف',
     'yes' => 'نعم',
+    'order' => 'الترتيب' ,
     'no' => 'لا',
     'success' => 'نجاح',
     'error' => 'خطأ',
@@ -64,4 +65,7 @@ return [
     'category' => 'التصنيف',
     'show' => 'عرض',
     'are_you_sure' => 'هل أنت متأكد؟',
+    'instructors' => 'المدربين',
+    'not_found' => 'لايوجد' ,
+    'create_new' => 'انشاء جديد'
 ];

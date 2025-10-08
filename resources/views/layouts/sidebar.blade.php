@@ -29,7 +29,7 @@
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
                             href="{{ route('dashboard') }}">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center">
+                                <div class="flex items-center gap-1">
                                     <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/Home.png') }}"
                                         alt="">
                                     <span
@@ -52,14 +52,14 @@
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
-                            sidebarExpanded && @js(Route::is('courses')) ?
+                            sidebarExpanded && @js(Route::is('courses.index') || (Route::is('courses.create') || (Route::is('courses.edit')) ?
                             'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
                             ''
                         ]">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
                             href="{{ route('courses.index') }}">
                             <div class="flex items-center justify-between">
-                                <div class="flex items-center">
+                                <div class="flex items-center gap-1">
                                     <img class="w-5 h-5"
                                         src="{{ asset('storage/dashboard/icons/baseline-laptop.png') }}" alt="">
                                     <span
@@ -81,34 +81,66 @@
                     </li>
 
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
-                    x-data="{ sidebarExpanded: false }"
-                    :class="[
-                        sidebarExpanded && @js(Route::is('courses.categories.index')) ?
-                        'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-                        ''
-                    ]">
-                    <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                        href="{{ route('courses.categories.index') }}">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="flex shrink-0 ml-2">
-                                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                    </svg>
+                        x-data="{ sidebarExpanded: false }"
+                        :class="[
+                            sidebarExpanded && @js(Route::is('courses.categories.index')) ?
+                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                            ''
+                        ]">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                            href="{{ route('courses.categories.index') }}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex shrink-0 ml-2">
+                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.categories') }}</span>
                                 </div>
-                                <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                                    :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.categories') }}</span>
+
                             </div>
-                       
-                        </div>
-                    </a>
+                        </a>
 
 
                     </li>
 
 
-                    <!-- E-Commerce -->
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                        x-data="{ sidebarExpanded: false }"
+                        :class="[
+                            sidebarExpanded && @js(Route::is('instructors.index') || Route::is('instructors.create') || Route::is('instructors.edit') ) ?
+                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                            ''
+                        ]">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                            href="{{ route('instructors.index') }}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex shrink-0 ml-2">
+                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.instructors') }}</span>
+                                </div>
+
+                            </div>
+                        </a>
+
+
+                    </li>
+
+
+                    {{-- <!-- E-Commerce -->
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: false }">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
                             href="#0" @click.prevent="open = !open; sidebarExpanded = true">
@@ -158,7 +190,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

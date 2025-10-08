@@ -1,11 +1,18 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('instructors.add_instructor') }}
-        </h2>
-    </x-slot>
+    <div class="py-5">
+        <div class="px-6 py-4">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+                <div class="px-6 py-4 mt-4 flex h-[100px] w-full">
+                    <x-breadcrumb :items="[
+                        ['url' => route('dashboard'), 'label' => __('common.dashboard')],
+                        ['url' => route('instructors.index'), 'label' => __('common.instructors')],
+                        ['label' => __('common.create')],
+                    ]" />
+                </div>
+            </div>
+        </div>
 
-    <div class="py-12">
+    <div class="pb-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white max-h-[calc(100vh-12rem)] overflow-scroll shadow-sm sm:rounded-lg p-6">
                <x-instructors.form-stepper :steps="4" :currentStep="1" :totalSteps="4" :form="route('instructors.store')" :method="'POST'" :redirect="route('instructors.index')" />
