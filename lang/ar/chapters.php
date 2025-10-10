@@ -12,5 +12,6 @@ return [
     'chapter_information' => 'معلومات الفصل',
     'create_a_new_chapter' => 'إنشاء فصل جديد',
     'no_chapters_found' => 'لا توجد فصول',
-    'create_one' => 'إنشاء واحد'
+    'create_one' => 'إنشاء واحد' ,
+    'manage' => 'ادارة الوحدات' 
 ];

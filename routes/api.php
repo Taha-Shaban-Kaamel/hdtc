@@ -34,11 +34,11 @@ Route::group(['prefix' => 'auth/'], function () {
         Route::get('/tokens', [SocialAuthController::class, 'tokens']);
         Route::delete('/tokens/{token_id}', [SocialAuthController::class, 'revokeToken']);
         Route::delete('/unlink', [SocialAuthController::class, 'unlinkSocialAccount']);
-
-
-
-
     });
+
+
+
+    
 });
 
 

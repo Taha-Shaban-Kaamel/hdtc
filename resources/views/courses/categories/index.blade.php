@@ -2,14 +2,12 @@
 
 
     <div class="py-12">
-        <div class="px-6 py-4 border-b border-gray-200">
+        <div class="px-6 py-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
-                <!-- Breadcrumb -->
                 <div class="px-6 py-4">
                     <x-breadcrumb :items="[
                         ['url' => route('dashboard'), 'label' => __('common.dashboard')],
                         ['url' => route('courses.categories.index'), 'label' => __('common.categories')],
-                        ['label' => __('common.categories')],
                     ]" />
                 </div>
             </div>
