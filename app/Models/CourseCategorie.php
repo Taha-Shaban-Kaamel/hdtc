@@ -26,4 +26,14 @@ class CourseCategorie extends Model
     {
         return $this->hasMany(CourseCategorie::class, 'parent_id');
     }
+    
+    public function courses()
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'course_category',
+            'course_category_id',
+            'course_id'
+        );
+    }
 }
