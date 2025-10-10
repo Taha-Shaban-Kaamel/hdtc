@@ -30,7 +30,7 @@ class InstructorController extends Controller
     public function show(string $id)
     {
         try {
-            $instructor = InstructorResource::collection(Instructor::all()) ;
+            $instructor = new InstructorResource(Instructor::find($id)) ;
             return response()->json([
                 'status' => true,
                 'message' => 'Instructor found',
