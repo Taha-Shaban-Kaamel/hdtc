@@ -22,6 +22,7 @@ class Instructor extends Model
         'experience',
         'education',
         'company',
+        'rating',
         'twitter_url', 
         'linkedin_url',
         'facebook_url',

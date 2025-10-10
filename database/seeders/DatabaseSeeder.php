@@ -19,16 +19,30 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'instructor']);
         Role::create(['name' => 'student']);
 
-        
-        // Create a super admin user
-        $superAdmin = User::factory()->create([
+        $superAdmin = User::create([
             'email' => 'taha.shaban@zydx.com',
-            'first_name' => ['ar' => 'طه', 'en' => 'taha'],
-            'second_name' => ['ar' => 'شعبان', 'en' => 'shaban'],
+            'first_name' => 'taha',
+            'second_name' => 'shaban',
             'password' => bcrypt('12345678'),
             'phone' => '123456789',
+            'email_verified_at' => now(),
         ]);
         
         $superAdmin->assignRole('super admin');
+
+        // Seed categories first
+        $this->call([
+            CourseCategorieSeeder::class,
+        ]);
+
+        // Then seed instructors (which create users with instructor role)
+        $this->call([
+            InstructorSeeder::class,
+        ]);
+
+        // Finally seed courses (which depend on categories and instructors)
+        $this->call([
+            CourseSeeder::class,
+        ]);
     }
 }
