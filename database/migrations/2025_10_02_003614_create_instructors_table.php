@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('linkedin_url')->nullable();
             $table->string('facebook_url')->nullable();
             $table->string('youtube_url')->nullable();
+            $table->string('rating')->nullable() ;
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

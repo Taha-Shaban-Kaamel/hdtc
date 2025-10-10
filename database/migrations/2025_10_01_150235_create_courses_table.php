@@ -19,11 +19,15 @@ return new class extends Migration
             $table->json('difficulty_degree');
             $table->json('objectives');
             $table->decimal('price', 10, 2);
+            $table->string('availability')->nullable();
+            $table->boolean('accessibility')->default(true);
+            $table->enum('progression', ['chapter', 'lecture'])->default('chapter');
+            $table->string('tags')->nullable();
             $table->decimal('duration');
             $table->string('cover');
             $table->string('thumbnail');
             $table->string('video');
-            $table->string('status');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

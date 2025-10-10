@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InstructorRequest;
 use App\Models\Instructor;
 use App\Http\Resources\InstructorResource;
 use Illuminate\Http\Request;
@@ -34,41 +35,44 @@ class InstructorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(InstructorRequest $request)
     {
-        // dd($request->all());
+        // dd($request);
 
-        $validated = $request->validate([
-            'first_name_ar' => 'required|string|max:255',
-            'first_name_en' => 'required|string|max:255',
-            'second_name_ar' => 'required|string|max:255',
-            'second_name_en' => 'required|string|max:255',
-            'gender' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'specialization_ar' => 'required|string|max:255',
-            'specialization_en' => 'required|string|max:255',
-            'experience' => 'required|string|max:255',
-            'education_ar' => 'required|string|max:255',
-            'education_en' => 'required|string|max:255',
-            'company' => 'required|string|max:255',
-            'twitter_url' => 'nullable|url|max:255',
-            'linkedin_url' => 'nullable|url|max:255',
-            'facebook_url' => 'nullable|url|max:255',
-            'youtube_url' => 'nullable|url|max:255',
-            'email' => 'required|string|unique:users,email|max:255',
-            'bio_ar' => 'nullable|string',
-            'bio_en' => 'nullable|string',
-            'phone' => 'nullable|string|max:20',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'company' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'twitter_url' => 'nullable|url|max:255',
-            'linkedin_url' => 'nullable|url|max:255',
-            'facebook_url' => 'nullable|url|max:255',
-            'youtube_url' => 'nullable|url|max:255',
-            'is_active' => 'boolean',
-        ]);
+        // $validated = $request->validate([
+        //     'first_name_ar' => 'required|string|max:255',
+        //     'first_name_en' => 'required|string|max:255',
+        //     'second_name_ar' => 'required|string|max:255',
+        //     'second_name_en' => 'required|string|max:255',
+        //     'gender' => 'required|string|max:255',
+        //     'birth_date' => 'required|date',
+        //     'specialization_ar' => 'required|string|max:255',
+        //     'specialization_en' => 'required|string|max:255',
+        //     'experience' => 'required|string|max:255',
+        //     'education_ar' => 'required|string|max:255',
+        //     'education_en' => 'required|string|max:255',
+        //     'company' => 'required|string|max:255',
+        //     'twitter_url' => 'nullable|url|max:255',
+        //     'linkedin_url' => 'nullable|url|max:255',
+        //     'facebook_url' => 'nullable|url|max:255',
+        //     'youtube_url' => 'nullable|url|max:255',
+        //     'email' => 'required|string|unique:users,email|max:255',
+        //     'bio_ar' => 'nullable|string',
+        //     'bio_en' => 'nullable|string',
+        //     'phone' => 'nullable|string|max:20',
+        //     'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'company' => 'nullable|string|max:255',
+        //     'website' => 'nullable|url|max:255',
+        //     'twitter_url' => 'nullable|url|max:255',
+        //     'linkedin_url' => 'nullable|url|max:255',
+        //     'facebook_url' => 'nullable|url|max:255',
+        //     'youtube_url' => 'nullable|url|max:255',
+        //     'password' => 'required|string|min:8' ,
+        //     'is_active' => 'boolean',
+        // ]);
 
+        $validated = $request->validated();
+        $request = request() ;
 
 
         if ($request->hasFile('avatar')) {
@@ -84,8 +88,8 @@ class InstructorController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'bio' => ['ar' => $request->bio_ar , 'en' => $request->bio_en],
+            'password' => bcrypt($request->password),
             'avatar' => $validated['avatar'] ?? null,
-            'password' => bcrypt('password'),
         ]);
 
         $user->assignRole('instructor');
