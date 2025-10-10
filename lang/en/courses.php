@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'accessability' => 'Accessibility',
     'categories' => 'Categories',
     'new_category' => 'New Category',
     'image' => 'Image',

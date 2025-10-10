@@ -35,6 +35,9 @@ class CourseResource extends JsonResource
             'instructors' => $this->whenLoaded('instructors', function () use ($request) {
                 return InstructorResource::collection($this->instructors)->toArray($request);
             }),
+            'tags' => $this->whenLoaded('tags', function ($tags) use ($request) {
+                return $tags->pluck('name');
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

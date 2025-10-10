@@ -12,5 +12,6 @@ return [
     'chapter_information' => 'Chapter Information',
     'create_a_new_chapter' => 'Create a new chapter',
     'no_chapters_found' => 'No chapters found',
-    'create_one' => 'Create one'
+    'create_one' => 'Create one' ,
+    'manage' => 'mange chapters'
 ];

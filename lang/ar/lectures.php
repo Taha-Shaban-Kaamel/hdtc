@@ -16,4 +16,6 @@ return [
     'lecture_created' => 'تم إنشاء المحاضرة بنجاح',
     'lecture_updated' => 'تم تحديث المحاضرة بنجاح',
     'lecture_deleted' => 'تم حذف المحاضرة بنجاح',
+    'manage_lectures_description' => 'ادارة المحاضرات'
+    
 ];
