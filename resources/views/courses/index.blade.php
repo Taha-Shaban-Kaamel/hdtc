@@ -143,7 +143,7 @@
                                             </div>
                                         </td>
 
-                                        <td class="px-6 py-4 whitespace-nowrap flex items-center justify-center ">
+                                        <td class="px-6 py-4 text-center">
                                             @php
                                                 $difficultyClasses =
                                                     [
@@ -154,14 +154,14 @@
                                             @endphp
                                             <span
                                                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $difficultyClasses }}">
-                                                {{ __('courses.' . $course['difficulty_degree']) }}
+                                                {{ $course['difficulty_degree'] ? __('courses.' . $course['difficulty_degree']) : '' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500  justify-center">
                                             {{ $course['duration'] }} {{ __('common.hour') }}
                                         </td>
                                         <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center justify-center">
+                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                             ${{ number_format($course['price'], 2) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">

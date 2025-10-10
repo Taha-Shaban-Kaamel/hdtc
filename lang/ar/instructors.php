@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'info' => 'معلومات المدرب',
     'instructors' => 'المدربين',
     'manage_instructors' => 'إدارة المدربين',
     'add_instructor' => 'إضافة مدرب',
@@ -37,6 +38,7 @@ return [
     'rating' => 'التقييم',
     
     // Actions
+    'password' => 'كلمه سر المدرب',
     'view_profile' => 'عرض الملف الشخصي',
     'edit_profile' => 'تعديل الملف الشخصي',
     'delete_instructor' => 'حذف المدرب',

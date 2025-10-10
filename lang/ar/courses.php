@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'accessability' => 'الاحتفاظ بالوصول',
     'categories' => 'الاقسام',
     'new_category' => 'اضافة قسم جديد',
     'image' => 'الصوره',

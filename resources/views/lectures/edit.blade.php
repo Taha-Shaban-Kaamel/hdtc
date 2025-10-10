@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6 max-h-[calc(100vh-12rem)]">
-        <div class="h-[200px] py-6 px-6 flex items-center">
+        <div class="h-[100px] py-6 px-6 flex items-center">
             <x-breadcrumb :items="[
                 ['url' => route('dashboard'), 'label' => __('common.dashboard')],
                 ['url' => route('courses.index'), 'label' => __('common.courses')],
@@ -16,7 +16,7 @@
             ]" />
         </div>
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-form-section :action="route('lectures.update', [$course->id, $chapter->id, $lecture->id])" method="PUT">
       
                 <x-slot name="title" class="text-xl font-bold text-gray-900">

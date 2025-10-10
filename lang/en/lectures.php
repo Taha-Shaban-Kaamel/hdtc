@@ -16,4 +16,5 @@ return [
     'lecture_created' => 'Lecture created successfully',
     'lecture_updated' => 'Lecture updated successfully',
     'lecture_deleted' => 'Lecture deleted successfully',
+    'manage_lectures_description' => "manage lecture"
 ];

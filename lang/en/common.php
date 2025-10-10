@@ -65,5 +65,6 @@ return [
     'show' => 'show',
     'are_you_sure' => 'Are you sure?' ,
     'instructors' => 'instructors' ,
-    'order' => 'order' 
+    'order' => 'order' ,
+    'manage' => 'manage chapters'
 ];

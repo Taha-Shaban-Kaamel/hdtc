@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Models\Category;
 use App\Models\Instructor;
-use App\Models\Chapters;
+use App\Models\Chapter;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -53,8 +54,12 @@ class Course extends Model
 
     public function chapters()
     {
-        return $this->hasMany(Chapters::class);
+        return $this->hasMany(Chapter::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'course_tag', 'course_id', 'tag_id');
+    }
 
 }
