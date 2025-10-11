@@ -47,5 +47,13 @@ return [
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
       ],
+    'paymob' => [
+        'api_key' => env('PAYMOB_API_KEY'),
+        'integration_id' => env('PAYMOB_INTEGRATION_ID'),
+        'iframe_id' => env('PAYMOB_IFRAME_ID'),
+        'hmac' => env('PAYMOB_HMAC_SECRET'),
+        'base_url' => env('PAYMOB_BASE_URL'),
+        'callback_url' => env('PAYMOB_CALLBACK_URL'),
+    ],
 
 ];

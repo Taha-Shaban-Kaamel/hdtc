@@ -19,11 +19,16 @@ class SubscriptionService
         $plan = $this->repo->getPlanById($planId);
         $active = $this->repo->getActiveSubscription($userId);
 
+        // ✅ لو فيه اشتراك نشط بالفعل لأي خطة
         if ($active) {
-            throw new Exception("يوجد اشتراك نشط بالفعل لهذا المستخدم");
+            return [
+                'already_subscribed' => true,
+                'subscription' => $active
+            ];
         }
 
-        $startDate = Carbon::now();
+        // ✅ مفيش اشتراك نشط → نعمل واحد جديد
+        $startDate = now();
         $endDate = $billingCycle === 'yearly'
             ? $startDate->copy()->addYear()
             : $startDate->copy()->addMonth();
@@ -40,7 +45,10 @@ class SubscriptionService
 
         $this->repo->createUsage($subscription->id);
 
-        return $subscription;
+        return [
+            'already_subscribed' => false,
+            'subscription' => $subscription
+        ];
     }
 
     public function getSubscription($userId)

@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Api\authController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlansController;
 use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -37,8 +38,16 @@ Route::group(['prefix' => 'auth/'], function () {
         Route::get('notifications/user', [NotificationController::class, 'getForUser']);
         Route::post('notifications/read', [NotificationController::class, 'markAsRead']);
 
+            Route::post('subscriptions/subscribe', [PaymentController::class, 'createPayment']);
+            Route::get('subscriptions', [\App\Http\Controllers\Api\SubscriptionController::class, 'getSubscription']);
+            Route::delete('subscriptions', [\App\Http\Controllers\Api\SubscriptionController::class, 'cancelSubscription']);
+
+
+
     });
 });
+Route::match(['get', 'post'], 'pay/callback', [PaymentController::class, 'callback']);
+Route::get('pay/status', [PaymentController::class, 'getStatus']);
 
 Route::apiResource('instructors', InstructorController::class);
 
