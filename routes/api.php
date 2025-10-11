@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\Api\authController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\PlansController;
 use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\InstructorController;
@@ -21,7 +23,9 @@ Route::group(['prefix' => 'auth/'], function () {
     Route::group(['prefix' => 'social/'], function () {
         Route::get('{provider}/redirect', [SocialAuthController::class, 'redirectToProvider']);
         Route::post('{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
+
     });
+
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [authController::class, 'logout']);
@@ -30,6 +34,9 @@ Route::group(['prefix' => 'auth/'], function () {
         Route::get('/tokens', [SocialAuthController::class, 'tokens']);
         Route::delete('/tokens/{token_id}', [SocialAuthController::class, 'revokeToken']);
         Route::delete('/unlink', [SocialAuthController::class, 'unlinkSocialAccount']);
+        Route::get('notifications/user', [NotificationController::class, 'getForUser']);
+        Route::post('notifications/read', [NotificationController::class, 'markAsRead']);
+
     });
 });
 
@@ -44,5 +51,9 @@ Route::prefix('categories')->group(function () {
 Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index']);
     Route::get('/{id}', [CourseController::class, 'show']);
+});
+Route::prefix('plans')->group(function () {
+    Route::get('/', [PlansController::class, 'index']);
+    Route::get('/{id}', [PlansController::class, 'show']);
 });
 

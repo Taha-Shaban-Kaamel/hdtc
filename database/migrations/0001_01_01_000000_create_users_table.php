@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('provider')->nullable();
+            $table->string('fcm_token')->nullable();
             $table->string('provider_id')->nullable();
-            $table->json('first_name');
-            $table->json('second_name');
+            $table->json('first_name')->nullable();
+            $table->json('second_name')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->longText('avatar')->nullable();

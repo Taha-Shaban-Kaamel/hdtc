@@ -1,3 +1,4 @@
+# Laravel & Node standard ignores
 *.log
 .DS_Store
 .env
@@ -21,3 +22,6 @@ Homestead.json
 Homestead.yaml
 
 Thumbs.db
+
+# Ignore Firebase credentials
+/storage/app/firebase-auth.json

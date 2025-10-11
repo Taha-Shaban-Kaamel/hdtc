@@ -4,4 +4,7 @@ return [
     'courses' => 'الدورات',
     'categories' => 'الاقسام',
     'instructors' => 'المدربين',
+    'plans' => 'الخطط',
+    'notifications' => 'الاشعارات',
+
 ];
