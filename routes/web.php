@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
         Route::get('chapters/{id}/edit', [ChaptersController::class, 'edit'])->name('chapters.edit');
         Route::post('chapters/{id}/update', [ChaptersController::class, 'update'])->name('chapters.update');
     });
-    Route::prefix('subscription')->group(function () {
+    Route::prefix('plans')->group(function () {
 
         Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
         Route::get('plans/create', [PlanController::class, 'create'])->name('plans.create');
