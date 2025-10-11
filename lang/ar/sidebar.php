@@ -5,5 +5,6 @@ return [
     'categories' => 'الاقسام',
     'instructors' => 'المدربين',
     'plans' => 'الخطط',
+    'notifications' => 'الاشعارات',
 
 ];

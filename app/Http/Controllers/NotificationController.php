@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Firebase\FirebaseNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -25,11 +26,10 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        $users = User::select('id', 'name', 'email')
-            ->orderBy('name')
-            ->get();
+        $users=User::select('id', DB::raw("JSON_UNQUOTE(JSON_EXTRACT(first_name, '$')) as first_name"), DB::raw("JSON_UNQUOTE(JSON_EXTRACT(second_name, '$')) as second_name"), 'email')->orderBy('first_name')->get();
 
-        return view('pages.notifications.create', compact('users'));
+
+        return view('notifications.create', compact('users'));
     }
 
     /**
@@ -115,12 +115,13 @@ class NotificationController extends Controller
             ->paginate(20);
 
 
-        if (Auth::guard('admin')->check()) {
-            Notification::where('user_id', Auth::guard('admin')->id())
+        if (Auth::check()) {
+            Notification::where('user_id', Auth::id())
                 ->where('is_read', false)
                 ->update(['is_read' => true]);
         }
 
-        return view('pages.notifications.index', compact('notifications'));
+
+        return view('notifications.index', compact('notifications'));
     }
 }
