@@ -9,8 +9,8 @@
         name_en: '{{ old('name_en', $course?->getTranslation('name', 'en') ?? '') }}',
         description_ar: `{{ old('description_ar', $course?->getTranslation('description', 'ar') ?? '') }}`,
         description_en: `{{ old('description_en', $course?->getTranslation('description', 'en') ?? '') }}`,
-        objectives_ar: `{{ old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? '') }}`,
-        objectives_en: `{{ old('objectives_en', $course?->getTranslation('objectives', 'en') ?? '') }}`,
+        objectives_ar: `{{ is_array(old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) ? implode("\n", old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) : (old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? '')) }}`,
+        objectives_en: `{{ is_array(old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) ? implode("\n", old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) : (old('objectives_en', $course?->getTranslation('objectives', 'en') ?? '')) }}`,
         difficulty_degree: '{{ old('difficulty_degree', $course?->difficulty_degree ?? '') }}',
         price: {{ old('price', $course?->price ?? 0) }},
         duration: {{ old('duration', $course?->duration ?? 1) }},
@@ -19,7 +19,8 @@
         categories: @json(old('categories', $course ? $course->categories->pluck('id') : [])),
         thumbnail: null,
         thumbnailPreview: '{{ $course?->thumbnail ? Storage::url($course->thumbnail) : '' }}',
-        availability: '{{ old('availability', $course?->availability ?? '') }}',
+        {{-- availability: '{{ old('availability', $course?->availability ?? '') }}', --}}
+        progression: '{{ old('progression', $course?->progression ?? '') }}',
         {{-- tags: @json(old('tags', $course ? $course->tags()->pluck('name') : [])), --}}
     },
     currentStep: {{ $currentStep }},
@@ -75,20 +76,20 @@
             @endif
         @endfor
     </div>
-    <div>
-        @if ($errors->any())
-            <div>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-    </div>
+
+    @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    {{-- @dd($course->accessibility) --}}
 
     <form method="POST" action="{{ isset($course) ? route('courses.update', $course) : route('courses.store') }}"
-        class="space-y-6" enctype="multipart/form-data" x-on:submit.prevent="$el.submit()">
+        class="space-y-6" enctype="multipart/form-data">
         @csrf
         @if (isset($course))
             @method('PUT')
@@ -104,6 +105,7 @@
 
         <div x-show="currentStep === 1" x-transition>
             <div class="grid grid-cols-6 gap-6">
+                
                 <div class="col-span-3">
                     <x-label for="title_ar" value="{{ __('courses.course_title_ar') }}" />
                     <x-input id="title_ar" name="title_ar" type="text" class="mt-1 block w-full"
@@ -135,13 +137,17 @@
 
                 <div class="col-span-3">
                     <label for="tags" class="block font-medium text-sm text-gray-700">Tags</label>
-                    <input id="tags" name="tags[]" value="{{ old('tags', $course ? $course?->tags()->pluck('name') :'') }}" class="tagify mt-1 block w-full" placeholder="Enter tags..." multiple>
+                    {{-- @dd($course?->tags()->pluck('name')) --}}
+                    <input id="tags" name="tags[]" value="{{ json_encode(old('tags',$course?->tags()->pluck('name'))) }}" class="tagify mt-1 block w-full" placeholder="Enter tags..." multiple>
                 </div>
 
                 <div class="col-span-3">
-                    <label for="availablety" class="block font-medium text-sm text-gray-700">Availablety</label>
-                    <x-input id="availablety" name="availablety" type="text" class="mt-1 block w-full"
-                    x-model="formData.availablety"/>
+                    <label for="progression" class="block font-medium text-sm text-gray-700">Progression</label>
+                    <select id="progression" name="progression" class="mt-1 block w-full" x-model="formData.progression">
+                        <option value="">Select Progression</option>
+                        <option value="chapter" :selected="formData.progression === 'chapter'">Chapter</option>
+                        <option value="lecture" :selected="formData.progression === 'lecture'">Lecture</option>
+                    </select>
                 </div>
 
                 <div class="col-span-3">
@@ -164,6 +170,36 @@
         <div x-show="currentStep === 2" x-transition>
             <div class="grid grid-cols-6 gap-6">
                
+                <div class="col-span-3">
+                    <label class="flex items-start gap-2">
+                        <!-- Hidden input to ensure a value is always submitted -->
+                        <input type="hidden" name="status" value="inactive">
+                        <input type="checkbox" name="status" value="active" 
+                            {{ old('status', $course->status ?? '') === 'active' ? 'checked' : '' }}
+                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                        <span class="ml-2 text-sm text-gray-600">
+                            {{ __('common.status') }}
+                        </span>
+                    </label>
+                    @if ($errors->has('status'))
+                        <x-input-error for="status" :messages="$errors->get('status')" class="mt-2" />
+                    @endif
+                </div>
+
+                <div class="col-span-3">
+                    <label class="flex items-start gap-2" title="{{ __('courses.accessability') }}">
+                        <input type="hidden" name="accessibility" value="inactive">
+                        <input type="checkbox" name="accessibility" value="active" 
+                            {{ old('accessibility', $course->accessibility ?? '') === 'active' ? 'checked' : '' }}
+                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                        <span class="ml-2 text-sm text-gray-600">
+                            {{ __('courses.accessability') }}
+                        </span>
+                    </label>
+                    @if ($errors->has('accessability'))
+                        <x-input-error for="accessability" :messages="$errors->get('accessability')" class="mt-2" />
+                    @endif
+                </div>
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="price" value="{{ __('courses.price') }}" />
                     <div class="mt-1 relative rounded-md shadow-sm">
@@ -185,7 +221,6 @@
                     <x-input-error for="duration" :messages="$errors->get('duration')" class="mt-2" />
                 </div>
 
-                {{-- @dd(old('categories', $course?->categories->toArray())) --}}
                 <div class="col-span-3 mt-6">
                     <x-label for="categories" value="{{ __('courses.select_categories') }}" />
                     <x-multi-select :items="$categories" name="categories[]" :placeholder="__('common.select_items')" id="category-selector"
@@ -217,11 +252,12 @@
                         )" />
                 </div>
 
+
                 <div class="col-span-3">
                     <x-label for="difficulty_degree" value="{{ __('courses.difficulty_level') }}" />
                     <select id="difficulty_degree" name="difficulty_degree" x-model="formData.difficulty_degree"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        required>
+                        >
                         <option value="">{{ __('courses.select_difficulty') }}</option>
                         <option
                             {{ $course?->getTranslation('difficulty_degree', 'ar') === 'beginner' ? 'selected' : '' }}
@@ -289,31 +325,6 @@
                     @endif
                 </div>
 
-                <div class="col-span-3">
-                    <label class="flex items-start gap-2">
-                        <input type="checkbox" name="status" required
-                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                        <span class="ml-2 text-sm text-gray-600">
-                            {{ __('common.status') }}
-                        </span>
-                    </label>
-                    @if ($errors->has('status'))
-                        <x-input-error for="status" :messages="$errors->get('status')" class="mt-2" />
-                    @endif
-                </div>
-
-                <div class="col-span-3">
-                    <label class="flex items-start gap-2" title="{{ __('courses.accessability') }}">
-                        <input type="checkbox" name="accessability" required
-                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                        <span class="ml-2 text-sm text-gray-600">
-                            {{ __('courses.accessability') }}
-                        </span>
-                    </label>
-                    @if ($errors->has('accessability'))
-                        <x-input-error for="accessability" :messages="$errors->get('accessability')" class="mt-2" />
-                    @endif
-                </div>
 
             </div>
         </div>
@@ -370,7 +381,6 @@
                         </div>
                     </div>
 
-                    <!-- Right Column -->
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-lg shadow">
                             <h4 class="font-medium text-gray-700 border-b pb-2 mb-2">
@@ -468,8 +478,9 @@
 
 @push('scripts')
     <script>
-        window.tagWhitelist = @json(\App\Models\Tag::pluck('name')->toArray());
+        document.addEventListener('alpine:init', () => {
+            window.tagWhitelist = @json(\App\Models\Tag::pluck('name')->toArray());
+        });
     </script>
     @vite(['resources/js/tagify.js'])
-
 @endpush
