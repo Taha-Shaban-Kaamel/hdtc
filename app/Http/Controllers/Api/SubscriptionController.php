@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -50,7 +51,7 @@ class SubscriptionController extends Controller
             return new SubscriptionResource($subscription);
         }
 
-        return response()->json(['message' => 'لا يوجد اشتراك نشط'], 404);
+        return response()->json(['message' => 'No active subscription found.'], 404);
     }
 
     public function cancelSubscription(Request $request)

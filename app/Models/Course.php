@@ -26,7 +26,9 @@ class Course extends Model
         'cover',
         'video',
         'status',
-
+        'accessibility',
+        'progression',
+        'tags',
     ];
 
     protected $casts = [
