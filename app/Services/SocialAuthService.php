@@ -10,7 +10,7 @@ class SocialAuthService
 {
     public function handleSocialAuth($provider, $socialUser)
     {
-        
+
         $provider_id = $provider == 'google' ? $socialUser['sub'] :  $socialUser->id ;
         $avatar = $provider == 'google' ? $socialUser['picture'] : $socialUser->avatar;
 
@@ -40,10 +40,9 @@ class SocialAuthService
                 'second_name' => $socialUser['family_name'] ?: 'User',
                 'email' => $socialUser['email'] ?: 'Useremail',
                 'provider' => $provider,
-                'provider_id' => $socialUser['id'],
+                'provider_id' => $provider_id,
                 'avatar' => $socialUser['picture'] ?: 'User',
                 'email_verified_at' => now(),
-                'user_type_id' => 1,
                 'password' => Hash::make(Str::random(16)), 
             ]);
         }elseif($provider == 'facebook'){
@@ -55,7 +54,6 @@ class SocialAuthService
                 'provider_id' => $socialUser->id,
                 'avatar' => $socialUser->avatar ?: 'User',
                 'email_verified_at' => now(),
-                'user_type_id' => 1,
                 'password' => Hash::make(Str::random(16)), // Random password for social users
             ]);
         };
@@ -67,10 +65,10 @@ class SocialAuthService
     {
         // Revoke existing tokens (optional - for single session)
         // $user->tokens()->delete();
-        
+
         // Create new token
         $token = $user->createToken($tokenName, $abilities);
-        
+
         return [
             'token' => $token->plainTextToken,
             'user' => new UserResource($user)

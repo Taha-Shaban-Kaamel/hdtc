@@ -32,12 +32,11 @@ class CategorieController extends Controller
     public function show($id)
     {
         try {
-            $category = CategorieResrource::collection(CourseCategorie::all());
+            $category = new CategorieResrource(CourseCategorie::find($id));
             return response()->json([
                 'status' => true,
                 'message' => 'Category found',
                 'data' => $category,
-                'count' => $category->count()
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
