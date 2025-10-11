@@ -43,7 +43,7 @@ class SocialAuthService
                 'provider_id' => $provider_id,
                 'avatar' => $socialUser['picture'] ?: 'User',
                 'email_verified_at' => now(),
-                'password' => Hash::make(Str::random(16)), // Random password for social users
+                'password' => Hash::make(Str::random(16)), 
             ]);
         }elseif($provider == 'facebook'){
             return User::create([

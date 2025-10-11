@@ -1,15 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CategorieResrource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\InstructorResource;
-use App\Models\Course;
 use App\Models\CourseCategorie;
 use App\Models\Instructor;
+use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Tag;
+use App\Utils\ArrayHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -27,7 +29,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+ * Show the form for creating a new resource.
      */
     public function create()
     {
@@ -62,6 +64,9 @@ class CourseController extends Controller
             'video_url' => 'required|url',
             'price' => 'required|numeric',
             'duration' => 'required|numeric',
+            'progression' => 'required|in:chapter,lecture',
+            'status' => 'required|in:active,inactive',
+            'accessability' => 'required|in:active,inactive',
         ]);
 
         try {
@@ -92,9 +97,10 @@ class CourseController extends Controller
                     'en' => $validated['description_en'],
                 ],
                 'objectives' => [
-                    'ar' => $validated['objectives_ar'] ?? '',
-                    'en' => $validated['objectives_en'] ?? '',
+                    'ar' => ArrayHelper::formatObjectives($validated['objectives_ar'] ?? ''),
+                    'en' => ArrayHelper::formatObjectives($validated['objectives_en'] ?? ''),
                 ],
+                'progression' => $validated['progression'],
                 'price' => $validated['price'],
                 'duration' => $validated['duration'],
                 'difficulty_degree' => $validated['difficulty_degree'],
@@ -168,6 +174,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'title_ar' => 'nullable|string|max:255',
             'title_en' => 'nullable|string|max:255',
@@ -187,6 +194,9 @@ class CourseController extends Controller
             'video_url' => 'nullable|url',
             'price' => 'nullable|numeric',
             'duration' => 'nullable|numeric',
+            'progression' => 'nullable|in:chapter,lecture',
+            'status' => 'nullable|in:active,inactive',
+            'accessibility' => 'nullable|in:active,inactive',
         ]);
         $courseData = [];
 
@@ -230,17 +240,20 @@ class CourseController extends Controller
         ];
 
         $courseData['objectives'] = [
-            'ar' => $validated['objectives_ar'],
-            'en' => $validated['objectives_en']
+            'ar' => ArrayHelper::formatObjectives($validated['objectives_ar']),
+            'en' => ArrayHelper::formatObjectives($validated['objectives_en'])
         ];
 
         $courseData['price'] = $validated['price'];
         $courseData['duration'] = $validated['duration'];
         $courseData['video'] = $validated['video_url'];
+        $courseData['progression'] = $validated['progression'];
+        $courseData['status'] = $validated['status'];
+        $courseData['accessibility'] = $validated['accessibility'];
 
         $courseData['difficulty_degree'] = $validated['difficulty_degree'];
 
-        // dd($courseData);
+
 
         try {
             \DB::beginTransaction();
@@ -254,6 +267,19 @@ class CourseController extends Controller
             if (isset($validated['instructors'])) {
                 $course->instructors()->sync($validated['instructors']);
             };
+
+            if ($request->has('tags')) {
+                $tagIds = collect(json_decode($request->tags[0], true))
+                    ->map(function ($tagData) {
+                        return Tag::firstOrCreate(
+                            ['name' => $tagData['value']],
+                            ['slug' => \Illuminate\Support\Str::slug($tagData['value'])]
+                        )->id;
+                    })
+                    ->toArray();
+
+                $course->tags()->sync($tagIds);
+            }
 
             \DB::commit();
 
