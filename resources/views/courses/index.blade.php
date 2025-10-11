@@ -111,7 +111,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="flex justify-center flex-wrap gap-3">
+                                            <div class="flex justify-center  gap-3 lg:!h-[40px] overflow-scroll">
                                                 @forelse($course['instructors'] as $instructor)
                                                     <div class="flex items-center gap-1">
                                                         <div class="flex-shrink-0 h-8 w-8">
