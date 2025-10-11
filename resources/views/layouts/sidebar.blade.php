@@ -49,6 +49,7 @@
 
 
                     </li>
+
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
@@ -79,6 +80,35 @@
 
 
                     </li>
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
+                        x-data="{ open: true }"
+                        x-data="{ sidebarExpanded: false }"
+                        :class="[
+        sidebarExpanded && @js(Route::is('plans.*')) ?
+        'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+        ''
+    ]">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                           href="{{ route('plans.index') }}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="w-5 h-5"
+                                         src="{{ asset('storage/dashboard/icons/baseline-pricetags.png') }}" alt="">
+                                    <span
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.plans') }}</span>
+                                </div>
+                                <!-- Icon -->
+                                <div
+                                    class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
 
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                     x-data="{ sidebarExpanded: false }"
@@ -100,12 +130,13 @@
                                     class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                                     :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.categories') }}</span>
                             </div>
-                       
+
                         </div>
                     </a>
 
 
                     </li>
+                    <!-- Subscription -->
 
 
                     <!-- E-Commerce -->

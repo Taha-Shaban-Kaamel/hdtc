@@ -2,55 +2,87 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plan;
+use App\Services\PlanService;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Exception;
 
 class PlanController extends Controller
 {
-    public function createPlan(Request $request)
+    protected $service;
+
+    public function __construct(PlanService $service)
     {
-
-
-
-        // التحقق من صحة البيانات
-        $request->validate([
-            'name' => 'required|string|max:255',  // اسم الخطة
-            'description' => 'required|string',   // وصف الخطة
-            'price_monthly' => 'required|numeric', // السعر الشهري
-            'price_yearly' => 'required|numeric',  // السعر السنوي
-            'yearly_discount_percent' => 'nullable|numeric|min:0|max:100', // ✅ نسبة الخصم السنوي
-
-            'max_users' => 'nullable|integer',  // الحد الأقصى للمستخدمين
-            'max_courses' => 'nullable|integer', // الحد الأقصى للدورات
-            'features' => 'nullable|array',  // المميزات
-        ]);
-
-        try {
-            // إنشاء الخطة
-            $plan = Plan::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price_monthly' => $request->price_monthly,
-                'price_yearly' => $request->price_yearly,
-                'max_users' => $request->max_users,
-                'yearly_discount_percent' => $request->yearly_discount_percent ?? 0, // ✅ تخزين الخصم أو 0 افتراضيًا
-
-                'max_courses' => $request->max_courses,
-                'features' => $request->features ? json_encode($request->features) : null,  // تخزين المميزات بتنسيق JSON
-            ]);
-
-            // إرجاع بيانات الخطة الجديدة
-            return response()->json(['data' => $plan], 201);  // 201 تعني أنه تم إنشاؤها بنجاح
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);  // في حالة حدوث خطأ
-        }
+        $this->service = $service;
     }
 
-    public function getPlans()
+    public function index()
     {
-        $plans = Plan::all();
-        return response()->json(['data' => $plans], 200);
+        $plans = $this->service->getAllPlans();
+        return view('subscription.plans.index', compact('plans'));
+    }
+
+    public function create()
+    {
+        return view('subscription.plans.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price_monthly' => 'required|numeric|min:0',
+            'price_yearly' => 'required|numeric|min:0',
+            'yearly_discount_percent' => 'nullable|integer|min:0|max:100',
+            'max_users' => 'nullable|integer|min:0',
+            'max_courses' => 'nullable|integer|min:0',
+            'features' => 'nullable',
+        ]);
+
+        if ($request->filled('features')) {
+            $validated['features'] = preg_split('/\r\n|\r|\n/', $request->features);
+        }
+
+        $this->service->createPlan($validated);
+
+
+        return redirect()->route('plans.index')->with('success', 'Plan created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $plan = $this->service->getPlanById($id);
+
+        return view('subscription.plans.edit', compact('plan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'features' => 'nullable|string',
+            'yearly_discount_percent' => 'nullable|integer|min:0|max:100',
+            'price_monthly' => 'required|numeric|min:0',
+            'price_yearly' => 'required|numeric|min:0',
+        ]);
+        if ($request->filled('features')) {
+            $validated['features'] = preg_split('/\r\n|\r|\n/', $request->features);
+        }
+
+        $this->service->updatePlan($id, $validated);
+
+        return redirect()->route('plans.index')->with('success', 'Plan updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $this->service->deletePlan($id);
+        return redirect()->route('plans.index')->with('success', 'Plan deleted successfully.');
+    }
+
+    public function show($id)
+    {
+        $plan = $this->service->getPlanById($id);
+        return view('subscription.plans.show', compact('plan'));
     }
 }

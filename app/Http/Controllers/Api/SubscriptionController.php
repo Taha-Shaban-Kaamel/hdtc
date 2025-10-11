@@ -21,12 +21,17 @@ class SubscriptionController extends Controller
     {
         $request->validate([
             'plan_id' => 'required|exists:plans,id',
+            'user_id' => 'nullable|exists:users,id',
             'billing_cycle' => 'required|in:monthly,yearly',
         ]);
 
         try {
+            $userId = $request->user_id ?? Auth::id();
+            if (!$userId) {
+                throw new \Exception("User ID is required when not authenticated");
+            }
             $subscription = $this->service->subscribe(
-                Auth::id(),
+                $userId,
                 $request->plan_id,
                 $request->billing_cycle
             );

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();
-            $table->json('first_name');
-            $table->json('second_name');
+            $table->json('first_name')->nullable();
+            $table->json('second_name')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->longText('avatar')->nullable();
