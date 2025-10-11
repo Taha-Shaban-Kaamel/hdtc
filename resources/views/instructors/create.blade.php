@@ -5,7 +5,7 @@
                 <div class="px-6 py-4 mt-4 flex h-[100px] w-full">
                     <x-breadcrumb :items="[
                         ['url' => route('dashboard'), 'label' => __('common.dashboard')],
-                        ['url' => route('instructors.index'), 'label' => __('common.instructors')],
+                        ['url' => route('web.instructors.index'), 'label' => __('common.instructors')],
                         ['label' => __('common.create')],
                     ]" />
                 </div>

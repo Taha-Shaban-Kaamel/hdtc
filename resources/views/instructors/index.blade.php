@@ -18,7 +18,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-medium text-gray-900">{{ __('instructors.manage_instructors') }}</h3>
-                        <a href="{{ route('instructors.create') }}" 
+                        <a href="{{ route('web.instructors.create') }}" 
                            class="inline-flex items-center px-4 py-2 bg-[#066B87] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#055a72] focus:bg-[#055a72] active:bg-[#044d63] focus:outline-none focus:ring-2 focus:ring-[#055a72] focus:ring-offset-2 transition ease-in-out duration-150">
                             {{ __('instructors.add_instructor') }}
                         </a>
@@ -71,18 +71,18 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-2">
-                                                <a href="{{ route('instructors.show', $instructor) }}" class="text-[#066B87] hover:text-[#055a72]">
+                                                <a href="{{ route('web.instructors.show', $instructor) }}" class="text-[#066B87] hover:text-[#055a72]">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                 </a>
-                                                <a href="{{ route('instructors.edit', $instructor) }}" class="text-blue-600 hover:text-blue-900">
+                                                <a href="{{ route('web.instructors.edit', $instructor) }}" class="text-blue-600 hover:text-blue-900">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                     </svg>
                                                 </a>
-                                                <form action="{{ route('instructors.destroy', $instructor) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('instructors.confirm_delete') }}')">
+                                                <form action="{{ route('web.instructors.destroy', $instructor) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('instructors.confirm_delete') }}')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900">
@@ -105,7 +105,7 @@
                                             <p class="mt-2 text-sm font-medium">{{ __('common.not_found') }}</p>
                                             <p class="mt-1 text-xs text-gray-500">{{ __('common.create_new') }}</p>
                                             <div class="mt-4">
-                                                <a href="{{ route('instructors.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                <a href="{{ route('web.instructors.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                                     </svg>

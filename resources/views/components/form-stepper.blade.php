@@ -20,7 +20,7 @@
         thumbnail: null,
         thumbnailPreview: '{{ $course?->thumbnail ? Storage::url($course->thumbnail) : '' }}',
         availability: '{{ old('availability', $course?->availability ?? '') }}',
-        {{-- tags: @json(old('tags', $course ? $course->tags()->pluck('name') : [])), --}}
+        tags: @json(old('tags', $course ? $course->tags()->pluck('name') : [])),
     },
     currentStep: {{ $currentStep }},
     totalSteps: {{ $totalSteps }},
