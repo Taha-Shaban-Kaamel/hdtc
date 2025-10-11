@@ -20,9 +20,7 @@ class PaymentController extends Controller
         $this->subscription = $subscription;
     }
 
-    /**
-     * إنشاء عملية الدفع
-     */
+
     public function createPayment(Request $request)
     {
         $request->validate([
@@ -32,7 +30,6 @@ class PaymentController extends Controller
 
         $user = $request->user();
 
-        // ✅ تحقق أولاً: هل عنده اشتراك نشط؟
         $activeSubscription = app(\App\Repositories\SubscriptionRepository::class)
             ->getActiveSubscription($user->id);
 
@@ -46,7 +43,6 @@ class PaymentController extends Controller
             ], 200);
         }
 
-        // 👇 في الحالة دي فقط لو مفيش اشتراك نشط، نبدأ عملية الدفع
         $plan = \App\Models\Plan::findOrFail($request->plan_id);
         $amount = $request->billing_cycle === 'yearly'
             ? $plan->price_yearly
@@ -55,14 +51,14 @@ class PaymentController extends Controller
         $amountCents = $amount * 100;
 
         try {
-            // 1️⃣ Auth Token
+            //Auth Token
             $authToken = $this->paymob->authenticate();
 
-            // 2️⃣ Register Order
+            //  Register Order
             $merchantOrderId = uniqid('order_'); // رقم فريد محلي
             $orderId = $this->paymob->registerOrder($authToken, $merchantOrderId, $amountCents);
 
-            // 3️⃣ Payment Key
+            // 3⃣ Payment Key
             $billingData = [
                 "first_name" => $user->first_name ?? "User",
                 "last_name" => $user->last_name ?? "Name",
@@ -86,10 +82,8 @@ class PaymentController extends Controller
                 $billingData
             );
 
-            // 4️⃣ رابط الـ iframe
             $iframeUrl = $this->paymob->buildIframeUrl($paymentToken);
 
-            // 🧾 حفظ الدفع في قاعدة البيانات
             \App\Models\Payment::create([
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
@@ -114,15 +108,12 @@ class PaymentController extends Controller
         }
     }
 
-    /**
-     * الكول باك من Paymob بعد الدفع
-     */
+
     public function callback(Request $request)
     {
         Log::info('📩 Paymob Callback Received', $request->all());
         $data = $request->all();
 
-        // ✅ تحقق من صحة الـ HMAC
         if (!$this->isValidHmac($data)) {
             Log::warning('⚠️ Invalid HMAC from Paymob');
             return response()->json([
@@ -144,7 +135,6 @@ class PaymentController extends Controller
             ], 404);
         }
 
-        // ✅ لو الدفع ناجح
         if ($data['success'] === 'true' || $data['success'] === true) {
             $payment->update([
                 'status' => 'paid',
@@ -152,14 +142,12 @@ class PaymentController extends Controller
                 'provider_response' => json_encode($data),
             ]);
 
-            // 🔹 نحاول إنشاء الاشتراك
             $result = app(\App\Services\SubscriptionService::class)->subscribe(
                 $payment->user_id,
                 $payment->plan_id,
                 $payment->billing_cycle ?? 'monthly'
             );
 
-            // ✅ لو المستخدم مشترك بالفعل
             if (is_array($result) && isset($result['already_subscribed']) && $result['already_subscribed']) {
                 return response()->json([
                     'status' => 'info',
@@ -171,7 +159,6 @@ class PaymentController extends Controller
                 ], 200);
             }
 
-            // ✅ اشتراك جديد
             $subscription = is_array($result) ? $result['subscription'] : $result;
 
             return response()->json([
@@ -184,7 +171,6 @@ class PaymentController extends Controller
             ], 200);
         }
 
-        // ❌ فشل الدفع
         $payment->update([
             'status' => 'failed',
             'provider_response' => json_encode($data),
@@ -198,9 +184,7 @@ class PaymentController extends Controller
         ], 200);
     }
 
-    /**
-     * ✅ دالة التحقق من صحة HMAC من Paymob
-     */
+
     private function isValidHmac(array $data): bool
     {
         if (!isset($data['hmac'])) {
@@ -209,13 +193,11 @@ class PaymentController extends Controller
 
         $secret = env('PAYMOB_HMAC_SECRET');
 
-        // ✅ الحقول المطلوبة بالترتيب الصحيح (حسب Paymob Docs)
         $fields = [
             'amount_cents', 'created_at', 'currency', 'error_occured',
             'has_parent_transaction', 'id', 'integration_id', 'is_3d_secure',
             'is_auth', 'is_capture', 'is_refunded', 'is_standalone_payment',
             'is_voided', 'order', 'owner', 'pending',
-            // ⚠️ استخدم مفاتيح Paymob كما تظهر فعليًا
             'source_data_pan', 'source_data_sub_type', 'source_data_type',
             'success'
         ];
@@ -232,7 +214,6 @@ class PaymentController extends Controller
 
         $calculated = hash_hmac('sha512', $concatenated, $secret);
 
-        // مقارنة غير حساسة لحالة الأحرف
         return strtolower($calculated) === strtolower($data['hmac']);
     }
 
