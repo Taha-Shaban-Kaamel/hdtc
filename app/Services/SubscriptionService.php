@@ -19,7 +19,6 @@ class SubscriptionService
         $plan = $this->repo->getPlanById($planId);
         $active = $this->repo->getActiveSubscription($userId);
 
-        // ✅ لو فيه اشتراك نشط بالفعل لأي خطة
         if ($active) {
             return [
                 'already_subscribed' => true,
@@ -27,7 +26,6 @@ class SubscriptionService
             ];
         }
 
-        // ✅ مفيش اشتراك نشط → نعمل واحد جديد
         $startDate = now();
         $endDate = $billingCycle === 'yearly'
             ? $startDate->copy()->addYear()
