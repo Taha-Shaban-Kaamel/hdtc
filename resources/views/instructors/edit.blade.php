@@ -12,9 +12,9 @@
                     :steps="4" 
                     :currentStep="1" 
                     :totalSteps="4" 
-                    :action="route('instructors.update', $instructor->id)" 
+                    :action="route('web.instructors.update', $instructor->id)" 
                     :method="'PUT'" 
-                    :redirect="route('instructors.index')" 
+                    :redirect="route('web.instructors.index')" 
                     :instructor="$instructor"
                 />
             </div>

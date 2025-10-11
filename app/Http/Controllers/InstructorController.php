@@ -37,43 +37,8 @@ class InstructorController extends Controller
      */
     public function store(InstructorRequest $request)
     {
-        // dd($request);
-
-        // $validated = $request->validate([
-        //     'first_name_ar' => 'required|string|max:255',
-        //     'first_name_en' => 'required|string|max:255',
-        //     'second_name_ar' => 'required|string|max:255',
-        //     'second_name_en' => 'required|string|max:255',
-        //     'gender' => 'required|string|max:255',
-        //     'birth_date' => 'required|date',
-        //     'specialization_ar' => 'required|string|max:255',
-        //     'specialization_en' => 'required|string|max:255',
-        //     'experience' => 'required|string|max:255',
-        //     'education_ar' => 'required|string|max:255',
-        //     'education_en' => 'required|string|max:255',
-        //     'company' => 'required|string|max:255',
-        //     'twitter_url' => 'nullable|url|max:255',
-        //     'linkedin_url' => 'nullable|url|max:255',
-        //     'facebook_url' => 'nullable|url|max:255',
-        //     'youtube_url' => 'nullable|url|max:255',
-        //     'email' => 'required|string|unique:users,email|max:255',
-        //     'bio_ar' => 'nullable|string',
-        //     'bio_en' => 'nullable|string',
-        //     'phone' => 'nullable|string|max:20',
-        //     'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        //     'company' => 'nullable|string|max:255',
-        //     'website' => 'nullable|url|max:255',
-        //     'twitter_url' => 'nullable|url|max:255',
-        //     'linkedin_url' => 'nullable|url|max:255',
-        //     'facebook_url' => 'nullable|url|max:255',
-        //     'youtube_url' => 'nullable|url|max:255',
-        //     'password' => 'required|string|min:8' ,
-        //     'is_active' => 'boolean',
-        // ]);
-
         $validated = $request->validated();
         $request = request() ;
-
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->move(storage_path('app/public/instructors'), Str::random(10) . '.' . $request->file('avatar')->getClientOriginalExtension());

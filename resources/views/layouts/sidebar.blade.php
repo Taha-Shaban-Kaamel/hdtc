@@ -47,8 +47,9 @@
                             href="{{ route('courses.index') }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-1">
-                                    <img class="w-5 h-5"
-                                        src="{{ asset('storage/dashboard/icons/baseline-laptop.png') }}" alt="">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
                                     <span
                                         class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                                         :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.courses') }}</span>
@@ -106,12 +107,12 @@
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
-                            sidebarExpanded && @js(Route::is('instructors.index') || Route::is('instructors.create') || Route::is('instructors.edit')) ?
+                            sidebarExpanded && @js(Route::is('web.instructors.index') || Route::is('web.instructors.create') || Route::is('web.instructors.edit')) ?
                             'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
                             ''
                         ]">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('instructors.index') }}">
+                            href="{{ route('web.instructors.index') }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="flex shrink-0 ">
