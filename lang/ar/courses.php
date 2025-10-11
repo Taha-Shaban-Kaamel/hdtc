@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'accessability' => 'الاحتفاظ بالوصول',
     'categories' => 'الاقسام',
     'new_category' => 'اضافة قسم جديد',
     'image' => 'الصوره',
@@ -20,6 +21,8 @@ return [
     'upload_an_image' => 'رفع صورة',
     'png_jpg_gif_up_to_2mb' => 'png,jpg,gif حتى 2 ميجابايت',
     'create' => 'اضافة',
+    'no_courses_found' => 'لا يوجد دورات',
+    'get_started_by_creating_a_new_course' => 'اضافة دورة جديدة',
     
     // Form Stepper
     'review_course' => 'مراجعة الدورة',

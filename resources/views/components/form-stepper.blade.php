@@ -1,4 +1,5 @@
-<!-- resources/views/components/courses/form-stepper.blade.php -->
+@vite(['resources/js/app.js'])
+@vite(['resources/js/tagify.js'])
 @props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null])
 <div x-data="{
     formData: {
@@ -18,7 +19,8 @@
         categories: @json(old('categories', $course ? $course->categories->pluck('id') : [])),
         thumbnail: null,
         thumbnailPreview: '{{ $course?->thumbnail ? Storage::url($course->thumbnail) : '' }}',
-
+        availability: '{{ old('availability', $course?->availability ?? '') }}',
+        {{-- tags: @json(old('tags', $course ? $course->tags()->pluck('name') : [])), --}}
     },
     currentStep: {{ $currentStep }},
     totalSteps: {{ $totalSteps }},
@@ -42,6 +44,7 @@
         return (this.currentStep / this.totalSteps) * 100;
     }
 }">
+
 
     <div class="w-full bg-gray-200 rounded-full h-2.5 mb-8">
         <div class="bg-blue-600 h-2.5 rounded-full" :style="'width: ' + stepProgress() + '%'"></div>
@@ -131,6 +134,17 @@
                 </div>
 
                 <div class="col-span-3">
+                    <label for="tags" class="block font-medium text-sm text-gray-700">Tags</label>
+                    <input id="tags" name="tags[]" value="{{ old('tags', $course ? $course?->tags()->pluck('name') :'') }}" class="tagify mt-1 block w-full" placeholder="Enter tags..." multiple>
+                </div>
+
+                <div class="col-span-3">
+                    <label for="availablety" class="block font-medium text-sm text-gray-700">Availablety</label>
+                    <x-input id="availablety" name="availablety" type="text" class="mt-1 block w-full"
+                    x-model="formData.availablety"/>
+                </div>
+
+                <div class="col-span-3">
                     <x-label for="description_ar" value="{{ __('courses.short_description_ar') }}" />
                     <textarea id="description_ar" name="description_ar" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
@@ -149,6 +163,7 @@
 
         <div x-show="currentStep === 2" x-transition>
             <div class="grid grid-cols-6 gap-6">
+               
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="price" value="{{ __('courses.price') }}" />
                     <div class="mt-1 relative rounded-md shadow-sm">
@@ -203,7 +218,6 @@
                 </div>
 
                 <div class="col-span-3">
-                    {{-- @dd($course->getTranslation('difficulty_degree','ar')) --}}
                     <x-label for="difficulty_degree" value="{{ __('courses.difficulty_level') }}" />
                     <select id="difficulty_degree" name="difficulty_degree" x-model="formData.difficulty_degree"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
@@ -231,7 +245,6 @@
                 </div>
 
 
-                <!-- Video Upload -->
                 <div class="col-span-3">
                     <x-label for="video_url" value="{{ __('courses.video_url') }}" />
                     <x-input type="text" name="video_url" x-model="formData.video_url" />
@@ -256,7 +269,6 @@
                     <x-input-error for="objectives_en" :messages="$errors->get('objectives_en')" class="mt-2" />
                 </div>
 
-                <!-- Thumbnail Upload -->
                 <div class="col-span-3">
                     <x-label for="thumbnail" value="{{ __('courses.thumbnail') }}" />
                     <x-image-input name="thumbnail" x-model="formData.thumbnail"
@@ -277,21 +289,40 @@
                     @endif
                 </div>
 
+                <div class="col-span-3">
+                    <label class="flex items-start gap-2">
+                        <input type="checkbox" name="status" required
+                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                        <span class="ml-2 text-sm text-gray-600">
+                            {{ __('common.status') }}
+                        </span>
+                    </label>
+                    @if ($errors->has('status'))
+                        <x-input-error for="status" :messages="$errors->get('status')" class="mt-2" />
+                    @endif
+                </div>
 
+                <div class="col-span-3">
+                    <label class="flex items-start gap-2" title="{{ __('courses.accessability') }}">
+                        <input type="checkbox" name="accessability" required
+                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                        <span class="ml-2 text-sm text-gray-600">
+                            {{ __('courses.accessability') }}
+                        </span>
+                    </label>
+                    @if ($errors->has('accessability'))
+                        <x-input-error for="accessability" :messages="$errors->get('accessability')" class="mt-2" />
+                    @endif
+                </div>
 
             </div>
         </div>
 
-
-
-
-        <!-- Step 3: Review and Submit -->
         <div x-show="currentStep === 3" x-transition>
             <div class="bg-gray-50 p-6 rounded-lg space-y-6">
                 <h3 class="text-lg font-medium text-gray-900">{{ __('courses.review_course') }}</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Left Column -->
                     <div class="space-y-4">
                         <div class="bg-white p-4 rounded-lg shadow">
                             <h4 class="font-medium text-gray-700 border-b pb-2 mb-2">
@@ -322,7 +353,7 @@
                             <h4 class="font-medium text-gray-700 border-b pb-2 mb-2">Pricing & Duration</h4>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <span class="text-sm font-medium text-gray-500">Price (USD)</span>
+                                    <span class="text-sm font-medium text-gray-500">Price </span>
                                     <p x-text="'$' + parseFloat(formData.price || 0).toFixed(2)"
                                         class="text-gray-800"></p>
                                 </div>
@@ -431,3 +462,14 @@
             </div>
     </form>
 </div>
+
+
+
+
+@push('scripts')
+    <script>
+        window.tagWhitelist = @json(\App\Models\Tag::pluck('name')->toArray());
+    </script>
+    @vite(['resources/js/tagify.js'])
+
+@endpush

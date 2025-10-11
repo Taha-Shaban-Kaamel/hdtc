@@ -2,11 +2,12 @@
 
 <div {{ $attributes->merge(['class' => 'md:grid md:grid-cols-3 md:gap-6 lg:grid-rows-1 lg:grid-cols-2']) }}>
     <x-section-title>
-        <x-slot name="title" class="lg:col-span-1 text-black">{{ $title ?? '' }}</x-slot>
+        <x-slot name="title" class="lg:col-span-1">{{ $title ?? '' }}</x-slot>
         <x-slot name="description" class="lg:col-span-1 text-black">{{ $description ?? '' }}</x-slot>
     </x-section-title>
 
     <div class="mt-5 md:mt-0 md:col-span-2">
+
         <form method="{{ $method === 'GET' ? 'GET' : 'POST' }}" action="{{ $action }}" enctype="multipart/form-data">
             @if (! in_array(strtoupper($method), ['GET', 'POST']))
                 @method($method)

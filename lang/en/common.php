@@ -3,6 +3,7 @@
 return [
     'create' => 'Create',
     'actions' => 'Actions',
+    'update' => 'Update',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'edit' => 'Edit',
@@ -62,5 +63,8 @@ return [
     'categories' => 'Categories',
     'category' => 'Category',
     'show' => 'show',
-    'are_you_sure' => 'Are you sure?'
+    'are_you_sure' => 'Are you sure?' ,
+    'instructors' => 'instructors' ,
+    'order' => 'order' ,
+    'manage' => 'manage chapters'
 ];

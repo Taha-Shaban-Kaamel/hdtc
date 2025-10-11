@@ -149,6 +149,29 @@
                 </div>
 
                 <div class="col-span-3">
+                    <x-label for="password" value="{{ __('instructors.password') }}" />
+                    <x-input id="password" name="password" type="text" class="mt-1 block w-full"
+                        x-model="formData.password" required />
+                    @if ($errors->has('password'))
+                        <x-input-error for="password" :messages="$errors->get('password')" class="mt-2" />
+                    @endif
+                </div>
+
+                <div class="col-span-3">
+                    <x-label for="birth_date" value="{{ __('instructors.birth_date') }}" />
+                    <x-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full"
+                        x-model="formData.birth_date" :value="old(
+                            'birth_date',
+                            isset($instructor->birth_date)
+                                ? \Carbon\Carbon::parse($instructor->birth_date)->format('Y-m-d')
+                                : '',
+                        )" required />
+                    @if ($errors->has('birth_date'))
+                        <x-input-error for="birth_date" :messages="$errors->get('birth_date')" class="mt-2" />
+                    @endif
+                </div>
+
+                <div class="col-span-3">
                     <x-label for="bio_ar" value="{{ __('instructors.bio_ar') }}" />
                     <textarea id="bio_ar" name="bio_ar" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
@@ -169,7 +192,7 @@
             </div>
         </div>
 
-        <!-- Step 3: Course Details -->
+
         <div x-show="currentStep === 2" x-transition>
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
@@ -236,20 +259,7 @@
                     @endif
                 </div>
 
-                <div class="col-span-3">
-                    <x-label for="birth_date" value="{{ __('instructors.birth_date') }}" />
-                    <x-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full"
-                        x-model="formData.birth_date" :value="old(
-                            'birth_date',
-                            isset($instructor->birth_date)
-                                ? \Carbon\Carbon::parse($instructor->birth_date)->format('Y-m-d')
-                                : '',
-                        )" required />
-                    @if ($errors->has('birth_date'))
-                        <x-input-error for="birth_date" :messages="$errors->get('birth_date')" class="mt-2" />
-                    @endif
-                </div>
-
+              
                 <div class="col-span-6">
                     <x-label for="avatar" value="{{ __('instructors.avatar') }}" />
                     <x-image-input name="avatar" />

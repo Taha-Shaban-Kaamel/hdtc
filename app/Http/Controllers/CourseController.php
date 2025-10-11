@@ -8,6 +8,7 @@ use App\Http\Resources\InstructorResource;
 use App\Models\Course;
 use App\Models\CourseCategorie;
 use App\Models\Instructor;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::paginate(10)->load('categories', 'instructors');
+        $courses = Course::paginate(10)->load('categories', 'instructors','tags');
         $courses = CourseResource::collection($courses)->toArray(request());
         // dd($courses);
         return view('courses.index', compact('courses'));
@@ -76,6 +77,7 @@ class CourseController extends Controller
                 $coverPath = $request->file('cover')->move(storage_path('app/public/courses/covers'), $imageName);
                 $coverPath = 'storage/courses/covers/' . $imageName;
             }
+
             $course = Course::create([
                 'title' => [
                     'ar' => $validated['title_ar'],
@@ -102,7 +104,18 @@ class CourseController extends Controller
                 'status' => $validated['status'] ?? 'active',
             ]);
 
-            // Attach categories and instructors
+            if ($request->has('tags')) {
+                $tagIds = collect(json_decode($request->tags[0], true))
+                    ->map(function ($tagData) {
+                        return Tag::firstOrCreate(
+                            ['name' => $tagData['value']],
+                            ['slug' => \Illuminate\Support\Str::slug($tagData['value'])]
+                        )->id;
+                    })
+                    ->toArray();
+
+                $course->tags()->sync($tagIds);
+            }
             $course->categories()->attach($validated['categories']);
             $course->instructors()->attach($validated['instructors']);
 
@@ -141,7 +154,9 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $course = Course::findOrFail($id)->load('categories', 'instructors');
+        $course = Course::with(['categories', 'instructors', 'tags'])->findOrFail($id);
+        // $course = new CourseResource($course);
+
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
         $instructors = InstructorResource::collection(Instructor::all())->toArray(request());

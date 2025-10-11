@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'info' => 'instructor information' ,
     'instructors' => 'Instructors',
     'manage_instructors' => 'Manage Instructors',
     'add_instructor' => 'Add Instructor',
@@ -27,6 +28,7 @@ return [
     
     'next' => 'next',
     'previous' => 'previous',
+    'password' => 'Password',
 
     // Stats
     'courses' => 'Courses',

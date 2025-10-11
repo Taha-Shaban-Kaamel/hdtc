@@ -25,8 +25,8 @@ class CourseResource extends JsonResource
             'price' => $this->price,
             'duration' => $this->duration,
             'difficulty_degree' => $this->difficulty_degree,
-            'thumbnail' => $this->thumbnail,
-            'cover' => $this->cover,
+            'thumbnail' => asset($this->thumbnail),
+            'cover' => asset($this->cover),
             'video' => $this->video,
             'status' => $this->status,
             'categories' => $this->whenLoaded('categories', function () use ($request) {
@@ -35,8 +35,11 @@ class CourseResource extends JsonResource
             'instructors' => $this->whenLoaded('instructors', function () use ($request) {
                 return InstructorResource::collection($this->instructors)->toArray($request);
             }),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'tags' => $this->whenLoaded('tags', function ($tags) use ($request) {
+                return $tags->pluck('name');
+            }),
+            'created_at' => $this->created_at->diffForHumans(),
+            'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }
 }

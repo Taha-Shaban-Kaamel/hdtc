@@ -51,14 +51,6 @@ class ChaptersController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Chapters $chapters)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit($course_id, $id)
@@ -67,15 +59,17 @@ class ChaptersController extends Controller
             $course = Course::findOrFail($course_id);
             $chapter = Chapter::findOrFail($id);
             return view('chapters.edit', compact('course', 'chapter'));
-        } catch (ModelNotFoundException $e) {
+        } catch (\Exception $e) {
             return back()->with('error', __('Chapter or course not found'));
         }
     }
     
     public function update(ChapterRequest $request, $course_id, $id)
     {
+        
+
         try {
-            $chapter = Chapter::findOrFail($id);
+            $chapter = Chapter::where("id", $id)->first();
             $chapter->update([
                 'name' => [
                     'ar' => $request->name_ar,
@@ -92,9 +86,7 @@ class ChaptersController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy($id)
     {
         try{
