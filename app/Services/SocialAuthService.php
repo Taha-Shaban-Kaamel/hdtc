@@ -10,9 +10,6 @@ class SocialAuthService
 {
     public function handleSocialAuth($provider, $socialUser)
     {
-
-        return response()->json($socialUser);
-
         
         $provider_id = $provider == 'google' ? $socialUser['sub'] :  $socialUser->id ;
         $avatar = $provider == 'google' ? $socialUser['picture'] : $socialUser->avatar;
@@ -43,7 +40,7 @@ class SocialAuthService
                 'second_name' => $socialUser['family_name'] ?: 'User',
                 'email' => $socialUser['email'] ?: 'Useremail',
                 'provider' => $provider,
-                'provider_id' => $provider_id,
+                'provider_id' => $socialUser['id'],
                 'avatar' => $socialUser['picture'] ?: 'User',
                 'email_verified_at' => now(),
                 'user_type_id' => 1,
@@ -59,7 +56,7 @@ class SocialAuthService
                 'avatar' => $socialUser->avatar ?: 'User',
                 'email_verified_at' => now(),
                 'user_type_id' => 1,
-                'password' => Hash::make(Str::random(16)),
+                'password' => Hash::make(Str::random(16)), // Random password for social users
             ]);
         };
 
@@ -68,16 +65,10 @@ class SocialAuthService
 
     public function generateTokenResponse($user, $tokenName = 'api-token', $abilities = ['*'])
     {
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                // 'token' => $user->createToken($tokenName, $abilities)->plainTextToken,
-                'user' => new UserResource($user)
-            ]
-        ]);
-
-       
+        // Revoke existing tokens (optional - for single session)
+        // $user->tokens()->delete();
+        
+        // Create new token
         $token = $user->createToken($tokenName, $abilities);
         
         return [
