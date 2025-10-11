@@ -36,7 +36,7 @@ class PaymentController extends Controller
         if ($activeSubscription) {
             return response()->json([
                 'status' => 'info',
-                'message' => 'ℹ️ أنت مشترك بالفعل في هذه الخطة ولا يمكنك الاشتراك مجددًا الآن',
+                'message' => 'You already have an active subscription for this plan.',
                 'subscription_id' => $activeSubscription->id,
                 'plan_id' => $activeSubscription->plan_id,
                 'end_date' => $activeSubscription->end_date,
@@ -51,25 +51,21 @@ class PaymentController extends Controller
         $amountCents = $amount * 100;
 
         try {
-            //Auth Token
             $authToken = $this->paymob->authenticate();
-
-            //  Register Order
-            $merchantOrderId = uniqid('order_'); // رقم فريد محلي
+            $merchantOrderId = uniqid('order_');
             $orderId = $this->paymob->registerOrder($authToken, $merchantOrderId, $amountCents);
 
-            // 3⃣ Payment Key
             $billingData = [
                 "first_name" => $user->first_name ?? "User",
                 "last_name" => $user->last_name ?? "Name",
                 "email" => $user->email ?? "example@test.com",
                 "phone_number" => "01000000000",
-                "apartment" => "NA",
-                "floor" => "NA",
-                "street" => "NA",
-                "building" => "NA",
-                "shipping_method" => "NA",
-                "postal_code" => "NA",
+                "apartment" => "N/A",
+                "floor" => "N/A",
+                "street" => "N/A",
+                "building" => "N/A",
+                "shipping_method" => "N/A",
+                "postal_code" => "N/A",
                 "city" => "Cairo",
                 "country" => "EG",
                 "state" => "Cairo"
@@ -84,7 +80,7 @@ class PaymentController extends Controller
 
             $iframeUrl = $this->paymob->buildIframeUrl($paymentToken);
 
-            \App\Models\Payment::create([
+            Payment::create([
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
                 'amount' => $amount,
@@ -98,27 +94,25 @@ class PaymentController extends Controller
                 'payment_url' => $iframeUrl,
                 'order_id' => $orderId,
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => '⚠️ فشل في تهيئة عملية الدفع',
+                'message' => 'Failed to initialize payment.',
                 'details' => $e->getMessage()
             ], 500);
         }
     }
 
-
     public function callback(Request $request)
     {
-        Log::info('📩 Paymob Callback Received', $request->all());
+        Log::info('Paymob Callback Received', $request->all());
         $data = $request->all();
 
         if (!$this->isValidHmac($data)) {
-            Log::warning('⚠️ Invalid HMAC from Paymob');
+            Log::warning('Invalid HMAC from Paymob');
             return response()->json([
                 'status' => 'error',
-                'message' => '🚨 Invalid callback signature',
+                'message' => 'Invalid callback signature.',
                 'data' => $data
             ], 400);
         }
@@ -127,10 +121,10 @@ class PaymentController extends Controller
         $payment = Payment::where('provider_order_id', $orderId)->first();
 
         if (!$payment) {
-            Log::error('⚠️ Payment not found for order', ['order' => $orderId]);
+            Log::error('Payment not found for order', ['order' => $orderId]);
             return response()->json([
                 'status' => 'error',
-                'message' => '⚠️ لم يتم العثور على سجل الدفع في قاعدة البيانات',
+                'message' => 'Payment record not found.',
                 'order_id' => $orderId,
             ], 404);
         }
@@ -151,7 +145,7 @@ class PaymentController extends Controller
             if (is_array($result) && isset($result['already_subscribed']) && $result['already_subscribed']) {
                 return response()->json([
                     'status' => 'info',
-                    'message' => 'ℹ️ أنت مشترك بالفعل في هذه الخطة',
+                    'message' => 'User is already subscribed to this plan.',
                     'subscription_id' => $result['subscription']->id,
                     'order_id' => $payment->provider_order_id,
                     'amount' => $payment->amount,
@@ -163,7 +157,7 @@ class PaymentController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => '✅ تم الدفع بنجاح وتم تفعيل الاشتراك',
+                'message' => 'Payment successful and subscription activated.',
                 'order_id' => $payment->provider_order_id,
                 'amount' => $payment->amount,
                 'transaction_id' => $payment->transaction_id,
@@ -178,12 +172,11 @@ class PaymentController extends Controller
 
         return response()->json([
             'status' => 'failed',
-            'message' => '❌ فشل الدفع أو تم إلغاؤه من المستخدم',
+            'message' => 'Payment failed or canceled by user.',
             'order_id' => $payment->provider_order_id,
             'amount' => $payment->amount,
         ], 200);
     }
-
 
     private function isValidHmac(array $data): bool
     {
@@ -228,21 +221,19 @@ class PaymentController extends Controller
         if (!$payment) {
             return response()->json([
                 'status' => 'not_found',
-                'message' => '⚠️ لم يتم العثور على الدفع بهذا الرقم',
+                'message' => 'Payment not found.',
             ], 404);
         }
 
         return response()->json([
             'status' => $payment->status,
             'message' => $payment->status === 'paid'
-                ? '✅ تم الدفع بنجاح'
-                : '❌ لم يتم الدفع بعد',
+                ? 'Payment completed successfully.'
+                : 'Payment not completed yet.',
             'order_id' => $payment->provider_order_id,
             'amount' => $payment->amount,
             'transaction_id' => $payment->transaction_id,
             'updated_at' => $payment->updated_at,
         ]);
     }
-
-
 }
