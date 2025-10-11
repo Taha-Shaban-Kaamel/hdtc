@@ -74,7 +74,6 @@ class SocialAuthController extends Controller
                         $userData = $userResponse->json();
 
                         $user = $this->socialAuthService->handleSocialAuth($provider, $userData);
-
                         $token = $this->socialAuthService->generateTokenResponse($user);
 
                         return response()->json([
