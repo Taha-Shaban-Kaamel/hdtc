@@ -104,8 +104,9 @@
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">
                                     {{ __('courses.learning_objectives') }}</h3>
                                 <div class="text-gray-700">
-                                    {!! nl2br(e($course->getTranslation('objectives', app()->getLocale()))) !!}
-                                </div>
+                                    {!! nl2br(e(is_array($course->getTranslation('objectives', app()->getLocale())) ? 
+                                    implode("\n", $course->getTranslation('objectives', app()->getLocale())) : 
+                                    $course->getTranslation('objectives', app()->getLocale()))) !!}                                </div>
                             </div>
 
                             <!-- Video Preview -->

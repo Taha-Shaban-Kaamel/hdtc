@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('objectives');
             $table->decimal('price', 10, 2);
             $table->string('availability')->nullable();
-            $table->boolean('accessibility')->default(true);
+            $table->enum('accessibility', ['active', 'inactive'])->default('active');
             $table->enum('progression', ['chapter', 'lecture'])->default('chapter');
             $table->string('tags')->nullable();
             $table->decimal('duration');
