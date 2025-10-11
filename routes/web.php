@@ -61,13 +61,13 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
     });
 
     Route::prefix('instructors')->group(function () {
-        Route::get('/', [InstructorController::class, 'index'])->name('instructors.index');
-        Route::get('/create', [InstructorController::class, 'create'])->name('instructors.create');
-        Route::post('/', [InstructorController::class, 'store'])->name('instructors.store');
-        Route::get('/{instructor}/edit', [InstructorController::class, 'edit'])->name('instructors.edit');
-        Route::put('/update/{id}', [InstructorController::class, 'update'])->name('instructors.update');
-        Route::get('/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
-        Route::delete('/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
+        Route::get('/', [InstructorController::class, 'index'])->name('web.instructors.index');
+        Route::get('/create', [InstructorController::class, 'create'])->name('web.instructors.create');
+        Route::post('/', [InstructorController::class, 'store'])->name('web.instructors.store');
+        Route::get('/{instructor}/edit', [InstructorController::class, 'edit'])->name('web.instructors.edit');
+        Route::put('/update/{id}', [InstructorController::class, 'update'])->name('web.instructors.update');
+        Route::get('/{instructor}', [InstructorController::class, 'show'])->name('web.instructors.show');
+        Route::delete('/{instructor}', [InstructorController::class, 'destroy'])->name('web.instructors.destroy');
     });
 });
 
