@@ -77,7 +77,7 @@ class InstructorController extends Controller
 
 
 
-        return redirect()->route('instructors.show', $instructor)
+        return redirect()->route('web.instructors.show', $instructor)
             ->with('success', __('instructors.created_successfully'));
     }
 
@@ -104,7 +104,7 @@ class InstructorController extends Controller
      */
     public function update(Request $request,$id)
     {
-        dd($request , $id);
+        $instructor = Instructor::findOrFail($id);
         $validated = $request->validate([
             'first_name_ar' => 'required|string|max:255',
             'first_name_en' => 'required|string|max:255',
@@ -196,7 +196,7 @@ class InstructorController extends Controller
 
         $instructor->update($data);
 
-        return redirect()->route('instructors.show', $instructor)
+        return redirect()->route('web.instructors.show', $instructor)
             ->with('success', __('instructors.updated_successfully'));
     }
 
