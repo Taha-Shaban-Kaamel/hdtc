@@ -4,7 +4,7 @@
     'currentStep' => 1,
     'totalSteps' => 3,
     'method' => 'POST',
-    'action' => route('instructors.store'),
+    'action' => route('web.instructors.store'),
 ])
 
 <div x-data="{
