@@ -53,7 +53,7 @@
                                 </div>
                                 <div
                                     class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                    {{ __('courses.' . $course->difficulty_degree) }}
+                                    {{ __('courses.' . $course->difficulty_deree) }}
                                 </div>
                             </div>
                         </div>

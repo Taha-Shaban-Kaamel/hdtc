@@ -73,7 +73,7 @@
                                     </svg>
                                     {{ __('common.edit') }}
                                 </a>
-                                <form action="{{ route('instructors.destroy', $instructor) }}" method="POST"
+                                <form action="{{ route('web.instructors.destroy', $instructor) }}" method="POST"
                                     onsubmit="return confirm('{{ __('instructors.confirm_delete') }}')">
                                     @csrf
                                     @method('DELETE')
