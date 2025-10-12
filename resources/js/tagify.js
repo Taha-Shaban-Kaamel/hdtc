@@ -5,36 +5,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const input = document.querySelector('input[name="tags[]"]');
     const categories = document.querySelector('input[name="categories[]"]');
     const instructors = document.querySelector('input[name="instructors[]"]');
+    const roles = document.querySelector('input[name="roles[]"]');
     
-    if (categories) {
-        const categoryInput = new Tagify(categories, {
-            whitelist: window.categoryWhitelist,
-            enforceWhitelist: true,
+    if (roles) {
+        console.log(window.roleWhitelist);
+        new Tagify(roles, {
+            whitelist: window.roleWhitelist,
             maxTags: 10,
+            focusable:false ,
             dropdown: {
                 maxItems: 20,
                 classname: "tags-look",
-                enabled: 1,
-                closeOnSelect: false,
-                searchKeys: ['name', 'value']
-            },
-            tagTextProp: 'value',
-            templates: {
-                dropdownItem: function(tagData) {
-                    return `${tagData.value || tagData.name}`;
-                }
+                enabled: 0, 
+                closeOnSelect: false
             }
         });
-
-        // Parse initial values if they exist
-        if (categories.value) {
-            try {
-                const initialValues = JSON.parse(categories.value);
-                categoryInput.addTags(initialValues);
-            } catch (e) {
-                console.error('Error parsing initial categories:', e);
+    }
+    if (categories) {
+        new Tagify(categories, {
+            whitelist: window.categoryWhitelist,
+            maxTags: 10,
+            focusable:false ,
+            dropdown: {
+                maxItems: 20,
+                classname: "tags-look",
+                enabled: 0, 
+                closeOnSelect: false
             }
-        }
+        });
     }
     if (instructors) {
         new Tagify(instructors, {

@@ -36,6 +36,39 @@
                             </div>
                         </a>
                     </li>
+                    @can('admins.index')
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('admins.index') || Route::is('admins.create') || Route::is('admins.edit')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('admins.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                                        </svg>
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('admin.admins') }}</span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
@@ -62,8 +95,6 @@
                                 </div>
                             </div>
                         </a>
-
-
                     </li>
 
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
@@ -131,58 +162,61 @@
 
 
                     </li>
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
-                        x-data="{ open: true }"
+
+
+
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
-        sidebarExpanded && @js(Route::is('notifications.index') || Route::is('notifications.create')) ?
-        'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-        ''
-    ]">
+                            sidebarExpanded && @js(Route::is('notifications.index') || Route::is('notifications.create')) ?
+                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                            ''
+                        ]">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                           href="{{ route('notifications.index') }}">
+                            href="{{ route('notifications.index') }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-1">
-                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/notification.png') }}" alt="">
+                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/notification.png') }}"
+                                        alt="">
                                     <span
                                         class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                                         :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
-                    {{ __('sidebar.notifications') }}
-                </span>
+                                        {{ __('sidebar.notifications') }}
+                                    </span>
                                 </div>
                                 <div
                                     class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
-                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                        :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
                                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
                                 </div>
                             </div>
                         </a>
                     </li>
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
-                        x-data="{ open: true }"
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
-        sidebarExpanded && @js(Route::is('plans.index') || Route::is('plans.create') || Route::is('plans.edit')) ?
-        'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-        ''
-    ]">
+                            sidebarExpanded && @js(Route::is('plans.index') || Route::is('plans.create') || Route::is('plans.edit')) ?
+                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                            ''
+                        ]">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                           href="{{ route('plans.index') }}">
+                            href="{{ route('plans.index') }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-1">
-                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/plans.png') }}" alt="">
+                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/plans.png') }}"
+                                        alt="">
                                     <span
                                         class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                                         :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
-                    {{ __('sidebar.plans') }}
-                </span>
+                                        {{ __('sidebar.plans') }}
+                                    </span>
                                 </div>
                                 <div
                                     class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
-                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                        :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
                                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
                                 </div>

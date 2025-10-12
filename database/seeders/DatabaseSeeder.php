@@ -6,18 +6,17 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use App\Models\Admin;
 use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         Role::create(['name' => 'super admin']);
         Role::create(['name' => 'instructor']);
         Role::create(['name' => 'student']);
+        Role::create(['name' => 'admin']);
 
         $superAdmin = User::create([
             'email' => 'taha.shaban@zydx.com',
@@ -27,20 +26,32 @@ class DatabaseSeeder extends Seeder
             'phone' => '123456789',
             'email_verified_at' => now(),
         ]);
+
+
+        $adminUser = User::create([
+            'email' => 'admin@zydx.com',
+            'first_name' => 'admin',
+            'second_name' => 'admin',
+            'password' => bcrypt('12345678'),
+            'phone' => '123456789',
+            'email_verified_at' => now(),
+        ]);
         
+        $admin= Admin::create([
+            'user_id' => $adminUser->id,
+        ]);
+
+        $adminUser->assignRole('admin');
         $superAdmin->assignRole('super admin');
 
-        // Seed categories first
         $this->call([
             CourseCategorieSeeder::class,
         ]);
 
-        // Then seed instructors (which create users with instructor role)
         $this->call([
             InstructorSeeder::class,
         ]);
 
-        // Finally seed courses (which depend on categories and instructors)
         $this->call([
             CourseSeeder::class,
         ]);
