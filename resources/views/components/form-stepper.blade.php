@@ -1,6 +1,6 @@
 @vite(['resources/js/app.js'])
 @vite(['resources/js/tagify.js'])
-@props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null])
+@props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null ])
 <div x-data="{
     formData: {
         title_ar: '{{ old('title_ar', $course?->getTranslation('title', 'ar') ?? '') }}',
@@ -471,6 +471,8 @@
                 </button>
             </div>
     </form>
+
+
 </div>
 
 
