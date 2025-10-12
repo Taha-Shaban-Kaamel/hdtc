@@ -8,12 +8,14 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LectureController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer;
 
-Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:super admin|admin'])->group(function () {
     Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -69,6 +71,27 @@ Route::middleware(['auth', 'verified', 'role:super admin'])->group(function () {
         Route::get('/{instructor}', [InstructorController::class, 'show'])->name('web.instructors.show');
         Route::delete('/{instructor}', [InstructorController::class, 'destroy'])->name('web.instructors.destroy');
     });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/', [UserController::class, 'store'])->name('users.store');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+});
+
+Route::prefix('admins')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+    Route::get('/create', [AdminController::class, 'create'])->name('admins.create');
+    Route::post('/', [AdminController::class, 'store'])->name('admins.store');
+    Route::get('/{admin}/edit', [AdminController::class, 'edit'])->name('admins.edit');
+    Route::put('/update/{id}', [AdminController::class, 'update'])->name('admins.update');
+    Route::get('/{admin}', [AdminController::class, 'show'])->name('admins.show');
+    Route::delete('/{admin}', [AdminController::class, 'destroy'])->name('admins.destroy');
 });
 
 Route::middleware('auth')->group(function () {

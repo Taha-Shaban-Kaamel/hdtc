@@ -27,7 +27,7 @@ class AuthenticatedSessionController extends Controller
     {
         $user = User::where('email', $request->email)->first();
         if ($user) {
-            if (!$user->hasRole('super admin')) {
+            if (!$user->hasRole('super admin') && !$user->hasRole('admin')) {
                 return redirect()->back()->withErrors([
                     'unauthorized' =>trans('auth.unauthorized'),
                 ]);

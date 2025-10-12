@@ -15,9 +15,8 @@ class checkRole
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if(!auth()->user()->hasRole($role)) {
-            abort(403,'only '.$role.' can access this page');
-
+        if (!auth()->user()->hasAnyRole(explode('|', $role))) {
+            abort(403, 'Only ' . str_replace('|', ' or ', $role) . ' can access this page');
         }
         return $next($request);
     }
