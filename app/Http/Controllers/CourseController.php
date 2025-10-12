@@ -66,7 +66,7 @@ class CourseController extends Controller
             'duration' => 'required|numeric',
             'progression' => 'required|in:chapter,lecture',
             'status' => 'required|in:active,inactive',
-            'accessability' => 'required|in:active,inactive',
+            'accessibility' => 'required|in:active,inactive',
         ]);
 
         try {
