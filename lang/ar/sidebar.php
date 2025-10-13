@@ -6,5 +6,5 @@ return [
     'instructors' => 'المدربين',
     'plans' => 'الخطط',
     'notifications' => 'الاشعارات',
-
+    'roles' => 'الصلاحيات',
 ];

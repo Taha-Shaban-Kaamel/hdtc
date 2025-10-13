@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const roles = document.querySelector('input[name="roles[]"]');
     
     if (roles) {
-        console.log(window.roleWhitelist);
         new Tagify(roles, {
             whitelist: window.roleWhitelist,
             maxTags: 10,

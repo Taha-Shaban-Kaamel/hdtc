@@ -19,6 +19,7 @@ class InstructorController extends Controller
      */
     public function index()
     {
+        $this->authorize('view',Instructor::class);
         $instructors = Instructor::latest()->paginate(10);
         return view('instructors.index', compact('instructors'));
     }
@@ -28,7 +29,7 @@ class InstructorController extends Controller
      */
     public function create()
     {
-        
+        $this->authorize('create',Instructor::class);
         return view('instructors.create');
     }
 
@@ -37,12 +38,13 @@ class InstructorController extends Controller
      */
     public function store(InstructorRequest $request)
     {
+        $this->authorize('create',Instructor::class);
         $validated = $request->validated();
         $request = request() ;
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->move(storage_path('app/public/instructors'), Str::random(10) . '.' . $request->file('avatar')->getClientOriginalExtension());
-            $validated['avatar'] = $path->getFilename();
+            $validated['avatar'] = 'storage/instructors/' . $path->getFilename();
         }
 
         $user = User::create([
@@ -86,6 +88,7 @@ class InstructorController extends Controller
      */
     public function show(Instructor $instructor)
     {
+        $this->authorize('view',Instructor::class);
         $instructor = $instructor->load('user');
         return view('instructors.show', compact('instructor'));
     }
@@ -95,6 +98,7 @@ class InstructorController extends Controller
      */
     public function edit(Instructor $instructor)
     {
+        $this->authorize('edit',Instructor::class);
         $instructor = $instructor->load('user');
         return view('instructors.edit', compact('instructor'));
     }
@@ -104,6 +108,7 @@ class InstructorController extends Controller
      */
     public function update(Request $request,$id)
     {
+        $this->authorize('edit',Instructor::class);
         $instructor = Instructor::findOrFail($id);
         $validated = $request->validate([
             'first_name_ar' => 'required|string|max:255',
@@ -122,7 +127,7 @@ class InstructorController extends Controller
             'linkedin_url' => 'nullable|url|max:255',
             'facebook_url' => 'nullable|url|max:255',
             'youtube_url' => 'nullable|url|max:255',
-            'email' => 'required|string|unique:users,email,'.$id.',id|max:255',
+            'email' => 'required|string|unique:users,email,'.$instructor->user->id.',id|max:255',
             'bio_ar' => 'nullable|string',
             'bio_en' => 'nullable|string',
             'phone' => 'nullable|string|max:20',
@@ -134,12 +139,14 @@ class InstructorController extends Controller
             'linkedin_url' => 'nullable|url|max:255',
             'facebook_url' => 'nullable|url|max:255',
             'youtube_url' => 'nullable|url|max:255',
-            'is_active' => 'boolean',
         ]);
 
-        if($request->hasFile('avatar')){
-            $path = $request->file('avatar')->move(storage_path('app/public/instructors'), Str::random(10) . '.' . $request->file('avatar')->getClientOriginalExtension());
-            $validated['avatar'] = $path->getFilename();
+
+        if ($request->hasFile('avatar')) { 
+                       
+            $fileName = $request->file('avatar')->getClientOriginalName();
+            $path = $request->file('avatar')->move(storage_path('app/public/instructors'), Str::random(10) . '.' .$fileName);
+            $validated['avatar'] = 'storage/instructors/' . $path->getFilename();
         }
 
         $userData = [
@@ -178,23 +185,15 @@ class InstructorController extends Controller
             'linkedin_url' => $validated['linkedin_url'],
             'facebook_url' => $validated['facebook_url'],
             'youtube_url' => $validated['youtube_url'],
-            'is_active' => $validated['is_active'],
         ];
 
-        $data = $request->except('profile_photo');
-        $data['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('profile_photo')) {
-            // Delete old profile photo if it exists
-            if ($instructor->profile_photo_path) {
-                Storage::disk('public')->delete($instructor->profile_photo_path);
-            }
-            
-            $path = $request->file('profile_photo')->store('instructors', 'public');
-            $data['profile_photo_path'] = $path;
-        }
 
-        $instructor->update($data);
+        $data = $validated; 
+
+
+        $instructor->user->update($userData);
+        $instructor->update($instructorData);
 
         return redirect()->route('web.instructors.show', $instructor)
             ->with('success', __('instructors.updated_successfully'));
@@ -205,14 +204,15 @@ class InstructorController extends Controller
      */
     public function destroy(Instructor $instructor)
     {
-        // Delete profile photo if it exists
+        $this->authorize('delete',Instructor::class);
+
         if ($instructor->profile_photo_path) {
             Storage::disk('public')->delete($instructor->profile_photo_path);
         }
 
         $instructor->delete();
 
-        return redirect()->route('instructors.index')
+        return redirect()->route('web.instructors.index')
             ->with('success', __('instructors.deleted_successfully'));
     }
 }

@@ -11,18 +11,20 @@ class LectureController extends Controller
 {
     public function index(Course $course, Chapter $chapter)
     {
+        $this->authorize('viewAny', Course::class);
         $lectures = $chapter->lectures()->orderBy('order')->get();
         return view('lectures.index', compact('course', 'chapter', 'lectures'));
     }
 
     public function create(Course $course, Chapter $chapter)
     {
+        $this->authorize('create', Course::class);
         return view('lectures.create', compact('course', 'chapter'));
     }
 
     public function store(Request $request, Course $course, Chapter $chapter)
     {
-        // dd($request) ;
+        $this->authorize('create', Course::class);
 
         $validated = $request->validate([
             'title_ar' => 'required|string|max:255',
@@ -52,11 +54,13 @@ class LectureController extends Controller
 
     public function edit(Course $course, Chapter $chapter, Lecture $lecture)
     {
+        $this->authorize('update', Course::class);
         return view('lectures.edit', compact('course', 'chapter', 'lecture'));
     }
 
     public function update(Request $request, Course $course, Chapter $chapter, Lecture $lecture)
     {
+        $this->authorize('update', Course::class);
         $validated = $request->validate([
             'title_ar' => 'required|string|max:255',
             'title_en' => 'required|string|max:255',
@@ -83,6 +87,7 @@ class LectureController extends Controller
 
     public function destroy(Course $course, Chapter $chapter, Lecture $lecture)
     {
+        $this->authorize('delete', Course::class);
         $lecture->delete();
         return back()->with('success', __('Lecture deleted successfully.'));
     }

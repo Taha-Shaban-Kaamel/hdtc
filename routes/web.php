@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LectureController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -92,6 +93,16 @@ Route::prefix('admins')->group(function () {
     Route::put('/update/{id}', [AdminController::class, 'update'])->name('admins.update');
     Route::get('/{admin}', [AdminController::class, 'show'])->name('admins.show');
     Route::delete('/{admin}', [AdminController::class, 'destroy'])->name('admins.destroy');
+});
+
+Route::prefix('roles')->group(function () {
+    Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
+    Route::get('/{role}', [RoleController::class, 'show'])->name('roles.show');
+    Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -36,7 +36,7 @@
                             </div>
                         </a>
                     </li>
-                    @can('admins.index')
+                    @canany(['view-admins', 'create-admins', 'edit-admins', 'delete-admins'])
                         <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                             x-data="{ sidebarExpanded: false }"
                             :class="[
@@ -48,10 +48,10 @@
                                 href="{{ route('admins.index') }}">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-1">
-                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                         <span
                                             class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
@@ -67,37 +67,74 @@
                                 </div>
                             </a>
                         </li>
-                    @endcan
+                    @endcanany
 
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
-                        x-data="{ sidebarExpanded: false }"
-                        :class="[
-                            sidebarExpanded && @js(Route::is('courses.index') || Route::is('courses.create') || Route::is('courses.edit')) ?
-                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-                            ''
-                        ]">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('courses.index') }}">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.courses') }}</span>
+                    @canany(['view-roles', 'create-roles', 'edit-roles', 'delete-roles'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('roles.index') || Route::is('roles.create') || Route::is('roles.edit')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('roles.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                                        </svg>
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.roles') }}</span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
                                 </div>
-                                <div
-                                    class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
-                                        :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    @endcanany
 
+                    @canany(['view-courses', 'create-courses', 'edit-courses', 'delete-courses'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('courses.index') || Route::is('courses.create') || Route::is('courses.edit')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('courses.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.courses') }}</span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcanany
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
                         x-data="{ sidebarExpanded: false }"
                         :class="[
@@ -134,96 +171,101 @@
 
                     </li>
 
+                    @canany(['view-instructors', 'create-instructors', 'edit-instructors', 'delete-instructors'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('web.instructors.index') || Route::is('web.instructors.create') || Route::is('web.instructors.edit')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('web.instructors.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex shrink-0 ">
+                                            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                        </div>
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.instructors') }}</span>
+                                    </div>
 
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
-                        x-data="{ sidebarExpanded: false }"
-                        :class="[
-                            sidebarExpanded && @js(Route::is('web.instructors.index') || Route::is('web.instructors.create') || Route::is('web.instructors.edit')) ?
-                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-                            ''
-                        ]">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('web.instructors.index') }}">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="flex shrink-0 ">
-                                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </div>
+                            </a>
+
+
+                        </li>
+                    @endcanany
+
+                    @canany(['view-notifications', 'create-notifications', 'edit-notifications',
+                        'delete-notifications'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('notifications.index') || Route::is('notifications.create')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('notifications.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <img class="w-5 h-5"
+                                            src="{{ asset('storage/dashboard/icons/notification.png') }}" alt="">
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
+                                            {{ __('sidebar.notifications') }}
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                         </svg>
                                     </div>
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">{{ __('sidebar.instructors') }}</span>
                                 </div>
+                            </a>
+                        </li>
+                    @endcanany
 
-                            </div>
-                        </a>
-
-
-                    </li>
-
-
-
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
-                        x-data="{ sidebarExpanded: false }"
-                        :class="[
-                            sidebarExpanded && @js(Route::is('notifications.index') || Route::is('notifications.create')) ?
-                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-                            ''
-                        ]">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('notifications.index') }}">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-1">
-                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/notification.png') }}"
-                                        alt="">
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
-                                        {{ __('sidebar.notifications') }}
-                                    </span>
+                    @canany(['view-plans', 'create-plans', 'edit-plans', 'delete-plans'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
+                            x-data="{ sidebarExpanded: false }"
+                            :class="[
+                                sidebarExpanded && @js(Route::is('plans.index') || Route::is('plans.create') || Route::is('plans.edit')) ?
+                                'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+                                ''
+                            ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                                href="{{ route('plans.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/plans.png') }}"
+                                            alt="">
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
+                                            {{ __('sidebar.plans') }}
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                            :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
                                 </div>
-                                <div
-                                    class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
-                                        :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r" x-data="{ open: true }"
-                        x-data="{ sidebarExpanded: false }"
-                        :class="[
-                            sidebarExpanded && @js(Route::is('plans.index') || Route::is('plans.create') || Route::is('plans.edit')) ?
-                            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
-                            ''
-                        ]">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
-                            href="{{ route('plans.index') }}">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-1">
-                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/plans.png') }}"
-                                        alt="">
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
-                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
-                                        {{ __('sidebar.plans') }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
-                                        :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    @endcanany
 
                 </ul>
             </div>

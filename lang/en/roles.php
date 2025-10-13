@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'name' => 'Name',
+    'permissions' => 'Permissions',
+    'add_role' => 'Add Role',
+    'manage_roles' => 'Manage Roles',
+    'manage_roles_description' => 'View and manage user roles and permissions',
+    'no_roles_found' => 'No roles found',
+    'confirm_delete' => 'Are you sure you want to delete this role?',
+    'role_created' => 'Role created successfully',
+    'role_updated' => 'Role updated successfully',
+    'role_deleted' => 'Role deleted successfully',
+    'more_permissions' => '{0} more|{1} :count more|[2,*] :count more',
+    'create_title' => 'Create New Role',
+    'edit_title' => 'Edit Role',
+    'role_name' => 'Role Name',
+    'select_permissions' => 'Select Permissions',
+    'save_role' => 'Save Role',
+    'update_role' => 'Update Role',
+    'back_to_roles' => 'Back to Roles',
+    'no_permissions' => 'No permissions assigned',
+    'section' => 'Section',
+    'add_role_description' => 'Add a new role',
+    'add_role' => 'Add a new role',
+];
