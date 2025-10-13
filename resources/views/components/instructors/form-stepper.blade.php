@@ -117,7 +117,7 @@
                 <div class="col-span-3">
                     <x-label for="first_name_ar" value="{{ __('instructors.first_name_ar') }}" />
                     <x-input id="first_name_ar" name="first_name_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.first_name_ar" required autofocus />
+                        x-model="formData.first_name_ar"  autofocus />
                     @if ($errors->has('first_name_ar'))
                         <x-input-error for="first_name_ar" :messages="$errors->get('first_name_ar')" class="mt-2" />
                     @endif
@@ -125,7 +125,7 @@
                 <div class="col-span-3">
                     <x-label for="first_name_en" value="{{ __('instructors.first_name_en') }}" />
                     <x-input id="first_name_en" name="first_name_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.first_name_en" required />
+                        x-model="formData.first_name_en"  />
                     @if ($errors->has('first_name_en'))
                         <x-input-error for="first_name_en" :messages="$errors->get('first_name_en')" class="mt-2" />
                     @endif
@@ -134,7 +134,7 @@
                 <div class="col-span-3">
                     <x-label for="second_name_ar" value="{{ __('instructors.second_name_ar') }}" />
                     <x-input id="second_name_ar" name="second_name_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.second_name_ar" required />
+                        x-model="formData.second_name_ar"  />
                     @if ($errors->has('second_name_ar'))
                         <x-input-error for="second_name_ar" :messages="$errors->get('second_name_ar')" class="mt-2" />
                     @endif
@@ -142,16 +142,22 @@
                 <div class="col-span-3">
                     <x-label for="second_name_en" value="{{ __('instructors.second_name_en') }}" />
                     <x-input id="second_name_en" name="second_name_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.second_name_en" required />
+                        x-model="formData.second_name_en"  />
                     @if ($errors->has('second_name_en'))
                         <x-input-error for="second_name_en" :messages="$errors->get('second_name_en')" class="mt-2" />
                     @endif
                 </div>
-
                 <div class="col-span-3">
                     <x-label for="password" value="{{ __('instructors.password') }}" />
-                    <x-input id="password" name="password" type="text" class="mt-1 block w-full"
-                        x-model="formData.password" required />
+                    <x-input 
+                        id="password" 
+                        name="password" 
+                        type="password" 
+                        class="mt-1 block w-full"
+                        x-model="formData.password" 
+                        :aria-="!$instructor"
+                        :placeholder="$instructor ? 'Leave blank to keep current password' : ''"
+                    />
                     @if ($errors->has('password'))
                         <x-input-error for="password" :messages="$errors->get('password')" class="mt-2" />
                     @endif
@@ -165,7 +171,7 @@
                             isset($instructor->birth_date)
                                 ? \Carbon\Carbon::parse($instructor->birth_date)->format('Y-m-d')
                                 : '',
-                        )" required />
+                        )"  />
                     @if ($errors->has('birth_date'))
                         <x-input-error for="birth_date" :messages="$errors->get('birth_date')" class="mt-2" />
                     @endif
@@ -175,7 +181,7 @@
                     <x-label for="bio_ar" value="{{ __('instructors.bio_ar') }}" />
                     <textarea id="bio_ar" name="bio_ar" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        x-model="formData.bio_ar" required></textarea>
+                        x-model="formData.bio_ar" ></textarea>
                     @if ($errors->has('bio_ar'))
                         <x-input-error for="bio_ar" :messages="$errors->get('bio_ar')" class="mt-2" />
                     @endif
@@ -184,7 +190,7 @@
                     <x-label for="bio_en" value="{{ __('instructors.bio_en') }}" />
                     <textarea id="bio_en" name="bio_en" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        x-model="formData.bio_en" required></textarea>
+                        x-model="formData.bio_en" ></textarea>
                     @if ($errors->has('bio_en'))
                         <x-input-error for="bio_en" :messages="$errors->get('bio_en')" class="mt-2" />
                     @endif
@@ -198,7 +204,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="specialization" value="{{ __('instructors.specialization') }}" />
                     <x-input id="specialization_ar" name="specialization_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.specialization_ar" required />
+                        x-model="formData.specialization_ar"  />
                     @if ($errors->has('specialization_ar'))
                         <x-input-error for="specialization_ar" :messages="$errors->get('specialization_ar')" class="mt-2" />
                     @endif
@@ -206,7 +212,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="specialization_en" value="{{ __('instructors.specialization_en') }}" />
                     <x-input id="specialization_en" name="specialization_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.specialization_en" required />
+                        x-model="formData.specialization_en"  />
                     @if ($errors->has('specialization_en'))
                         <x-input-error for="specialization_en" :messages="$errors->get('specialization_en')" class="mt-2" />
                     @endif
@@ -215,7 +221,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="experience" value="{{ __('instructors.experience') }}" />
                     <x-input id="experience" name="experience" type="number" class="mt-1 block w-full"
-                        x-model="formData.experience" required />
+                        x-model="formData.experience"  />
                     @if ($errors->has('experience'))
                         <x-input-error for="experience" :messages="$errors->get('experience')" class="mt-2" />
                     @endif
@@ -224,7 +230,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="education" value="{{ __('instructors.education') }}" />
                     <x-input id="education_ar" name="education_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.education_ar" required />
+                        x-model="formData.education_ar"  />
                     @if ($errors->has('education_ar'))
                         <x-input-error for="education_ar" :messages="$errors->get('education_ar')" class="mt-2" />
                     @endif
@@ -232,7 +238,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="education_en" value="{{ __('instructors.education_en') }}" />
                     <x-input id="education_en" name="education_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.education_en" required />
+                        x-model="formData.education_en"  />
                     @if ($errors->has('education_en'))
                         <x-input-error for="education_en" :messages="$errors->get('education_en')" class="mt-2" />
                     @endif
@@ -243,7 +249,7 @@
                     <x-label for="gender" value="{{ __('Gender') }}" />
                     <select id="gender" name="gender" x-model="formData.gender"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        required>
+                        >
                         <option value="">{{ __('instructors.select_gender') }}</option>
                         <option value="male"
                             {{ old('gender', $instructor?->user?->gender ?? '') === 'male' ? 'selected' : '' }}>
@@ -286,7 +292,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="email" value="{{ __('instructors.email') }}" />
                     <x-input id="email" name="email" type="email" class="mt-1 block w-full"
-                        x-model="formData.email" required />
+                        x-model="formData.email"  />
                     @if ($errors->has('email'))
                         <x-input-error for="email" :messages="$errors->get('email')" class="mt-2" />
                     @endif
@@ -295,7 +301,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="phone" value="{{ __('instructors.phone') }}" />
                     <x-input id="phone" name="phone" type="text" class="mt-1 block w-full"
-                        x-model="formData.phone" required />
+                        x-model="formData.phone"  />
                     @if ($errors->has('phone'))
                         <x-input-error for="phone" :messages="$errors->get('phone')" class="mt-2" />
                     @endif
@@ -304,7 +310,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="company" value="{{ __('instructors.company') }}" />
                     <x-input id="company" name="company" type="text" class="mt-1 block w-full"
-                        x-model="formData.company" required />
+                        x-model="formData.company"  />
                     @if ($errors->has('company'))
                         <x-input-error for="company" :messages="$errors->get('company')" class="mt-2" />
                     @endif
@@ -462,7 +468,7 @@
                     <label class="flex items-start">
                         <input type="checkbox" name="terms"
                             class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                            required>
+                            >
                         <span class="ml-2 text-sm text-gray-600">{{ __('instructors.confirm_information') }}</span>
                     </label>
                     @if ($errors->has('terms'))

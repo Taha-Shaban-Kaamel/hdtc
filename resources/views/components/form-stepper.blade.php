@@ -1,6 +1,6 @@
 @vite(['resources/js/app.js'])
 @vite(['resources/js/tagify.js'])
-@props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null ])
+@props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null  ])
 <div x-data="{
     formData: {
         title_ar: '{{ old('title_ar', $course?->getTranslation('title', 'ar') ?? '') }}',
@@ -137,10 +137,15 @@
 
                 <div class="col-span-3">
                     <label for="tags" class="block font-medium text-sm text-gray-700">Tags</label>
-                    {{-- @dd($course?->tags()->pluck('name')) --}}
-                    <input id="tags" name="tags[]" value="{{ json_encode(old('tags',$course?->tags()->pluck('name'))) }}" class="tagify mt-1 block w-full" placeholder="Enter tags..." multiple>
+                    <input 
+                        id="tags" 
+                        name="tags[]" 
+                        value="{{ old('tags', $course ? $course?->tags()->pluck('name')->implode(',') : '') }}" 
+                        class="tagify mt-1 block w-full" 
+                        placeholder="Enter tags..."
+                        x-model="formData.tags"
+                    >
                 </div>
-
                 <div class="col-span-3">
                     <label for="progression" class="block font-medium text-sm text-gray-700">Progression</label>
                     <select id="progression" name="progression" class="mt-1 block w-full" x-model="formData.progression">
@@ -482,6 +487,7 @@
     <script>
         document.addEventListener('alpine:init', () => {
             window.tagWhitelist = @json(\App\Models\Tag::pluck('name')->toArray());
+            console.log(window.tagWhitelist);
         });
     </script>
     @vite(['resources/js/tagify.js'])

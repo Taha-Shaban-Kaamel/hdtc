@@ -22,9 +22,10 @@ class CourseController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Course::class);
+
         $courses = Course::paginate(10)->load('categories', 'instructors','tags');
         $courses = CourseResource::collection($courses)->toArray(request());
-        // dd($courses);
         return view('courses.index', compact('courses'));
     }
 
@@ -33,6 +34,8 @@ class CourseController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Course::class);
+
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
         $instructors = InstructorResource::collection(Instructor::all())->toArray(request());
@@ -45,6 +48,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Course::class);
         $validated = $request->validate([
             'title_ar' => 'required|string|max:255',
             'title_en' => 'required|string|max:255',
@@ -148,6 +152,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        $this->authorize('viewAny', Course::class);
         $course = Course::findOrFail($course->id)->load('categories', 'instructors');
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
@@ -160,13 +165,17 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update', Course::class);
         $course = Course::with(['categories', 'instructors', 'tags'])->findOrFail($id);
+
+        $tags = Tag::all()->pluck('name');
+
         // $course = new CourseResource($course);
 
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
         $instructors = InstructorResource::collection(Instructor::all())->toArray(request());
-        return view('courses.edit', compact('course', 'categories', 'instructors'));
+        return view('courses.edit', compact('course', 'categories', 'instructors', 'tags'));
     }
 
     /**
@@ -174,7 +183,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        // dd($request->all());
+        $this->authorize('edit', $course);
         $validated = $request->validate([
             'title_ar' => 'nullable|string|max:255',
             'title_en' => 'nullable|string|max:255',
@@ -299,6 +308,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
+        $this->authorize('delete', $course);
         try {
             $course->delete();
             return redirect()

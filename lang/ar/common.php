@@ -67,5 +67,7 @@ return [
     'are_you_sure' => 'هل أنت متأكد؟',
     'instructors' => 'المدربين',
     'not_found' => 'لايوجد' ,
-    'create_new' => 'انشاء جديد'
+    'create_new' => 'انشاء جديد',
+    'roles' => 'الصلاحيات',
+    'name' => 'الاسم',
 ];

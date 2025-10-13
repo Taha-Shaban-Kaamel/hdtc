@@ -12,14 +12,11 @@
     currentStep: {{ $currentStep }},
     totalSteps: {{ $totalSteps }},
     formData: {
-        // User Information
-        user_name: '{{ old('user_name', $admin?->user?->user_name ?? '') }}',
         email: '{{ old('email', $admin?->user?->email ?? '') }}',
         phone: '{{ old('phone', $admin?->user?->phone ?? '') }}',
         password: '',
         password_confirmation: '',
 
-        // Personal Information (Translatable)
         first_name_ar: '{{ old('first_name_ar', $admin?->user?->getTranslation('first_name', 'ar') ?? '') }}',
         first_name_en: '{{ old('first_name_en', $admin?->user?->getTranslation('first_name', 'en') ?? '') }}',
         second_name_ar: '{{ old('second_name_ar', $admin?->user?->getTranslation('second_name', 'ar') ?? '') }}',
@@ -27,7 +24,6 @@
         bio_ar: '{{ old('bio_ar', $admin?->user?->getTranslation('bio', 'ar') ?? '') }}',
         bio_en: '{{ old('bio_en', $admin?->user?->getTranslation('bio', 'en') ?? '') }}',
 
-        // Additional User Fields
         birth_date: '{{ old('birth_date', $admin?->user?->birth_date ?? '') }}',
         gender: '{{ old('gender', $admin?->user?->gender ?? '') }}',
         status: '{{ old('status', $admin?->user?->status ?? 'active') }}',
@@ -78,6 +74,7 @@
         }
     }
 }" @next-step.window="nextStep()" @prev-step.window="prevStep()">
+
     <!-- Progress Bar -->
     <div class="w-full bg-gray-200 rounded-full h-2.5 mb-8">
         <div class="bg-blue-600 h-2.5 rounded-full" :style="'width: ' + stepProgress() + '%'"></div>
@@ -201,7 +198,6 @@
                     <x-input-error for="gender" class="mt-2" />
                 </div>
 
-                <!-- Birth Date -->
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="birth_date" value="{{ __('admin.birth_date') }}" />
                     <x-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full"
@@ -209,7 +205,6 @@
                     <x-input-error for="birth_date" class="mt-2" />
                 </div>
 
-                <!-- Bio (AR) -->
                 <div class="col-span-3">
                     <x-label for="bio_ar" value="{{ __('admin.bio_ar') }}" />
                     <textarea id="bio_ar" name="bio_ar" rows="3"
@@ -218,7 +213,6 @@
                     <x-input-error for="bio_ar" class="mt-2" />
                 </div>
 
-                <!-- Bio (EN) -->
                 <div class="col-span-3">
                     <x-label for="bio_en" value="{{ __('admin.bio_en') }}" />
                     <textarea id="bio_en" name="bio_en" rows="3"
@@ -293,7 +287,6 @@
                             </div>
                         </dl>
                     </div>
-
                     <div x-show="formData.bio_ar || formData.bio_en">
                         <h4 class="font-medium text-gray-900 border-b pb-2 mb-3">{{ __('admin.bio') }}</h4>
                         <dl class="grid grid-cols-1 gap-x-4 gap-y-2">
