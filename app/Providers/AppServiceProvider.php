@@ -10,8 +10,10 @@ use Illuminate\Support\ServiceProvider;
 use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
+use App\Policies\RolePolicy;
 
-class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider 
 {
     /**
      * Register any application services.
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
                 ->withServiceAccount(storage_path(env('FIREBASE_CREDENTIALS')));
             return $firebase->createMessaging();
         });
+ 
 
         $this->app->bind(PaymentGatewayInterface::class, PaymobService::class);
 
@@ -42,5 +45,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });
+
+        Gate::policy(Role::class, RolePolicy::class);
+
     }
 }

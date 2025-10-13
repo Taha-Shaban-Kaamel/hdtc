@@ -33,7 +33,7 @@ return [
     'duration_hours' => 'Duration (hours)',
     'difficulty_level' => 'Difficulty Level',
     'select_difficulty' => 'Select Difficulty',
-    'beginner' => 'Beginner',
+    'Beginner' => 'Beginner',
     'intermediate' => 'Intermediate',
     'advanced' => 'Advanced',
     'video_url' => 'Video URL',

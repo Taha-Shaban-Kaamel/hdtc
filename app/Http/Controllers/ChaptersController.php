@@ -15,9 +15,9 @@ class ChaptersController extends Controller
      */
     public function index($course_id)
 	{
+        $this->authorize('viewAny', Course::class);
 		$course = Course::find($course_id);
 		$chapters = Chapter::where("course_id", $course_id)->orderBy('id', 'ASC')->get();
-        // dd($chapters);
 		return view("chapters.index", compact("course", "chapters"));
 	}
 
@@ -26,6 +26,7 @@ class ChaptersController extends Controller
      */
     public function create($course_id)
 	{
+        $this->authorize('create', Course::class);
 		$course = Course::find($course_id);
 		return view("chapters.create", compact("course"));
 	}
@@ -34,6 +35,7 @@ class ChaptersController extends Controller
      */
     public function store(ChapterRequest $request,$course_id)
     {
+        $this->authorize('create', Course::class);
         try{
             Chapter::create([
                 'name' =>[
@@ -55,6 +57,7 @@ class ChaptersController extends Controller
      */
     public function edit($course_id, $id)
     {
+        $this->authorize('update', Course::class);
         try {
             $course = Course::findOrFail($course_id);
             $chapter = Chapter::findOrFail($id);
@@ -66,7 +69,7 @@ class ChaptersController extends Controller
     
     public function update(ChapterRequest $request, $course_id, $id)
     {
-        
+        $this->authorize('update', Course::class);
 
         try {
             $chapter = Chapter::where("id", $id)->first();
@@ -89,6 +92,7 @@ class ChaptersController extends Controller
    
     public function destroy($id)
     {
+        $this->authorize('delete', Course::class);
         try{
             $chapter = Chapter::find($id);
             $chapter->delete();
