@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\setLocal;
 use App\Http\Middleware\webSetLocale;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Application;
@@ -24,6 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('api', [setLocal::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->renderable(function (AuthorizationException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'You are not authorized to access this resource.'
+                ], 403);
+            }
+    
+            return response()->view('errors.403', [], 403);
+        });
     })
     ->create();

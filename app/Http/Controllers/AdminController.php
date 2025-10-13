@@ -20,7 +20,7 @@ class AdminController extends Controller
 
     public function create()
     {
-        $this->authorize('create admins');
+        $this->authorize('create', Admin::class);
 
         $roles = Role::all();
 
@@ -29,7 +29,7 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create admins');
+        $this->authorize('create', Admin::class);
       
         try {
             $request->validate([
@@ -86,12 +86,91 @@ class AdminController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($admin)
     {
+        $this->authorize('update', Admin::class);
+
+        $admin = Admin::findOrFail($admin)->load('user');
         return view('admins.edit', compact('admin'));
     }
 
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id) {
+        $this->authorize('update', Admin::class);
+        $admin = Admin::findOrFail($id);
 
-    public function destroy($id) {}
+        $validatedData = $request->validate([
+            'email' => 'nullable|email|max:255|unique:users,email,' . $admin->user->id ,
+            'phone' => 'nullable|string|max:255|unique:users,phone,' . $admin->user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'password_confirmation' => 'nullable|string|min:8',
+            'first_name_ar' => 'nullable|string|max:255',
+            'first_name_en' => 'nullable|string|max:255',
+            'second_name_ar' => 'nullable|string|max:255',
+            'second_name_en' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+            'password_confirmation' => 'nullable|string|min:8',
+            'bio_ar' => 'nullable|string',
+            'bio_en' => 'nullable|string',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female',
+            'status' => 'nullable|string|in:active,inactive',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'address' => 'nullable|string|max:255',
+        ]);
+
+        
+
+
+
+        $userData = [
+
+            'email' => $validatedData['email'],
+            'phone' => $validatedData['phone'],
+            'first_name' => [
+                'ar' => $validatedData['first_name_ar'],
+                'en' => $validatedData['first_name_en'],
+            ],
+            'second_name' => [
+                'ar' => $validatedData['second_name_ar'],
+                'en' => $validatedData['second_name_en'],
+            ],
+            'bio' => [
+                'ar' => $validatedData['bio_ar'],
+                'en' => $validatedData['bio_en'],
+            ],
+            'birth_date' => $validatedData['birth_date'],
+            'gender' => $validatedData['gender'],
+            'status' => $validatedData['status'],
+            'avatar' => $validatedData['avatar'] ?? $admin->user->avatar,
+        ];
+
+
+        if($validatedData['password']) {
+            $userData['password'] = $validatedData['password'];
+        }
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(public_path('storage/admins'), $avatarName);
+            $userData['avatar'] ='storage/admins/' . $avatarName;
+        }
+
+        $user = $admin->user;
+
+        $user->update($userData);
+
+
+        return redirect()->route('admins.index')->with('success', 'Admin updated successfully');
+    }
+
+    public function destroy($id) {
+        $this->authorize('delete',Admin::class);
+
+        $admin = Admin::findOrFail($id);
+
+        $admin->delete();
+
+        return redirect()->route('admins.index')->with('success', 'Admin deleted successfully');
+    }
 }

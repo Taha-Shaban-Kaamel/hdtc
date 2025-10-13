@@ -7,6 +7,6 @@ return [
     'instructors' => 'Instructors',
     'plans' => 'Plans',
     'notifications' => 'notifications',
-
+    'roles' => 'Roles',
 
 ];

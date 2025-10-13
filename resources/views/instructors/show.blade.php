@@ -10,8 +10,7 @@
                                 <div
                                     class="flex-shrink-0 h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-lg">
                                     <img class="h-full w-full object-cover"
-                                        src="{{ $instructor->user->avatar ? asset('storage/instructors/' . $instructor->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($instructor->user->getTranslation('first_name', app()->getLocale()) . ' ' . $instructor->user->getTranslation('second_name', app()->getLocale())) . '&size=512&color=7F9CF5&background=EBF4FF' }}"
-                                        alt="{{ $instructor->user->getTranslation('first_name', app()->getLocale()) }} {{ $instructor->user->getTranslation('second_name', app()->getLocale()) }}">
+                                    src="{{ $instructor->user->avatar ? asset($instructor->user->avatar) : 'default-image-path' }}"                                        alt="{{ $instructor->user->getTranslation('first_name', app()->getLocale()) }} {{ $instructor->user->getTranslation('second_name', app()->getLocale()) }}">
                                 </div>
                                 <div class="ml-6">
                                     <h1 class="text-2xl font-bold text-gray-900">
@@ -285,7 +284,7 @@
                         <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
                             <dt class="text-sm font-medium text-gray-500">{{ __('instructors.courses') }}</dt>
                             <dd class="mt-1 text-3xl font-semibold text-gray-900">
-                                {{ $instructor->courses_count ?? 0 }}</dd>
+                                {{ $instructor->courses()->count() ?? 0 }}</dd>
                         </div>
                         <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
                             <dt class="text-sm font-medium text-gray-500">{{ __('instructors.students') }}</dt>

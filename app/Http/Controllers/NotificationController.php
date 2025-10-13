@@ -26,6 +26,7 @@ class NotificationController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Notification::class);
         $users=User::select('id', DB::raw("JSON_UNQUOTE(JSON_EXTRACT(first_name, '$')) as first_name"), DB::raw("JSON_UNQUOTE(JSON_EXTRACT(second_name, '$')) as second_name"), 'email')->orderBy('first_name')->get();
 
 
@@ -40,6 +41,7 @@ class NotificationController extends Controller
      */
     public function send(Request $request)
     {
+        $this->authorize('create', Notification::class);
         $request->validate([
             'send_type' => 'required|in:topic,users',
             'title' => 'required|string|max:255',
@@ -110,6 +112,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
+        $this->authorize('view', Notification::class);
         $notifications = Notification::with('user')
             ->latest('sent_at')
             ->paginate(20);

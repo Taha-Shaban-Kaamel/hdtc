@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plan;
 use App\Services\PlanService;
 use Illuminate\Http\Request;
 
@@ -16,17 +17,20 @@ class PlanController extends Controller
 
     public function index()
     {
+        $this->authorize('view', Plan::class);
         $plans = $this->service->getAllPlans();
         return view('subscription.plans.index', compact('plans'));
     }
 
     public function create()
     {
+        $this->authorize('create', Plan::class);
         return view('subscription.plans.create');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('create', Plan::class);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -50,6 +54,7 @@ class PlanController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('update', Plan::class);
         $plan = $this->service->getPlanById($id);
 
         return view('subscription.plans.edit', compact('plan'));
@@ -76,12 +81,14 @@ class PlanController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('delete', Plan::class);
         $this->service->deletePlan($id);
         return redirect()->route('plans.index')->with('success', 'Plan deleted successfully.');
     }
 
     public function show($id)
     {
+        $this->authorize('view', Plan::class);
         $plan = $this->service->getPlanById($id);
         return view('subscription.plans.show', compact('plan'));
     }
