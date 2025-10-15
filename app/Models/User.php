@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -19,7 +20,6 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-
     public $translatable = ['first_name', 'second_name', 'bio'];
 
     protected $fillable = [
@@ -47,6 +47,39 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+    /**
+     * Get the enrollments for the user.
+     */
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function isEnrolledIn($courseId)
+    {
+        return $this
+            ->enrollments()
+            ->where('course_id', $courseId)
+            ->where('status', 'active')
+            ->exists();
+    }
+
+
+    
+
+    /**
+     * Get the enrolled courses for the user.
+     */
+    public function enrolledCourses()
+    {
+        return $this
+            ->belongsToMany(Course::class, 'enrollments')
+            ->using(Enrollment::class)
+            ->withPivot('status', 'progress', 'grade', 'completion_date')
+            ->withTimestamps();
+    }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -81,5 +114,18 @@ class User extends Authenticatable
     public function admin()
     {
         return $this->hasOne(Admin::class);
+    }
+
+    public function teaches($courseId)
+    {
+        return $this
+            ->courses()
+            ->where('courses.id', $courseId)
+            ->exists();
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_instructor', 'instructor_id', 'course_id');
     }
 }
