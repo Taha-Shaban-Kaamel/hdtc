@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class Lecture extends Model
@@ -29,6 +29,7 @@ class Lecture extends Model
         'lecture_views' => 'integer',
     ];
 
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
@@ -38,4 +39,30 @@ class Lecture extends Model
     {
         return $this->belongsTo(Chapter::class);
     }
+
+
+    public function isAccessibleBy($user = null)
+    {
+        if ($this->isPreviewable()) {
+            return true;
+        }
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->isEnrolledIn($this->course_id)) {
+            return true;
+        }
+        if ($user->teaches($this->course_id)) {
+            return true;
+        }
+
+        if ($user->hasRole('admin') || $user->hasRole('super admin')) {
+            return true;
+        }
+
+        return false;
+    }
 }
+
