@@ -12,7 +12,7 @@ class InstructorController extends Controller
     public function index()
     {
         try {
-            $instructors = InstructorResource::collection(Instructor::all()) ;
+            $instructors = InstructorResource::collection(Instructor::all()->load('courses')) ;
             return response()->json([
                 'status' => true,
                 'message' => 'Instructors found',
@@ -30,7 +30,7 @@ class InstructorController extends Controller
     public function show(string $id)
     {
         try {
-            $instructor = new InstructorResource(Instructor::find($id)) ;
+            $instructor = new InstructorResource(Instructor::find($id)->load('courses')) ;
             return response()->json([
                 'status' => true,
                 'message' => 'Instructor found',
