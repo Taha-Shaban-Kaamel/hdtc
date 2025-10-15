@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 class InstructorResource extends JsonResource
 {
@@ -29,6 +29,12 @@ class InstructorResource extends JsonResource
             'facebook_url' => $this->resource->facebook_url,
             'youtube_url' => $this->resource->youtube_url,
             'is_active' => $this->resource->is_active,
+            'courses' => $this->resource->courses->count(),
+            'students' => $this->whenLoaded('courses', function () {
+                return $this->resource->courses->sum(function ($course) {
+                    return $course->enrollments()->count();
+                });
+            }), 
             'created_at' => $this->resource->created_at->diffForHumans(),
             'updated_at' => $this->resource->updated_at->diffForHumans(),
             'user' => [
