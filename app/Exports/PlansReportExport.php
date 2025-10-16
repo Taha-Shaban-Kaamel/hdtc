@@ -9,9 +9,6 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class PlansReportExport implements FromCollection, WithHeadings, WithMapping
 {
-    /**
-     * ✅ استرجاع جميع الخطط مع العدّادات المطلوبة
-     */
     public function collection()
     {
         return Plan::withCount(['subscriptions', 'payments'])
@@ -19,9 +16,7 @@ class PlansReportExport implements FromCollection, WithHeadings, WithMapping
             ->get();
     }
 
-    /**
-     * ✅ تحديد البيانات التي تُعرض في كل صف داخل Excel
-     */
+   
     public function map($plan): array
     {
         return [
@@ -32,9 +27,7 @@ class PlansReportExport implements FromCollection, WithHeadings, WithMapping
         ];
     }
 
-    /**
-     * ✅ تحديد عناوين الأعمدة (تدعم الترجمة)
-     */
+   
     public function headings(): array
     {
         return [
