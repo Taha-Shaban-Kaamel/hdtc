@@ -266,8 +266,122 @@
                             </a>
                         </li>
                     @endcanany
+                    @canany(['view-subscriptions', 'manage-subscriptions'])
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
+                            x-data="{ open: true }" x-data="{ sidebarExpanded: false }"
+                            :class="[
+            sidebarExpanded && @js(Route::is('subscriptions.index')) ?
+            'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+            ''
+        ]">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                               href="{{ route('subscription.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/subscriptions.png') }}" alt="">
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                            :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
+                        {{ __('sidebar.subscriptions') }}
+                    </span>
+                                    </div>
+                                    <div
+                                        class="flex shrink-0 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400"
+                                             :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endcanany
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
+                        x-data="{ open: true }" x-data="{ sidebarExpanded: false }"
+                        :class="[
+        sidebarExpanded && @js(Route::is('payments.index')) ?
+        'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
+        ''
+    ]">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                           href="{{ route('payments.index') }}">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1">
+                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/payment.png') }}" alt="">
+                                    <span
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                                        :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
+                    {{ __('sidebar.payments') }}
+                </span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    @can('view-reports')
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r"
+                            x-data="{ open: false }"
+                            :class="[
+        sidebarExpanded && (
+            @js(Route::is('reports.index') ||
+            Route::is('reports.plans') ||
+            Route::is('reports.courses') ||
+            Route::is('reports.instructors') ||
+            Route::is('reports.subscriptions'))
+        ) ? 'w-[255px] bg-[#066B87] flex flex-col justify-center' : ''
+    ]">
+
+                            <!-- 🔹 العنوان الرئيسي "التقارير" -->
+                            <div class="flex items-center justify-between">
+                                <a href="{{ route('reports.index') }}"
+                                   class="flex items-center gap-1 text-gray-800 dark:text-gray-100 transition hover:text-gray-900 dark:hover:text-white">
+                                    <img class="w-5 h-5" src="{{ asset('storage/dashboard/icons/reports.png') }}" alt="Reports Icon">
+                                    <span class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 duration-200"
+                                          :style="sidebarExpanded ? 'opacity: 1' : 'opacity: 0'">
+                {{ __('sidebar.reports') }}
+            </span>
+                                </a>
+
+                                <!-- 🔹 زر السهم لفتح/غلق القائمة -->
+                                <button @click.stop="open = !open"
+                                        class="flex items-center justify-center ml-1 text-gray-400 hover:text-gray-600 transition">
+                                    <svg class="w-3 h-3 shrink-0 fill-current transform transition-transform duration-200"
+                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
+                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- 🔹 القائمة الفرعية -->
+                            <ul x-show="open" class="mt-2 ml-8 space-y-1" x-transition>
+                                <li>
+                                    <a href="{{ route('reports.plans') }}" class="block text-gray-700 hover:text-[#066B87] text-sm">
+                                        {{ __('sidebar.plans_reports') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('reports.courses') }}" class="block text-gray-700 hover:text-[#066B87] text-sm">
+                                        {{ __('sidebar.courses_reports') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('reports.instructors') }}" class="block text-gray-700 hover:text-[#066B87] text-sm">
+                                        {{ __('sidebar.instructors_reports') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('reports.subscriptions') }}" class="block text-gray-700 hover:text-[#066B87] text-sm">
+                                        {{ __('sidebar.subscriptions_reports') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+
+
 
                 </ul>
+
             </div>
         </div>
         <div class="pt-3 lg:inline-flex justify-end mt-auto">

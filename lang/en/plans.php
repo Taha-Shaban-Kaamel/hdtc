@@ -45,4 +45,16 @@ return [
     // Validation / Messages
     'error_occurred' => 'An error occurred, please try again later.',
     'confirm_delete' => 'Are you sure you want to delete this plan?',
+    'courses' => 'Associated Courses',
+    'select_multiple_courses' => 'You can select multiple courses for this plan.',
+    'statistics' => 'Statistics',
+    'subscriptions_count' => 'Subscriptions Count',
+    'total_revenue' => 'Total Revenue',
+    'courses_associated_with_plan' => 'Courses Associated with this Plan',
+    'no_courses_associated' => 'No courses are currently associated with this plan.',
+    'yearly_discount_percent' => 'Yearly Discount',
+    'retrieved_successfully' => 'Plans retrieved successfully',
+    'not_found' => 'Plan not found',
+    'details' => 'Plan details',
+
 ];

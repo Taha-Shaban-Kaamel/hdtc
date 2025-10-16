@@ -15,4 +15,14 @@ class Plan extends Model
     {
         return $this->hasMany(Subscription::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_plan', 'plan_id', 'course_id');
+    }
+
+
 }
