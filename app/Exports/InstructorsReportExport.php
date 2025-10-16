@@ -19,7 +19,6 @@ class InstructorsReportExport implements FromCollection, WithHeadings, WithMappi
 
     public function collection()
     {
-        // نحمّل العلاقات بالكامل لضمان نفس النتائج
         return Instructor::with([
             'user:id,first_name,second_name',
             'courses' => function ($q) {
@@ -39,7 +38,6 @@ class InstructorsReportExport implements FromCollection, WithHeadings, WithMappi
             // Courses Count
             $instructor->courses_count ?? 0,
 
-            // Linked Plans Count (جمع كل الخطط من كل الكورسات)
             $instructor->courses->sum('plans_count') ?? 0,
 
             // Status
