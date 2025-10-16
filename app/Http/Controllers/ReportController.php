@@ -18,18 +18,14 @@ use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    // 📊 التقرير العام (كل الإحصاءات)
     public function index(Request $request)
     {
-        // 🕒 فلترة حسب التاريخ مع نهاية اليوم
         $from = Carbon::parse($request->input('from', Carbon::now()->subMonth()->toDateString()))->startOfDay();
         $to = Carbon::parse($request->input('to', Carbon::now()->toDateString()))->endOfDay();
 
-        // ✅ نضيف المتغيرات الافتراضية لتفادي الخطأ
         $planId = $request->input('plan_id');
         $courseId = $request->input('course_id');
 
-        // ⚙️ فلترة الاشتراكات والمدفوعات
         $paymentsQuery = Payment::with(['user', 'plan'])
             ->whereBetween('created_at', [$from, $to]);
         $subscriptionsQuery = Subscription::whereBetween('created_at', [$from, $to]);
@@ -47,17 +43,14 @@ class ReportController extends Controller
             $subscriptionsQuery->whereIn('plan_id', $planIds);
         }
 
-        // 💰 الإحصاءات العامة
         $totalRevenue = (clone $paymentsQuery)->where('status', 'paid')->sum('amount');
         $totalPayments = (clone $paymentsQuery)->count();
         $totalSubscriptions = (clone $subscriptionsQuery)->count();
 
-        // 💳 بيانات المدفوعات للجدول
         $payments = $paymentsQuery
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        // 📊 الإحصاءات العامة
         $stats = [
             'total_users' => User::count(),
             'active_users' => User::whereHas('subscriptions')->count(),
@@ -69,7 +62,6 @@ class ReportController extends Controller
             'total_subscriptions' => $totalSubscriptions,
         ];
 
-        // 📅 الإيرادات اليومية
         $dailyRevenue = Payment::selectRaw('DATE(created_at) as date, SUM(amount) as total')
             ->where('status', 'paid')
             ->whereBetween('created_at', [$from, $to])
@@ -77,20 +69,17 @@ class ReportController extends Controller
             ->orderBy('date')
             ->get();
 
-        // 📈 الاشتراكات حسب الخطة
         $subscriptionsByPlan = Subscription::selectRaw('plan_id, COUNT(*) as total')
             ->whereBetween('created_at', [$from, $to])
             ->groupBy('plan_id')
             ->with('plan:id,name')
             ->get();
 
-        // 🎓 أكثر الكورسات ظهورًا في الخطط
         $topCourses = Course::withCount('plans')
             ->orderByDesc('plans_count')
             ->take(5)
             ->get();
 
-        // ✅ تمرير جميع البيانات إلى الواجهة (بما فيها planId و courseId)
         return view('reports.index', compact(
             'stats',
             'payments',
@@ -104,7 +93,6 @@ class ReportController extends Controller
         ));
     }
 
-    // 🎓 تقرير الكورسات
     public function courses()
     {
         $courses = Course::withCount('plans')
@@ -116,7 +104,6 @@ class ReportController extends Controller
         return view('reports.courses', compact('courses'));
     }
 
-    // 👨‍🏫 تقرير المدربين
     public function instructors()
     {
         $instructors = Instructor::with([
@@ -130,7 +117,6 @@ class ReportController extends Controller
         return view('reports.instructors', compact('instructors'));
     }
 
-    // 💳 تقرير الاشتراكات
     public function subscriptions()
     {
         $subscriptions = Subscription::with(['plan', 'user'])->paginate(10);
@@ -144,7 +130,6 @@ class ReportController extends Controller
         return view('reports.subscriptions', compact('subscriptions', 'summary'));
     }
 
-    // 🧾 تقرير الخطط
     public function plans()
     {
         $plans = Plan::withCount(['subscriptions', 'payments'])->paginate(10);
@@ -152,13 +137,11 @@ class ReportController extends Controller
         return view('reports.plans', compact('plans'));
     }
 
-    // 🧾 تصدير التقرير العام Excel
     public function exportGeneralExcel()
     {
         return Excel::download(new GeneralReportExport, 'general_report.xlsx');
     }
 
-    // 🧾 تصدير التقرير العام PDF
 
     /**
      * @throws MpdfException
@@ -191,7 +174,6 @@ class ReportController extends Controller
         $mpdf->WriteHTML($html);
         return $mpdf->Output('general_report.pdf', 'D');
     }
-    // 🎓 الكورسات Excel
     public function exportCoursesExcel()
     {
         return Excel::download(new CoursesReportExport, 'courses_report.xlsx');
@@ -210,7 +192,6 @@ class ReportController extends Controller
         return $pdf->download('courses_report.pdf');
     }
 
-    // 👨‍🏫 المدربين Excel
     public function exportInstructorsExcel()
     {
         $instructors = \App\Models\Instructor::with([
@@ -229,7 +210,6 @@ class ReportController extends Controller
     }
 
 
-    // 👨‍🏫 المدربين PDF
     public function exportInstructorsPdf()
     {
         $instructors = \App\Models\Instructor::with([
@@ -246,13 +226,11 @@ class ReportController extends Controller
         return $pdf->download('instructors_report.pdf');
     }
 
-    // 💳 الاشتراكات Excel
     public function exportSubscriptionsExcel()
     {
         return Excel::download(new SubscriptionsReportExport, 'subscriptions_report.xlsx');
     }
 
-    // 💳 الاشتراكات PDF
     public function exportSubscriptionsPdf()
     {
         $subscriptions = Subscription::with(['plan', 'user'])->get();
@@ -263,7 +241,6 @@ class ReportController extends Controller
         return $pdf->download('subscriptions_report.pdf');
     }
 
-    // 🧾 الخطط Excel
     public function exportPlansExcel()
     {
         return Excel::download(new PlansReportExport, 'plans_report.xlsx');
