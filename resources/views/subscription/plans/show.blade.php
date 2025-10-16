@@ -1,113 +1,152 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
-                <!-- Breadcrumb -->
-                <div class="px-6 py-4">
-                    <x-breadcrumb :items="[
-                        ['url' => route('dashboard'), 'label' => __('Dashboard')],
-                        ['url' => route('plans.index'), 'label' => __('Plans')],
-                        ['label' => __('common.show') . ' : ' . $plan->name],
-                    ]" />
+    <div class="py-8 mt-5 max-h-[calc(100vh-20rem)]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- ✅ Flash Messages -->
+            @if (session('success'))
+                <div class="mb-4" x-data="{ show: true }" x-show="show" x-transition
+                     x-init="setTimeout(() => show = false, 3000)">
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-md" role="alert">
+                        <strong class="font-bold">{{ __('common.success') }}!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
                 </div>
-            </div>
-        </div>
+            @endif
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-scroll max-h-[calc(100vh-12rem)] shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+            @if ($errors->any())
+                <div class="mb-4" x-data="{ show: true }" x-show="show" x-transition
+                     x-init="setTimeout(() => show = false, 4000)">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative shadow-md" role="alert">
+                        <strong class="font-bold">{{ __('common.error') }}:</strong>
+                        <span class="block sm:inline">{{ $errors->first() }}</span>
+                    </div>
+                </div>
+            @endif
+            <!-- ✅ End Flash Messages -->
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Header Card -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-8 sm:p-10 text-center">
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        {{ $plan->name }}
+                    </h1>
+                    <p class="mt-2 text-gray-600">
+                        {{ $plan->description ?? __('common.not_available') }}
+                    </p>
 
-                        <!-- Plan Info Section -->
-                        <div class="space-y-6">
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-medium text-gray-900">{{ __('general_info') }}</h3>
-                                <dl class="mt-2 space-y-2">
-                                    <div class="py-2">
-                                        <dt class="text-sm font-medium text-gray-500">{{ __('name') }}</dt>
-                                        <dd class="mt-1 text-sm text-gray-900">
-                                            {{ $plan->name }}
-                                        </dd>
-                                    </div>
-                                    <div class="py-2">
-                                        <dt class="text-sm font-medium text-gray-500">{{ __('description') }}</dt>
-                                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-line">
-                                            {{ $plan->description ?? __('not_available') }}
-                                        </dd>
-                                    </div>
-                                </dl>
-                            </div>
-
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-medium text-gray-900">{{ __('pricing') }}</h3>
-                                <dl class="mt-2 space-y-2">
-                                    <div class="py-2">
-                                        <dt class="text-sm font-medium text-gray-500">{{ __('price_monthly') }}</dt>
-                                        <dd class="mt-1 text-sm text-gray-900">
-                                            ${{ number_format($plan->price_monthly, 2) }}
-                                        </dd>
-                                    </div>
-                                    <div class="py-2">
-                                        <dt class="text-sm font-medium text-gray-500">{{ __('price_yearly') }}</dt>
-                                        <dd class="mt-1 text-sm text-gray-900">
-                                            ${{ number_format($plan->price_yearly, 2) }}
-                                        </dd>
-                                    </div>
-                                    @if($plan->yearly_discount_percent)
-                                        <div class="py-2">
-                                            <dt class="text-sm font-medium text-gray-500">{{ __('plans.yearly_discount_percent') }}</dt>
-                                            <dd class="mt-1 text-sm text-gray-900">
-                                                {{ $plan->yearly_discount_percent }}%
-                                            </dd>
-                                        </div>
-                                    @endif
-                                </dl>
-                            </div>
-
-
+                    <!-- Pricing Summary -->
+                    <div class="mt-6 flex justify-center gap-4">
+                        <div class="bg-gray-100 px-4 py-2 rounded-lg text-center">
+                            <p class="text-sm text-gray-500">{{ __('plans.price_monthly') }}</p>
+                            <p class="text-lg font-semibold text-gray-900">
+                                ${{ number_format($plan->price_monthly, 2) }}
+                            </p>
                         </div>
 
-                        <!-- Features Section -->
-                        <div class="space-y-6">
-                            <div class="border-b border-gray-200 pb-4">
-                                <h3 class="text-lg font-medium text-gray-900">{{ __('features') }}</h3>
+                        <div class="bg-gray-100 px-4 py-2 rounded-lg text-center">
+                            <p class="text-sm text-gray-500">{{ __('plans.price_yearly') }}</p>
+                            <p class="text-lg font-semibold text-gray-900">
+                                ${{ number_format($plan->price_yearly, 2) }}
+                            </p>
+                        </div>
 
-                                @if(!empty($plan->features) && is_array($plan->features))
-                                    <ul class="mt-3 space-y-2 list-disc list-inside text-sm text-gray-800">
-                                        @foreach($plan->features as $feature)
-                                            <li>{{ $feature }}</li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <p class="text-sm text-gray-500 mt-2">{{ __('common.not_available') }}</p>
-                                @endif
+                        @if($plan->yearly_discount_percent)
+                            <div class="bg-green-100 px-4 py-2 rounded-lg text-center">
+                                <p class="text-sm text-gray-500">{{ __('plans.yearly_discount_percent') }}</p>
+                                <p class="text-lg font-semibold text-green-700">
+                                    {{ $plan->yearly_discount_percent }}%
+                                </p>
                             </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
-                            <!-- Timestamps -->
-                            <div class="pt-4 border-t border-gray-200">
-                                <div class="text-sm text-gray-500">
-                                    <p>{{ __('Created at') }}: {{ $plan->created_at->format('Y-m-d H:i') }}</p>
-                                    <p class="mt-1">{{ __('Last updated') }}: {{ $plan->updated_at->format('Y-m-d H:i') }}</p>
-                                </div>
-                            </div>
+            <!-- Main Content -->
+            <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-8">
+
+                    <!-- Features Section -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('plans.features') }}</h3>
+                        </div>
+                        <div class="px-6 py-4">
+                            @if(!empty($plan->features) && is_array($plan->features))
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    @foreach($plan->features as $feature)
+                                        <li>{{ $feature }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-sm text-gray-500">{{ __('common.not_available') }}</p>
+                            @endif
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="mt-8 flex items-center justify-end space-x-4">
-                        <a href="{{ route('plans.index') }}"
-                           class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-800 uppercase tracking-widest hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
-                            {{ __('Back to List') }}
-                        </a>
-                        <a href="{{ route('plans.edit', $plan->id) }}"
-                           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                            {{ __('Edit') }}
-                        </a>
+                    <!-- Description -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('plans.description') }}</h3>
+                        </div>
+                        <div class="px-6 py-4 text-gray-700">
+                            {!! nl2br(e($plan->description ?? __('common.not_available'))) !!}
+                        </div>
                     </div>
 
+                    <!-- 🔹 Courses Section -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('plans.courses_associated_with_plan') }}</h3>
+                        </div>
+                        <div class="px-6 py-4">
+                            @if($plan->courses && $plan->courses->count() > 0)
+                                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                    @foreach($plan->courses as $course)
+                                        <li>
+                                            {{ is_array($course->name) ? ($course->name['ar'] ?? $course->name['en']) : $course->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-sm text-gray-500">{{ __('plans.no_courses_associated') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-8">
+                    <!-- Statistics -->
+                    @php
+                        $monthlySubs = $plan->subscriptions()->where('billing_cycle', 'monthly')->count();
+                        $yearlySubs = $plan->subscriptions()->where('billing_cycle', 'yearly')->count();
+                        $totalRevenue = ($monthlySubs * $plan->price_monthly) + ($yearlySubs * $plan->price_yearly);
+                    @endphp
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('plans.statistics') }}</h3>
+                        </div>
+                        <div class="px-6 py-4 grid grid-cols-2 gap-4 text-center">
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <dt class="text-sm text-gray-500">{{ __('plans.subscriptions_count') }}</dt>
+                                <dd class="text-xl font-semibold text-gray-900">
+                                    {{ $plan->subscriptions()->count() ?? 0 }}
+                                </dd>
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <dt class="text-sm text-gray-500">{{ __('plans.total_revenue') }}</dt>
+                                <dd class="text-xl font-semibold text-gray-900">
+                                    ${{ number_format($totalRevenue, 2) }}
+                                </dd>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </x-app-layout>

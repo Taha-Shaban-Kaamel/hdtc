@@ -142,18 +142,14 @@ class PaymentController extends Controller
                 $payment->billing_cycle ?? 'monthly'
             );
 
-            if (is_array($result) && isset($result['already_subscribed']) && $result['already_subscribed']) {
-                return response()->json([
-                    'status' => 'info',
-                    'message' => 'User is already subscribed to this plan.',
-                    'subscription_id' => $result['subscription']->id,
-                    'order_id' => $payment->provider_order_id,
-                    'amount' => $payment->amount,
-                    'transaction_id' => $payment->transaction_id,
-                ], 200);
-            }
-
             $subscription = is_array($result) ? $result['subscription'] : $result;
+
+            if ($subscription) {
+                $subscription->update([
+                    'payment_status' => 'paid',
+                    'status' => 'active',
+                ]);
+            }
 
             return response()->json([
                 'status' => 'success',
@@ -161,7 +157,7 @@ class PaymentController extends Controller
                 'order_id' => $payment->provider_order_id,
                 'amount' => $payment->amount,
                 'transaction_id' => $payment->transaction_id,
-                'subscription_id' => $subscription->id,
+                'subscription_id' => $subscription->id ?? null,
             ], 200);
         }
 
@@ -177,7 +173,6 @@ class PaymentController extends Controller
             'amount' => $payment->amount,
         ], 200);
     }
-
     private function isValidHmac(array $data): bool
     {
         if (!isset($data['hmac'])) {

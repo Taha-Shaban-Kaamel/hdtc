@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Http\Controllers\Controller;
 use App\Services\PlanService;
 use Illuminate\Http\JsonResponse;
@@ -22,8 +21,8 @@ class PlansController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Plans retrieved successfully',
-            'data' => $plans
+            'message' => __('plans.retrieved_successfully'),
+            'data' => $plans,
         ], 200);
     }
 
@@ -34,14 +33,14 @@ class PlansController extends Controller
         if (!$plan) {
             return response()->json([
                 'status' => false,
-                'message' => 'Plan not found',
+                'message' => __('plans.not_found'),
             ], 404);
         }
 
         return response()->json([
             'status' => true,
-            'message' => 'Plan details',
-            'data' => $plan
+            'message' => __('plans.details'),
+            'data' => $plan,
         ], 200);
     }
 }
