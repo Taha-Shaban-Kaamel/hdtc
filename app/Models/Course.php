@@ -63,5 +63,22 @@ class Course extends Model
     {
         return $this->belongsToMany(Tag::class, 'course_tag', 'course_id', 'tag_id');
     }
+    public function plans()
+    {
+        return $this->belongsToMany(Plan::class, 'course_plan', 'course_id', 'plan_id');
+    }
+    public function lectures()
+    {
+        return $this->hasManyThrough(
+            \App\Models\Lecture::class,
+            \App\Models\Chapter::class,
+            'course_id',   // Foreign key on chapters table
+            'chapter_id',  // Foreign key on lectures table
+            'id',          // Local key on courses table
+            'id'           // Local key on chapters table
+        );
+    }
+
+
 
 }
