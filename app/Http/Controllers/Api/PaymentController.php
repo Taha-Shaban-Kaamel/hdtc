@@ -130,7 +130,6 @@ class PaymentController extends Controller
         }
 
         if ($data['success'] === 'true' || $data['success'] === true) {
-            // 1️⃣ تحديث حالة الدفع
             $payment->update([
                 'status' => 'paid',
                 'transaction_id' => $data['id'],
