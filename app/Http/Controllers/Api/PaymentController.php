@@ -108,7 +108,6 @@ class PaymentController extends Controller
         Log::info('Paymob Callback Received', $request->all());
         $data = $request->all();
 
-        // 🔐 التحقق من توقيع HMAC القادم من Paymob
         if (!$this->isValidHmac($data)) {
             Log::warning('Invalid HMAC from Paymob');
             return response()->json([
@@ -130,7 +129,6 @@ class PaymentController extends Controller
             ], 404);
         }
 
-        // ✅ لو الدفع ناجح
         if ($data['success'] === 'true' || $data['success'] === true) {
             // 1️⃣ تحديث حالة الدفع
             $payment->update([
@@ -139,7 +137,6 @@ class PaymentController extends Controller
                 'provider_response' => json_encode($data),
             ]);
 
-            // 2️⃣ إنشاء أو تحديث الاشتراك
             $result = app(\App\Services\SubscriptionService::class)->subscribe(
                 $payment->user_id,
                 $payment->plan_id,
@@ -148,7 +145,6 @@ class PaymentController extends Controller
 
             $subscription = is_array($result) ? $result['subscription'] : $result;
 
-            // 3️⃣ تحديث حالة الاشتراك بعد الدفع الناجح
             if ($subscription) {
                 $subscription->update([
                     'payment_status' => 'paid',
@@ -156,7 +152,6 @@ class PaymentController extends Controller
                 ]);
             }
 
-            // 4️⃣ ردّ النجاح
             return response()->json([
                 'status' => 'success',
                 'message' => 'Payment successful and subscription activated.',
