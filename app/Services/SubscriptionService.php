@@ -38,8 +38,10 @@ class SubscriptionService
             'end_date' => $endDate,
             'billing_cycle' => $billingCycle,
             'status' => 'active',
+            'payment_status' => 'paid',
             'auto_renew' => true,
         ]);
+
 
         $this->repo->createUsage($subscription->id);
 

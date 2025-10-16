@@ -14,10 +14,13 @@ class PlanService
         $this->repo = $repo;
     }
 
-    public function getAllPlans()
+    public function getAllPlans($perPage = 10)
     {
-        return $this->repo->all();
+        return \App\Models\Plan::with(['courses:id,name,price,duration'])
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
     }
+
 
     public function getPlanById($id)
     {

@@ -115,6 +115,25 @@ class User extends Authenticatable
     {
         return $this->hasOne(Admin::class);
     }
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'user_id');
+    }
+    public function getFullNameAttribute()
+    {
+        $locale = app()->getLocale(); // اللغة الحالية (ar أو en)
+
+        $first = is_array($this->first_name)
+            ? ($this->first_name[$locale] ?? reset($this->first_name))
+            : $this->first_name;
+
+        $second = is_array($this->second_name)
+            ? ($this->second_name[$locale] ?? reset($this->second_name))
+            : $this->second_name;
+
+        return trim("{$first} {$second}") ?: '---';
+    }
+
 
     public function teaches($courseId)
     {

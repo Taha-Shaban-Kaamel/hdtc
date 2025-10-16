@@ -7,4 +7,7 @@ return [
     'plans' => 'الخطط',
     'notifications' => 'الاشعارات',
     'roles' => 'الصلاحيات',
+    'subscriptions' => 'الاشتراكات',
+    'payments' => 'المدفوعات',
+
 ];
