@@ -11,7 +11,6 @@ class ReportsExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
-        // هتصدّر المدفوعات المدفوعة فقط
         return Payment::with(['user', 'plan'])
             ->where('status', 'paid')
             ->orderByDesc('created_at')
