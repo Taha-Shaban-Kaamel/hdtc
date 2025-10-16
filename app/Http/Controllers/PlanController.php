@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Plan;
 use App\Services\PlanService;
 use Illuminate\Http\Request;
@@ -15,18 +16,21 @@ class PlanController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('view', Plan::class);
-        $plans = $this->service->getAllPlans();
+        $perPage = $request->get('per_page', 10);
+        $plans = $this->service->getAllPlans($perPage);
         return view('subscription.plans.index', compact('plans'));
     }
 
     public function create()
     {
         $this->authorize('create', Plan::class);
-        return view('subscription.plans.create');
+        $courses =Course::all(['id', 'name']);
+        return view('subscription.plans.create', compact('courses'));
     }
+
 
     public function store(Request $request)
     {
@@ -40,13 +44,22 @@ class PlanController extends Controller
             'max_users' => 'nullable|integer|min:0',
             'max_courses' => 'nullable|integer|min:0',
             'features' => 'nullable',
+            'courses' => 'nullable|array',
+            'courses.*' => 'exists:courses,id',
+
         ]);
 
         if ($request->filled('features')) {
             $validated['features'] = preg_split('/\r\n|\r|\n/', $request->features);
         }
 
-        $this->service->createPlan($validated);
+        $plan = $this->service->createPlan($validated);
+
+        if ($request->filled('courses')) {
+            $plan->courses()->sync($request->courses);
+        }
+
+        return redirect()->route('plans.index')->with('success', 'Plan created successfully.');
 
 
         return redirect()->route('plans.index')->with('success', 'Plan created successfully.');
@@ -56,9 +69,12 @@ class PlanController extends Controller
     {
         $this->authorize('update', Plan::class);
         $plan = $this->service->getPlanById($id);
+        $courses = Course::all(['id', 'name']);
+        $selectedCourses = $plan->courses->pluck('id')->toArray();
 
-        return view('subscription.plans.edit', compact('plan'));
+        return view('subscription.plans.edit', compact('plan', 'courses', 'selectedCourses'));
     }
+
 
     public function update(Request $request, $id)
     {
@@ -75,16 +91,29 @@ class PlanController extends Controller
         }
 
         $this->service->updatePlan($id, $validated);
+        $plan = Plan::findOrFail($id);
+        if ($request->filled('courses')) {
+            $plan->courses()->sync($request->courses);
+        } else {
+            $plan->courses()->detach();
+        }
+
 
         return redirect()->route('plans.index')->with('success', 'Plan updated successfully.');
     }
 
     public function destroy($id)
     {
-        $this->authorize('delete', Plan::class);
-        $this->service->deletePlan($id);
-        return redirect()->route('plans.index')->with('success', 'Plan deleted successfully.');
+        $plan = Plan::withCount('payments')->findOrFail($id);
+
+        if ($plan->payments_count > 0) {
+            return redirect()->back()->withErrors('لا يمكن حذف هذه الخطة لأنها مرتبطة بعمليات دفع.');
+        }
+
+        $plan->delete();
+        return redirect()->route('plans.index')->with('success', 'تم حذف الخطة بنجاح');
     }
+
 
     public function show($id)
     {

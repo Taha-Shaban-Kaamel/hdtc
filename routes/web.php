@@ -8,6 +8,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LectureController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RoleController;
@@ -58,7 +59,42 @@ Route::middleware(['auth', 'verified', 'role:super admin|admin'])->group(functio
         Route::delete('plans/{id}', [PlanController::class, 'destroy'])->name('plans.destroy');
 
     });
+    Route::get('/subscriptions', [\App\Http\Controllers\SubscriptionsController::class, 'index'])
+        ->name('subscription.index');
+    Route::get('/payments', [\App\Http\Controllers\PaymentController::class, 'index'])
+        ->name('payments.index');
+//    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
 
+
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+
+        // Courses
+        Route::get('/courses', [ReportController::class, 'courses'])->name('courses');
+        Route::get('/courses/export-excel', [ReportController::class, 'exportCoursesExcel'])->name('courses.export.excel');
+        Route::get('/courses/export-pdf', [ReportController::class, 'exportCoursesPdf'])->name('courses.export.pdf');
+
+        // Instructors
+        Route::get('/instructors', [ReportController::class, 'instructors'])->name('instructors');
+        Route::get('/instructors/export-excel', [ReportController::class, 'exportInstructorsExcel'])->name('instructors.export.excel');
+        Route::get('/instructors/export-pdf', [ReportController::class, 'exportInstructorsPdf'])->name('instructors.export.pdf');
+
+        // Subscriptions
+        Route::get('/subscriptions', [ReportController::class, 'subscriptions'])->name('subscriptions');
+        Route::get('/subscriptions/export-excel', [ReportController::class, 'exportSubscriptionsExcel'])->name('export.subscriptions.excel');
+        Route::get('/subscriptions/export-pdf', [ReportController::class, 'exportSubscriptionsPdf'])->name('export.subscriptions.pdf');
+
+
+        // Plans
+        Route::get('/plans', [ReportController::class, 'plans'])->name('plans');
+        Route::get('/plans/export-excel', [ReportController::class, 'exportPlansExcel'])->name('plans.export.excel');
+        Route::get('/plans/export-pdf', [ReportController::class, 'exportPlansPdf'])->name('plans.export.pdf');
+
+        // General
+        Route::get('/general/export-excel', [ReportController::class, 'exportGeneralExcel'])->name('export.excel');
+        Route::get('/general/export-pdf', [ReportController::class, 'exportGeneralPdf'])->name('export.pdf');
+    });
     Route::prefix('course/{course}/chapter/{chapter}')->group(function () {
         Route::resource('lectures', LectureController::class)->names('lectures');
     });

@@ -108,6 +108,7 @@ class PaymentController extends Controller
         Log::info('Paymob Callback Received', $request->all());
         $data = $request->all();
 
+        // 🔐 التحقق من توقيع HMAC القادم من Paymob
         if (!$this->isValidHmac($data)) {
             Log::warning('Invalid HMAC from Paymob');
             return response()->json([
@@ -129,39 +130,40 @@ class PaymentController extends Controller
             ], 404);
         }
 
+        // ✅ لو الدفع ناجح
         if ($data['success'] === 'true' || $data['success'] === true) {
+            // 1️⃣ تحديث حالة الدفع
             $payment->update([
                 'status' => 'paid',
                 'transaction_id' => $data['id'],
                 'provider_response' => json_encode($data),
             ]);
 
+            // 2️⃣ إنشاء أو تحديث الاشتراك
             $result = app(\App\Services\SubscriptionService::class)->subscribe(
                 $payment->user_id,
                 $payment->plan_id,
                 $payment->billing_cycle ?? 'monthly'
             );
 
-            if (is_array($result) && isset($result['already_subscribed']) && $result['already_subscribed']) {
-                return response()->json([
-                    'status' => 'info',
-                    'message' => 'User is already subscribed to this plan.',
-                    'subscription_id' => $result['subscription']->id,
-                    'order_id' => $payment->provider_order_id,
-                    'amount' => $payment->amount,
-                    'transaction_id' => $payment->transaction_id,
-                ], 200);
-            }
-
             $subscription = is_array($result) ? $result['subscription'] : $result;
 
+            // 3️⃣ تحديث حالة الاشتراك بعد الدفع الناجح
+            if ($subscription) {
+                $subscription->update([
+                    'payment_status' => 'paid',
+                    'status' => 'active',
+                ]);
+            }
+
+            // 4️⃣ ردّ النجاح
             return response()->json([
                 'status' => 'success',
                 'message' => 'Payment successful and subscription activated.',
                 'order_id' => $payment->provider_order_id,
                 'amount' => $payment->amount,
                 'transaction_id' => $payment->transaction_id,
-                'subscription_id' => $subscription->id,
+                'subscription_id' => $subscription->id ?? null,
             ], 200);
         }
 
@@ -177,7 +179,6 @@ class PaymentController extends Controller
             'amount' => $payment->amount,
         ], 200);
     }
-
     private function isValidHmac(array $data): bool
     {
         if (!isset($data['hmac'])) {
