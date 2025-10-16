@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-
-            $table->decimal('price_monthly', 10, 2);
-            $table->decimal('price_yearly', 10, 2);
+            $table->string('description')->nullable();
+            $table->decimal('price_monthly', 10, 2)->default(0);
+            $table->decimal('price_yearly', 10, 2)->default(0);
             $table->unsignedTinyInteger('yearly_discount_percent')->default(0);
             $table->integer('max_users')->nullable();
             $table->integer('max_courses')->nullable();

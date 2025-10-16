@@ -40,6 +40,18 @@ return [
     'confirm_info' => 'أؤكد أن جميع المعلومات صحيحة',
 
     // رسائل إضافية
+    'yearly_discount_percent' => 'نسبة الخصم السنوي',
+
     'error_occurred' => 'حدث خطأ، يرجى المحاولة لاحقًا.',
     'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذه الخطة؟',
+    'courses' => 'الكورسات المرتبطة',
+    'select_multiple_courses' => 'يمكنك اختيار أكثر من كورس لهذه الخطة.',
+    'statistics' => 'الإحصائيات',
+    'subscriptions_count' => 'عدد الاشتراكات',
+    'total_revenue' => 'إجمالي الإيرادات',
+    'courses_associated_with_plan' => 'الكورسات المرتبطة بالخطة',
+    'no_courses_associated' => 'لا توجد كورسات مرتبطة بهذه الخطة حالياً.',
+    'retrieved_successfully' => 'تم جلب الخطط بنجاح',
+    'not_found' => 'الخطة غير موجودة',
+    'details' => 'تفاصيل الخطة',
 ];

@@ -320,4 +320,6 @@ class CourseController extends Controller
                 ->withErrors(['error' => 'Failed to delete course. Please try again. ' . $e->getMessage()]);
         }
     }
+
+
 }

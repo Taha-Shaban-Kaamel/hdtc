@@ -68,6 +68,22 @@
                             <p class="text-xs text-gray-500 mt-1">{{ __('plans.features_hint') }}</p>
                             <x-input-error for="features" class="mt-2" />
                         </div>
+                        <!-- Courses -->
+                        <div class="lg:col-span-6 sm:col-span-6">
+                            <x-label for="courses" :value="__('plans.courses')" />
+                            <select name="courses[]" id="courses" multiple
+                                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}"
+                                            @if(in_array($course->id, $selectedCourses ?? [])) selected @endif>
+                                        {{ is_array($course->name) ? ($course->name['ar'] ?? $course->name['en']) : $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">{{ __('plans.select_multiple_courses') }}</p>
+                            <x-input-error for="courses" class="mt-2" />
+                        </div>
+
 
                     </x-slot>
 

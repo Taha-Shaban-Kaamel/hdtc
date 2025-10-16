@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\CategorieResrource;
 use App\Http\Resources\InstructorResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 class CourseResource extends JsonResource
 {
@@ -16,6 +16,8 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $isEnrolled = auth('sanctum')->check() &&
+            auth('sanctum')->user()->isEnrolledIn($this->resource->id);
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -38,6 +40,19 @@ class CourseResource extends JsonResource
             'tags' => $this->whenLoaded('tags', function ($tags) use ($request) {
                 return $tags->pluck('name');
             }),
+            'chapters' => $this->whenLoaded('chapters', function () use ($request) {
+                return ChapterResource::collection($this->chapters)->toArray($request);
+            }),
+            'preview' => $this->when($this->getPreviewContent()->isNotEmpty(), function () {
+                return  LectureResource::collection($this->getPreviewContent());
+            }),
+            'user_status' => [
+                'is_enrolled' => $isEnrolled,
+                'can_enroll' => !$isEnrolled && $this->status === 'active',
+            ],
+
+            'enrollments_count' => $this->enrollments()->count(),
+
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
         ];
