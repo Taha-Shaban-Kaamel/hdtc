@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Category;
-use App\Models\Instructor;
 use App\Models\Chapter;
+use App\Models\CourseCategorie;
+use App\Models\Instructor;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -21,7 +23,6 @@ class Course extends Model
         'price',
         'duration',
         'difficulty_degree',
-        'objectives',
         'thumbnail',
         'cover',
         'video',
@@ -36,9 +37,33 @@ class Course extends Model
         'name' => 'array',
         'description' => 'array',
         'objectives' => 'array',
+        'difficulty_degree' => 'array',
     ];
 
-    public $translatable = ['title', 'name', 'description', 'objectives' , 'difficulty_degree'];
+    protected $translatable = [
+        'title', 'description', 'objectives', 'name', 'difficulty_degree'
+    ];
+
+    /**
+     * Get the enrollments for the course.
+     */
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Get the users enrolled in the course.
+     */
+    public function enrolledUsers(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(User::class, 'enrollments')
+            ->using(Enrollment::class)
+            ->withPivot('status', 'progress', 'grade', 'completion_date')
+            ->withTimestamps();
+    }
+
     public function categories()
     {
         return $this->belongsToMany(
@@ -49,6 +74,16 @@ class Course extends Model
         );
     }
 
+    public function getPreviewContent()
+    {
+        $previewCount = 1; 
+
+        return $this
+            ->lectures()
+            ->orderBy('order')
+            ->limit($previewCount)
+            ->get();
+    }
     public function instructors()
     {
         return $this->belongsToMany(Instructor::class, 'course_instructor');
@@ -57,6 +92,11 @@ class Course extends Model
     public function chapters()
     {
         return $this->hasMany(Chapter::class);
+    }
+
+    public function lectures()
+    {
+        return $this->hasMany(Lecture::class);
     }
 
     public function tags()
@@ -72,10 +112,10 @@ class Course extends Model
         return $this->hasManyThrough(
             \App\Models\Lecture::class,
             \App\Models\Chapter::class,
-            'course_id',   // Foreign key on chapters table
-            'chapter_id',  // Foreign key on lectures table
-            'id',          // Local key on courses table
-            'id'           // Local key on chapters table
+            'course_id',   
+            'chapter_id', 
+            'id',         
+            'id'          
         );
     }
 
