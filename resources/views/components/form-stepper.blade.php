@@ -109,13 +109,13 @@
                 <div class="col-span-3">
                     <x-label for="title_ar" value="{{ __('courses.course_title_ar') }}" />
                     <x-input id="title_ar" name="title_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.title_ar" required autofocus />
+                        x-model="formData.title_ar"  autofocus />
                     <x-input-error for="title_ar" :messages="$errors->get('title_ar')" class="mt-2" />
                 </div>
                 <div class="col-span-3">
                     <x-label for="title_en" value="{{ __('courses.course_title_en') }}" />
                     <x-input id="title_en" name="title_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.title_en" required autofocus />
+                        x-model="formData.title_en"  autofocus />
                     <x-input-error for="title_en" :messages="$errors->get('title_en')" class="mt-2" />
                 </div>
 
@@ -123,7 +123,7 @@
                 <div class="col-span-3">
                     <x-label for="name_ar" value="{{ __('courses.course_name_ar') }}" />
                     <x-input id="name_ar" name="name_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.name_ar" required autofocus />
+                        x-model="formData.name_ar"  autofocus />
                     <x-input-error for="name_ar" :messages="$errors->get('name_ar')" class="mt-2" />
                 </div>
 
@@ -131,7 +131,7 @@
                 <div class="col-span-3">
                     <x-label for="name_en" value="{{ __('courses.course_name_en') }}" />
                     <x-input id="name_en" name="name_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.name_en" required autofocus />
+                        x-model="formData.name_en"  autofocus />
                     <x-input-error for="name_en" :messages="$errors->get('name_en')" class="mt-2" />
                 </div>
 
@@ -159,14 +159,14 @@
                     <x-label for="description_ar" value="{{ __('courses.short_description_ar') }}" />
                     <textarea id="description_ar" name="description_ar" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        x-model="formData.description_ar" required></textarea>
+                        x-model="formData.description_ar" ></textarea>
                     <x-input-error for="description_ar" :messages="$errors->get('description_ar')" class="mt-2" />
                 </div>
                 <div class="col-span-3">
                     <x-label for="description_en" value="{{ __('courses.short_description_en') }}" />
                     <textarea id="description_en" name="description_en" rows="3"
                         class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        x-model="formData.description_en" required></textarea>
+                        x-model="formData.description_en" ></textarea>
                     <x-input-error for="description_en" :messages="$errors->get('description_en')" class="mt-2" />
                 </div>
             </div>
@@ -212,7 +212,7 @@
                             <span class="text-gray-500 sm:text-sm">$</span>
                         </div>
                         <x-input type="number" name="price" id="price" class="pl-7" min="0"
-                            step="0.01" x-model="formData.price" required />
+                            step="0.01" x-model="formData.price"  />
                     </div>
                     @if ($errors->has('price'))
                         <x-input-error for="price" :messages="$errors->get('price')" class="mt-2" />
@@ -222,7 +222,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="duration" value="{{ __('courses.duration_hours') }}" />
                     <x-input id="duration" name="duration" type="number" min="1" class="mt-1 block w-full"
-                        x-model="formData.duration" required />
+                        x-model="formData.duration"  />
                     <x-input-error for="duration" :messages="$errors->get('duration')" class="mt-2" />
                 </div>
 
@@ -422,7 +422,7 @@
 
                 <div class="mt-6 pt-4 border-t border-gray-200">
                     <label class="flex items-start">
-                        <input type="checkbox" name="terms" required
+                        <input type="checkbox" name="terms" 
                             class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
                         <span class="ml-2 text-sm text-gray-600">
                             I confirm that all information is correct and I have the rights to use the uploaded content.
