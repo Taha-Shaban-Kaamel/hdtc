@@ -14,9 +14,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class GeneralReportExport implements FromCollection, WithHeadings
 {
-    /**
-     * البيانات اللي هتتصدّر إلى ملف Excel
-     */
+   
     public function collection()
     {
         $stats = [
@@ -57,9 +55,7 @@ class GeneralReportExport implements FromCollection, WithHeadings
         return new Collection($stats);
     }
 
-    /**
-     * عناوين الأعمدة في ملف Excel
-     */
+ 
     public function headings(): array
     {
         return ['Metric', 'Value'];
