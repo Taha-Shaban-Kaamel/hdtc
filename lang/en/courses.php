@@ -24,6 +24,8 @@ return [
     'create' => 'Create',
     'no_courses_found' => 'No courses found',
     'get_started_by_creating_a_new_course' => 'Get started by creating a new course',
+    'instructors' => 'Instructors' ,
+    'categories' => 'Categories' ,
     
     // Form Stepper
     'review_course' => 'Review Your Course',

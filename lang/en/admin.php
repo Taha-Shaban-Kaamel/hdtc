@@ -18,6 +18,7 @@ return [
     'admin_created' => 'Admin created successfully',
     'admin_updated' => 'Admin updated successfully',
     'admin_deleted' => 'Admin deleted successfully',
+    'add_admin' => 'Add Admin',
     
     // Form Labels
     'name' => 'Name',

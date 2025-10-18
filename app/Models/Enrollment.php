@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
@@ -33,11 +33,14 @@ class Enrollment extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the course that owns the enrollment.
-     */
+    
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function lessonProgress()
+    {
+        return $this->hasMany(LessonProgress::class, 'enrollment_id', 'enrollment_id');
     }
 }

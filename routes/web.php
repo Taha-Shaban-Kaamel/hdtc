@@ -15,12 +15,11 @@ use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\DashboardController;
 use Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer;
 
 Route::middleware(['auth', 'verified', 'role:super admin|admin'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
         Route::get('/create', [NotificationController::class, 'create'])->name('notifications.create');
@@ -43,9 +42,9 @@ Route::middleware(['auth', 'verified', 'role:super admin|admin'])->group(functio
         Route::get('chapters', [ChaptersController::class, 'index'])->name('chapters.index');
         Route::get('chapters/create', [ChaptersController::class, 'create'])->name('chapters.create');
         Route::post('chapters', [ChaptersController::class, 'store'])->name('chapters.store');
-        Route::delete('chapters/{id}', [ChaptersController::class, 'destroy'])->name('chapters.destroy');
-        Route::get('chapters/{id}/edit', [ChaptersController::class, 'edit'])->name('chapters.edit');
-        Route::post('chapters/{id}/update', [ChaptersController::class, 'update'])->name('chapters.update');
+        Route::delete('chapters/{chapter_id}', [ChaptersController::class, 'destroy'])->name('chapters.destroy');
+        Route::get('chapters/{chapter_id}/edit', [ChaptersController::class, 'edit'])->name('chapters.edit');
+        Route::post('chapters/{chapter_id}/update', [ChaptersController::class, 'update'])->name('chapters.update');
     });
     Route::prefix('plans')->group(function () {
 

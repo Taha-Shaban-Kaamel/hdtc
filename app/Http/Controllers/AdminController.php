@@ -27,6 +27,14 @@ class AdminController extends Controller
         return view('admins.create', compact('roles'));
     }
 
+    public function show($id){
+        $this->authorize('viewAny', Admin::class);
+
+        $admin = Admin::findOrFail($id);
+
+        return view('admins.show', compact('admin'));
+    }
+
     public function store(Request $request)
     {
         $this->authorize('create', Admin::class);
@@ -50,7 +58,16 @@ class AdminController extends Controller
                 'address' => 'nullable|string|max:255',
             ]);
 
+            $avatarPath = null;
+            if($request->hasFile('avatar')){
+                $avatar = $request->file('avatar');
+                $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
+                $avatar->move(storage_path('app/public/admins'), $avatarName);
+                $avatarPath = 'storage/admins/' . $avatarName;
+            }
+
             $user = User::create([
+                'avatar' => $avatarPath,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'password' => $request->password,
@@ -69,7 +86,7 @@ class AdminController extends Controller
                 'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
                 'status' => $request->status,
-                'avatar' => $request->avatar,
+                'avatar' => $avatarPath,
                 'roles' => $request->roles,
                 'address' => $request->address,
             ]);
@@ -99,10 +116,8 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($id);
 
         $validatedData = $request->validate([
-            'email' => 'nullable|email|max:255|unique:users,email,' . $admin->user->id ,
+            'email' => 'nullable|email|max:255|unique:users,email,' . $admin->user->id,
             'phone' => 'nullable|string|max:255|unique:users,phone,' . $admin->user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'password_confirmation' => 'nullable|string|min:8',
             'first_name_ar' => 'nullable|string|max:255',
             'first_name_en' => 'nullable|string|max:255',
             'second_name_ar' => 'nullable|string|max:255',
@@ -118,8 +133,13 @@ class AdminController extends Controller
             'address' => 'nullable|string|max:255',
         ]);
 
-        
-
+        $avatarPath = null;
+        if($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(storage_path('app/public/admins'), $avatarName);
+            $avatarPath = 'storage/admins/' . $avatarName;
+        }
 
 
         $userData = [
@@ -141,7 +161,7 @@ class AdminController extends Controller
             'birth_date' => $validatedData['birth_date'],
             'gender' => $validatedData['gender'],
             'status' => $validatedData['status'],
-            'avatar' => $validatedData['avatar'] ?? $admin->user->avatar,
+            'avatar' => $avatarPath ?? $admin->user->avatar,
         ];
 
 
@@ -149,12 +169,6 @@ class AdminController extends Controller
             $userData['password'] = $validatedData['password'];
         }
 
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $avatar->move(public_path('storage/admins'), $avatarName);
-            $userData['avatar'] ='storage/admins/' . $avatarName;
-        }
 
         $user = $admin->user;
 
