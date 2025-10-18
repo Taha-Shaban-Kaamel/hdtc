@@ -69,6 +69,16 @@
                                 </svg>
                                 {{ __('common.edit') }}
                             </a>
+
+                            <a href="{{ route('chapters.index', $course) }}"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    fill="currentColor" aria-hidden="true">
+                                    <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                                </svg>
+                                {{ __('chapters.manage') }}
+                            </a>
+
                             <form action="{{ route('courses.destroy', $course) }}" method="POST"
                                 onsubmit="return confirm('{{ __('courses.confirm_delete') }}')">
                                 @csrf

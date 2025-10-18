@@ -17,10 +17,10 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-medium text-gray-900">{{ __('admins.manage_admins') }}</h3>
+                            <h3 class="text-lg font-medium text-gray-900">{{ __('admin.manage_admins') }}</h3>
                             <a href="{{ route('admins.create') }}" 
                                class="inline-flex items-center px-4 py-2 bg-[#066B87] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#055a72] focus:bg-[#055a72] active:bg-[#044d63] focus:outline-none focus:ring-2 focus:ring-[#055a72] focus:ring-offset-2 transition ease-in-out duration-150">
-                                {{ __('admins.add_admin') }}
+                                {{ __('admin.add_admin') }}
                             </a>
                         </div>
 
@@ -29,16 +29,16 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
-                                            {{ __('admins.name') }}
+                                            {{ __('common.name') }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
-                                            {{ __('admins.email') }}
+                                            {{ __('common.email') }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
-                                            {{ __('admins.phone') }}
+                                            {{ __('common.phone') }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
-                                            {{ __('admins.roles') }}
+                                            {{ __('common.roles') }}
                                         </th>
                                         <th scope="col" class="relative px-6 py-3 text-center">
                                             <span class="sr-only">{{ __('actions') }}</span>
@@ -51,7 +51,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <div class="flex items-center justify-center gap-2">
                                                     <div class="flex-shrink-0 h-10 w-10">
-                                                        <img class="h-10 w-10 rounded-full" src="{{ $admin->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name='.urlencode($admin->user->first_name).'&color=7F9CF5&background=EBF4FF' }}" alt="{{ $admin->user->first_name }}">
+                                                        <img class="h-10 w-10 rounded-full" src="{{ $admin->user->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($admin->user->first_name).'&color=7F9CF5&background=EBF4FF' }}" alt="{{ $admin->user->first_name }}">
                                                     </div>
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">

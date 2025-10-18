@@ -18,6 +18,8 @@ return [
     'admin_created' => 'تم إنشاء المشرف بنجاح',
     'admin_updated' => 'تم تحديث المشرف بنجاح',
     'admin_deleted' => 'تم حذف المشرف بنجاح',
+    'add_admin' => 'إضافة مشرف',
+    'manage_admins' => 'إدارة المشرفين' ,
     
     // Form Labels
     'name' => 'الاسم',

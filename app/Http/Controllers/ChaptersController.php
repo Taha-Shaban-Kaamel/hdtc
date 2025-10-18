@@ -55,24 +55,24 @@ class ChaptersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($course_id, $id)
+    public function edit($course_id, $chapter_id)
     {
         $this->authorize('update', Course::class);
         try {
             $course = Course::findOrFail($course_id);
-            $chapter = Chapter::findOrFail($id);
+            $chapter = Chapter::findOrFail($chapter_id);
             return view('chapters.edit', compact('course', 'chapter'));
         } catch (\Exception $e) {
             return back()->with('error', __('Chapter or course not found'));
         }
     }
     
-    public function update(ChapterRequest $request, $course_id, $id)
+    public function update(ChapterRequest $request, $course_id, $chapter_id)
     {
         $this->authorize('update', Course::class);
 
         try {
-            $chapter = Chapter::where("id", $id)->first();
+            $chapter = Chapter::where("id", $chapter_id)->first();
             $chapter->update([
                 'name' => [
                     'ar' => $request->name_ar,
@@ -90,13 +90,12 @@ class ChaptersController extends Controller
     }
 
    
-    public function destroy($id)
+    public function destroy(Course $course_id ,Chapter $chapter_id)
     {
         $this->authorize('delete', Course::class);
         try{
-            $chapter = Chapter::find($id);
-            $chapter->delete();
-            return redirect()->route('chapters.index')->with('success', __('Chapter deleted successfully'));
+            $chapter_id->delete();
+            return redirect()->route('chapters.index',$course_id)->with('success', __('Chapter deleted successfully'));
         }catch(Exception $e){
             return back()->with('error', __('Error deleting chapter: ') . $e->getMessage());
         }
