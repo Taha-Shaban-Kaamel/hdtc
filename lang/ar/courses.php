@@ -23,6 +23,8 @@ return [
     'create' => 'اضافة',
     'no_courses_found' => 'لا يوجد دورات',
     'get_started_by_creating_a_new_course' => 'اضافة دورة جديدة',
+    'instructors' => 'المدربين' ,
+    'categories' => 'الأقسام' ,
     
     // Form Stepper
     'review_course' => 'مراجعة الدورة',

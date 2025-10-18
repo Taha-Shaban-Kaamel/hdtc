@@ -81,14 +81,14 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap  text-sm font-medium t">
                                             <div class="flex justify-center space-x-2">
-                                                <a href="{{ route('chapters.edit', ['course_id' => $course->id, 'id' => $chapter->id]) }}" 
+                                                <a href="{{ route('chapters.edit', ['course_id' => $course->id, 'chapter_id' => $chapter->id]) }}" 
                                                     class="text-indigo-600 hover:text-indigo-900" 
                                                     title="{{ __('common.edit') }}">
                                                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                      </svg>
                                                  </a>
-                                                <form action="{{ route('chapters.destroy', ['course_id' => $course->id, 'id' => $chapter->id]) }}" method="POST" class="inline">                                                    @csrf
+                                                <form action="{{ route('chapters.destroy', ['course_id' => $course->id, 'chapter_id' => $chapter->id]) }}" method="POST" class="inline">                                                    @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900" 
                                                             title="{{ __('common.delete') }}" 
@@ -102,7 +102,7 @@
                                                 class="text-green-600 hover:text-green-900"
                                                 title="{{ __('chapters.manage') }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
+                                                    stroke="currentColor">p
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                                                 </svg>

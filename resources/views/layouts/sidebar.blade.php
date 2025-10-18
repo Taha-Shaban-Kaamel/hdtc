@@ -211,7 +211,7 @@
                                 'w-[255px] h-[60px] bg-[#066B87] flex items-center justify-center' :
                                 ''
                             ]">
-                            <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                            <a class="block text-white  truncate transition hover:text-gray-900 dark:hover:text-white"
                                 href="{{ route('notifications.index') }}">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-1">
