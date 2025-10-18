@@ -419,20 +419,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <label class="flex items-start">
-                        <input type="checkbox" name="terms" 
-                            class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                        <span class="ml-2 text-sm text-gray-600">
-                            I confirm that all information is correct and I have the rights to use the uploaded content.
-                            I understand that this course will be reviewed before being published.
-                        </span>
-                    </label>
-                    @if ($errors->has('terms'))
-                        <x-input-error for="terms" :messages="$errors->get('terms')" class="mt-2" />
-                    @endif
-                </div>
             </div>
         </div>
 

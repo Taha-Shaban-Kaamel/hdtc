@@ -28,7 +28,7 @@
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white max-h-[calc(100vh-12rem)] overflow-scroll shadow-sm sm:rounded-lg p-6">
-                <x-form-section method="POST" :action="route('chapters.update',['course_id'=> $course->id , 'id' => $chapter?->id])">
+                <x-form-section method="POST" :action="route('chapters.update',['course_id'=> $course->id , 'chapter_id' => $chapter?->id])">
                     @csrf
                     @method('PUT')
                     <x-slot name="title" class="text-xl font-bold text-gray-900">

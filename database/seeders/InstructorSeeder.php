@@ -53,6 +53,8 @@ class InstructorSeeder extends Seeder
                 'email_verified_at' => now(),
             ]);
 
+            $user->assignRole('instructor');
+
             Instructor::create([
                 'user_id' => $user->id,
                 'specialization' => ['en' => 'Specialization ' . $i, 'ar' => 'تخصص ' . $i],
