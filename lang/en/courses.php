@@ -26,7 +26,11 @@ return [
     'get_started_by_creating_a_new_course' => 'Get started by creating a new course',
     'instructors' => 'Instructors' ,
     'categories' => 'Categories' ,
-    
+    'show_index' => 'show in courses index',
+    'course_details' => 'Course Details',
+    'days_to_complete' => 'Days to complete',
+    'capacity' => 'Capacity',
+
     // Form Stepper
     'review_course' => 'Review Your Course',
     'basic_information' => 'Basic Information',

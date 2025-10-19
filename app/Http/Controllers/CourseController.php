@@ -48,6 +48,8 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        
         $this->authorize('create', Course::class);
         $validated = $request->validate([
             'title_ar' => 'required|string|max:255',
@@ -71,6 +73,9 @@ class CourseController extends Controller
             'progression' => 'required|in:chapter,lecture',
             'status' => 'required|in:active,inactive',
             'accessibility' => 'required|in:active,inactive',
+            'show_index' => 'nullable|in:true,false',
+            'days_to_complete' => 'nullable|numeric',
+            'capacity' => 'nullable|numeric',
         ]);
 
         try {
@@ -112,6 +117,9 @@ class CourseController extends Controller
                 'cover' => $coverPath,
                 'video' => $validated['video_url'],
                 'status' => $validated['status'] ?? 'active',
+                'show_index' => $validated['show_index'] == 'true' ? true : false,
+                'days_to_complete' => $validated['days_to_complete'] ?? null,
+                'capacity' => $validated['capacity'] ?? null,
             ]);
 
             if ($request->has('tags')) {
@@ -154,6 +162,7 @@ class CourseController extends Controller
     {
         $this->authorize('viewAny', Course::class);
         $course = Course::findOrFail($course->id)->load('categories', 'instructors');
+        dd($course->requiredBy);
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
         $instructors = InstructorResource::collection(Instructor::all())->toArray(request());
@@ -206,6 +215,9 @@ class CourseController extends Controller
             'progression' => 'nullable|in:chapter,lecture',
             'status' => 'nullable|in:active,inactive',
             'accessibility' => 'nullable|in:active,inactive',
+            'days_to_complete' => 'nullable|numeric',
+            'capacity' => 'nullable|numeric',
+            'show_index' => 'nullable|in:true,false',
         ]);
         $courseData = [];
 
@@ -261,6 +273,9 @@ class CourseController extends Controller
         $courseData['accessibility'] = $validated['accessibility'];
 
         $courseData['difficulty_degree'] = $validated['difficulty_degree'];
+        $courseData['days_to_complete'] = $validated['days_to_complete'];
+        $courseData['capacity'] = $validated['capacity'];
+        $courseData['show_index'] = $validated['show_index'] == 'true' ? true : false;
 
 
 

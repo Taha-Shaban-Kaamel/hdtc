@@ -25,8 +25,12 @@ return [
     'get_started_by_creating_a_new_course' => 'اضافة دورة جديدة',
     'instructors' => 'المدربين' ,
     'categories' => 'الأقسام' ,
+    'days_to_complete' => 'عدد الايام المسموح لاكمال الدرة',
+    'capacity' => 'السعة',
     
     // Form Stepper
+    'show_index' => 'اظهار في دليل الدورات',
+    'course_details' => 'تفاصيل الدورة',
     'review_course' => 'مراجعة الدورة',
     'basic_information' => 'المعلومات الأساسية',
     'learning_objectives' => 'الأهداف التعليمية',
@@ -35,7 +39,7 @@ return [
     'difficulty_level' => 'مستوى الصعوبة',
     'select_difficulty' => 'اختر مستوى الصعوبة',
     'beginner' => 'مبتدئ',
-    'intermediate' => 'متوسط',
+
     'advanced' => 'متقدم',
     'video_url' => 'رابط الفيديو',
     'thumbnail' => 'صورة مصغرة',
