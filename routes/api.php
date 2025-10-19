@@ -28,6 +28,8 @@ Route::group(['prefix' => 'auth/'], function () {
         Route::post('{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
     });
 
+    
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [authController::class, 'logout']);
         Route::get('profile', [authController::class, 'getUserProfile']);
