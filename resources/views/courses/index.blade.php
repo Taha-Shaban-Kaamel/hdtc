@@ -77,8 +77,8 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($courses as $course)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap flex items-center justify-center">
-                                            <div class="flex items-center gap-2">
+                                        <td class="px-6 py-4 whitespace-nowrap flex items-center  overflow-scroll w-[200px]">
+                                            <div class="flex items-center gap-2 ">
                                                 <div class="flex-shrink-0 h-10 w-10">
                                                     @if ($course['thumbnail'])
                                                         <img class="h-10 w-10 rounded-full object-cover"
@@ -111,9 +111,9 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="flex justify-center  gap-3 lg:!h-[40px] overflow-scroll">
+                                            <div class="flex justify-center flex-col  gap-3 lg:!h-[40px] overflow-scroll">
                                                 @forelse($course['instructors'] as $instructor)
-                                                    <div class="flex items-center gap-1">
+                                                    <div class="flex items-center gap-1 !w-[200px]">
                                                         <div class="flex-shrink-0 h-8 w-8">
                                                             @if (isset($instructor['avatar']))
                                                                 <img class="h-8 w-8 rounded-full object-cover"

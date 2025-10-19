@@ -24,8 +24,11 @@ return new class extends Migration
             $table->enum('progression', ['chapter', 'lecture'])->default('chapter');
             $table->string('tags')->nullable();
             $table->decimal('duration');
+            $table->string('days_to_complete')->nullable();
+            $table->boolean('show_index')->default(true);
             $table->string('cover');
             $table->string('thumbnail');
+            $table->string('capacity')->nullable();
             $table->string('video');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();

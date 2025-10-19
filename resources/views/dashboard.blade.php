@@ -100,9 +100,7 @@
             </div>
         </div>
 
-        <!-- Charts Row 2 -->
         <div class="grid grid-cols-1 gap-6 mt-6">
-            <!-- Top Instructors -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Top Instructors by Courses') }}</h3>
                 <div class="chart-container">
@@ -115,7 +113,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Courses by Category Chart
         const coursesByCategoryCtx = document.getElementById('coursesByCategoryChart').getContext('2d');
         new Chart(coursesByCategoryCtx, {
             type: 'doughnut',
@@ -147,7 +144,6 @@
             }
         });
 
-        // Monthly Enrollments Chart
         const monthlyEnrollmentsCtx = document.getElementById('monthlyEnrollmentsChart').getContext('2d');
         new Chart(monthlyEnrollmentsCtx, {
             type: 'line',
@@ -177,7 +173,6 @@
             }
         });
 
-        // Top Instructors Chart
         const topInstructorsCtx = document.getElementById('topInstructorsChart').getContext('2d');
         new Chart(topInstructorsCtx, {
             type: 'bar',
