@@ -162,16 +162,13 @@ class CourseController extends Controller
     {
         $this->authorize('viewAny', Course::class);
         $course = Course::findOrFail($course->id)->load('categories', 'instructors');
-        dd($course->requiredBy);
         $categories = CourseCategorie::all();
         $categories = CategorieResrource::collection($categories)->toArray(request());
         $instructors = InstructorResource::collection(Instructor::all())->toArray(request());
         return view('courses.show', compact('course', 'categories', 'instructors'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit($id)
     {
         $this->authorize('update', Course::class);
