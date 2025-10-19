@@ -14,7 +14,8 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $query = Course::with(['instructors', 'categories'])
-            ->where('status', 'active');
+            ->where('status', 'active')
+            ->where('show_index', 1);
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);

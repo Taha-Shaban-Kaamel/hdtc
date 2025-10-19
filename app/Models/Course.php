@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Chapter;
 use App\Models\CourseCategorie;
 use App\Models\Instructor;
+use App\Models\CoursePrerequisite;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,6 +31,9 @@ class Course extends Model
         'accessibility',
         'progression',
         'tags',
+        'capacity',
+        'days_to_complete',
+        'show_index'
     ];
 
     protected $casts = [
@@ -93,6 +97,17 @@ class Course extends Model
     {
         return $this->hasMany(Chapter::class);
     }
+
+    public function prerequisites()
+    {
+        return $this->belongsToMany(CoursePrerequisite::class);
+    }
+
+    public function requiredBy()
+    {
+        return $this->hasMany(CoursePrerequisite::class,'course_prerequisite_id');
+    }
+    
 
     // public function lectures()
     // {
