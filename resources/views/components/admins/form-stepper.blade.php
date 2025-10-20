@@ -82,36 +82,21 @@
         <div class="bg-blue-600 h-2.5 rounded-full" :style="'width: ' + stepProgress() + '%'"></div>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">
+    @if (session('success'))
+        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
             {{ session('success') }}
         </div>
     @endif
-
-
-    @if(session('error'))
-        <div class="relative mb-6 p-4 border-l-4 border-red-500 bg-red-50 text-red-700 rounded-r" role="alert">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium">{{ session('error') }}</p>
-                </div>
-                <div class="ml-auto pl-3">
-                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" @click="$el.parentElement.parentElement.remove()">
-                        <span class="sr-only">Close</span>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div class="font-bold mb-2">{{ __('common.validation_errors') }}</div>
+            <ul class="list-disc list-inside space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
-
     <!-- Step Indicators -->
     <div class="flex justify-between mb-8">
         @for ($i = 1; $i <= $totalSteps; $i++)
@@ -139,7 +124,7 @@
         @endfor
     </div>
 
-    <form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="space-y-6">
+    <form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="space-y-6" novalidate>
         @csrf
         @method($method)
         <input type="hidden" name="redirect" value="{{ $redirect }}">
@@ -149,14 +134,14 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="first_name_ar" value="{{ __('admin.first_name_ar') }}" />
                     <x-input id="first_name_ar" name="first_name_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.first_name_ar" required />
+                        x-model="formData.first_name_ar" />
                     <x-input-error for="first_name_ar" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="first_name_en" value="{{ __('admin.first_name_en') }}" />
                     <x-input id="first_name_en" name="first_name_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.first_name_en" required />
+                        x-model="formData.first_name_en" />
                     <x-input-error for="first_name_en" class="mt-2" />
                 </div>
 
@@ -164,7 +149,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="second_name_ar" value="{{ __('admin.second_name_ar') }}" />
                     <x-input id="second_name_ar" name="second_name_ar" type="text" class="mt-1 block w-full"
-                        x-model="formData.second_name_ar" required />
+                        x-model="formData.second_name_ar" />
                     <x-input-error for="second_name_ar" class="mt-2" />
                 </div>
 
@@ -172,28 +157,28 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="second_name_en" value="{{ __('admin.second_name_en') }}" />
                     <x-input id="second_name_en" name="second_name_en" type="text" class="mt-1 block w-full"
-                        x-model="formData.second_name_en" required />
+                        x-model="formData.second_name_en" />
                     <x-input-error for="second_name_en" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="email" value="{{ __('admin.email') }}" />
                     <x-input id="email" name="email" type="email" class="mt-1 block w-full"
-                        x-model="formData.email" required />
+                        x-model="formData.email" />
                     <x-input-error for="email" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="password" value="{{ __('admin.password') }}" />
                     <x-input id="password" name="password" type="password" class="mt-1 block w-full"
-                        x-model="formData.password" :required="!$admin" autocomplete="new-password" />
+                        x-model="formData.password" :="!$admin" autocomplete="new-password" />
                     <x-input-error for="password" class="mt-2" />
                 </div>
 
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="password_confirmation" value="{{ __('admin.password_confirmation') }}" />
                     <x-input id="password_confirmation" name="password_confirmation" type="password"
-                        class="mt-1 block w-full" x-model="formData.password_confirmation" :required="!$admin"
+                        class="mt-1 block w-full" x-model="formData.password_confirmation" :="!$admin"
                         autocomplete="new-password" />
                     <x-input-error for="password_confirmation" class="mt-2" />
                 </div>
@@ -202,7 +187,7 @@
                     <x-label for="status" value="{{ __('admin.status') }}" />
                     <select id="status" name="status"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        x-model="formData.status" required>
+                        x-model="formData.status">
                         <option value="active">{{ __('admin.active') }}</option>
                         <option value="inactive">{{ __('admin.inactive') }}</option>
                     </select>
@@ -291,7 +276,8 @@
                             {{ __('admin.personal_information') }}</h4>
                         <dl class="grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
                             <div class="sm:col-span-1">
-                                <dt class="text-sm font-medium text-gray-500">{{ __('admin.first_name_ar') }} / {{ __('admin.first_name_en') }}</dt>
+                                <dt class="text-sm font-medium text-gray-500">{{ __('admin.first_name_ar') }} /
+                                    {{ __('admin.first_name_en') }}</dt>
                                 <dd class="mt-1 text-sm text-gray-900"
                                     x-text="formData.first_name_ar + ' / ' + formData.first_name_en"></dd>
                             </div>

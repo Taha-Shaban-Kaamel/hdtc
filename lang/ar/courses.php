@@ -73,6 +73,18 @@ return [
     'select_categories' => 'اختر الأقسام',
     'instructors' => 'المدربين',
     'categories' => 'الأقسام',
+    'prerequisite_courses' => 'مستلزمات الدورة',
+    'status' => 'الحالة',
+    'accessibility' => 'إمكانية الوصول',
+    'progression' => 'التقدم',
+    'show_in_index' => 'عرض في الفهرس',
+    'tags' => 'الوسوم',
+    'hours' => 'ساعات',
+    'no_instructors' => 'لا يوجد مدربين',
+    'no_categories' => 'لا توجد أقسام',
+    'confirm_delete' => 'هل أنت متأكد من حذف هذه الدورة؟',
+    'course_details' => 'تفاصيل الدورة',
+    'course_preview' => 'معاينة الدورة',
     
     
     // Review Step

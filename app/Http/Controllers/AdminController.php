@@ -39,32 +39,35 @@ class AdminController extends Controller
     {
         $this->authorize('create', Admin::class);
       
-        try {
-            $request->validate([
-                'email' => 'required|email|max:255|unique:users,email',
-                'phone' => 'required|string|max:255|unique:users,phone',
-                'password' => 'required|string|min:8|confirmed',
-                'password_confirmation' => 'required|string|min:8',
-                'first_name_ar' => 'required|string|max:255',
-                'first_name_en' => 'required|string|max:255',
-                'second_name_ar' => 'required|string|max:255',
-                'second_name_en' => 'required|string|max:255',
-                'bio_ar' => 'nullable|string',
-                'bio_en' => 'nullable|string',
-                'birth_date' => 'nullable|date',
-                'gender' => 'nullable|string|in:male,female',
-                'status' => 'nullable|string|in:active,inactive',
-                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'address' => 'nullable|string|max:255',
-            ]);
+        $request->validate([
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'required|string|max:255|unique:users,phone',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
+            'first_name_ar' => 'required|string|max:255',
+            'first_name_en' => 'required|string|max:255',
+            'second_name_ar' => 'required|string|max:255',
+            'second_name_en' => 'required|string|max:255',
+            'bio_ar' => 'nullable|string',
+            'bio_en' => 'nullable|string',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female',
+            'status' => 'nullable|string|in:active,inactive',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'address' => 'nullable|string|max:255',
+        ]);
 
-            $avatarPath = null;
-            if($request->hasFile('avatar')){
-                $avatar = $request->file('avatar');
-                $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-                $avatar->move(storage_path('app/public/admins'), $avatarName);
-                $avatarPath = 'storage/admins/' . $avatarName;
-            }
+        $avatarPath = null;
+        if($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatar->move(storage_path('app/public/admins'), $avatarName);
+            $avatarPath = 'storage/admins/' . $avatarName;
+        }
+
+        try {
+
+            \DB::beginTransaction();
 
             $user = User::create([
                 'avatar' => $avatarPath,
@@ -91,14 +94,22 @@ class AdminController extends Controller
                 'address' => $request->address,
             ]);
 
-            $user->assignRole('admin');
+            $role = Role::where('name', 'admin')->first();
+            if($role){
+                $user->assignRole('admin');
+            }else{
+                Role::create(['name' => 'admin']);
+                $user->assignRole('admin');
+            }
 
             $admin = Admin::create([
                 'user_id' => $user->id,
             ]);
 
+            \DB::commit();
             return redirect()->route('admins.index')->with('success', 'Admin created successfully');
         } catch (\Exception $e) {
+            \DB::rollBack();
             return redirect()->back()->with('error', 'Failed to create admin: ' . $e->getMessage());
         }
     }
@@ -114,7 +125,6 @@ class AdminController extends Controller
     public function update(Request $request, $id) {
         $this->authorize('update', Admin::class);
         $admin = Admin::findOrFail($id);
-
         $validatedData = $request->validate([
             'email' => 'nullable|email|max:255|unique:users,email,' . $admin->user->id,
             'phone' => 'nullable|string|max:255|unique:users,phone,' . $admin->user->id,

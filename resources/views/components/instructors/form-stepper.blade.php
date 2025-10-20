@@ -98,7 +98,7 @@
         @endfor
     </div>
 
-    <form method="POST" action="{{ $action }}" class="space-y-6" enctype="multipart/form-data">
+    <form method="POST" action="{{ $action }}" class="space-y-6" enctype="multipart/form-data" novalidate>
         @csrf
         @if ($method !== 'POST')
             @method($method)

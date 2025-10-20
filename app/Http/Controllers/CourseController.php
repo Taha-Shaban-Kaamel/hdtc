@@ -134,6 +134,15 @@ class CourseController extends Controller
 
                 $course->tags()->sync($tagIds);
             }
+
+            if ($request->has('prerequisite_courses')) {
+                $prerequisites = collect(json_decode($request->prerequisite_courses[0], true))
+                    ->pluck('id')
+                    ->toArray();
+            
+                $course->prerequisiteCourses()->sync($prerequisites);
+            }
+
             $course->categories()->attach($validated['categories']);
             $course->instructors()->attach($validated['instructors']);
 
@@ -141,7 +150,6 @@ class CourseController extends Controller
                 ->route('courses.index')
                 ->with('success', __('courses.created_successfully'));
         } catch (\Exception $e) {
-            // Clean up uploaded files if something went wrong
             if (isset($thumbnailPath) && Storage::disk('public')->exists($thumbnailPath)) {
                 Storage::disk('public')->delete($thumbnailPath);
             }

@@ -20,6 +20,18 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if(session('success'))
+                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    
+                    @if(session('error'))
+                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    
                     <h2 class="text-2xl font-semibold mb-6">
                         {{ __('roles.manage_roles') }}
                     </h2>
@@ -73,6 +85,19 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
                                                     <span class="sr-only">{{ __('common.delete') }}</span>
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('roles.force-destroy', $role->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        class="inline-flex items-center p-1.5 rounded-full text-orange-600 hover:bg-orange-50 hover:text-orange-700 transition-colors duration-200"
+                                                        onclick="return confirm('⚠️ DANGER: This will DELETE ALL USERS who have this role AND delete the role itself. This action cannot be undone! Are you absolutely sure?')"
+                                                        title="Force Delete (Delete all users with this role)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                    </svg>
+                                                    <span class="sr-only">Force Delete</span>
                                                 </button>
                                             </form>
                                         </td>
