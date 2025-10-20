@@ -53,8 +53,32 @@
                                 </div>
                                 <div
                                     class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                    {{ __('courses.' . $course->difficulty_deree) }}
+                                    {{ $course->getTranslation('difficulty_degree', app()->getLocale()) }}
                                 </div>
+                                @if($course->status)
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    {{ __('courses.status') }}: {{ ucfirst($course->status) }}
+                                </div>
+                                @endif
+                                @if($course->capacity)
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                    </svg>
+                                    {{ __('courses.capacity') }}: {{ $course->capacity }}
+                                </div>
+                                @endif
+                                @if($course->days_to_complete)
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                    </svg>
+                                    {{ __('courses.days_to_complete') }}: {{ $course->days_to_complete }} {{ __('common.days') }}
+                                </div>
+                                @endif
                             </div>
                         </div>
 
@@ -97,11 +121,8 @@
                         </div>
                     </div>
 
-                    <!-- Course Content -->
                     <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-3">
-                        <!-- Left Column -->
                         <div class="lg:col-span-2">
-                            <!-- Course Description -->
                             <div class="prose max-w-none">
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('courses.description') }}</h3>
                                 <div class="text-gray-700">
@@ -109,7 +130,6 @@
                                 </div>
                             </div>
 
-                            <!-- Course Objectives -->
                             <div class="mt-8">
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">
                                     {{ __('courses.learning_objectives') }}</h3>
@@ -119,18 +139,29 @@
                                     $course->getTranslation('objectives', app()->getLocale()))) !!}                                </div>
                             </div>
 
-                            <!-- Video Preview -->
-                            {{-- @if ($course->video)
+                            @if ($course->video)
                             <div class="mt-8">
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('courses.course_preview') }}</h3>
-                                <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
-                                    <iframe class="w-full h-96" src="{{ $course->video }}" frameborder="0" allowfullscreen></iframe>
+                                <div class="relative rounded-lg overflow-hidden bg-gray-900" style="padding-bottom: 56.25%;">
+                                    @php
+                                        $videoUrl = $course->video;
+                                        if (preg_match('/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $videoUrl, $matches)) {
+                                            $videoUrl = 'https://www.youtube.com/embed/' . $matches[1];
+                                        } elseif (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $videoUrl, $matches)) {
+                                            $videoUrl = 'https://www.youtube.com/embed/' . $matches[1];
+                                        }
+                                    @endphp
+                                    <iframe class="absolute top-0 left-0 w-full h-full" 
+                                            src="{{ $videoUrl }}" 
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen>
+                                    </iframe>
                                 </div>
                             </div>
-                            @endif --}}
+                            @endif
                         </div>
 
-                        <!-- Right Column -->
                         <div class="lg:col-span-1">
                             <!-- Instructors -->
                             <div class="bg-gray-50 rounded-lg p-6">
@@ -174,6 +205,66 @@
                                     @endforelse
                                 </div>
                             </div>
+
+                            <!-- Course Details -->
+                            <div class="mt-6 bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('courses.course_details') }}</h3>
+                                <dl class="space-y-3">
+                                    @if($course->accessibility)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500">{{ __('courses.accessibility') }}</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">{{ ucfirst($course->accessibility) }}</dd>
+                                    </div>
+                                    @endif
+                                    @if($course->progression)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500">{{ __('courses.progression') }}</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">{{ ucfirst($course->progression) }}</dd>
+                                    </div>
+                                    @endif
+                                    @if($course->show_index !== null)
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-500">{{ __('courses.show_in_index') }}</dt>
+                                        <dd class="mt-1 text-sm text-gray-900">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $course->show_index ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $course->show_index ? __('common.yes') : __('common.no') }}
+                                            </span>
+                                        </dd>
+                                    </div>
+                                    @endif
+                                </dl>
+                            </div>
+
+                            @if($course->prerequisiteCourses->count() > 0)
+                            <div class="mt-6 bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('courses.prerequisite_courses') }}</h3>
+                                <ul class="space-y-2">
+                                    @foreach($course->prerequisiteCourses as $prerequisite)
+                                        <li class="flex items-center text-sm text-gray-700">
+                                            <svg class="flex-shrink-0 mr-2 h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <a href="{{ route('courses.show', $prerequisite) }}" class="hover:text-indigo-600">
+                                                {{ $prerequisite->getTranslation('title', app()->getLocale()) }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+                            @if($course->tags()->count() > 0)
+                            <div class="mt-6 bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('courses.tags') }}</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($course->tags()->get() as $tag)
+                                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-200 text-gray-800">
+                                            {{ $tag->name}}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

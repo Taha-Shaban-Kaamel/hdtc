@@ -58,6 +58,7 @@ return [
     'maintenance' => 'الصفحة قيد الصيانة',
     'be_right_back' => 'سنعود قريباً',
     'hour' => 'ساعة',
+    'days' => 'أيام',
     'courses' => 'الدورات',
     'select_items' => 'اختر العناصر...',
     'edit' => 'تعديل',

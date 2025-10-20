@@ -22,7 +22,7 @@
                             {{ __('chapters.create_new_chapter') }}
                         </h2>
 
-                        <form action="{{ route('chapters.store') }}" method="POST" class="space-y-6">
+                        <form action="{{ route('chapters.store') }}" method="POST" class="space-y-6" novalidate>
                             @csrf
 
                             <!-- Chapter Name -->

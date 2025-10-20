@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Resources\UserResource;
+use Spatie\Permission\Models\Role;
 
 class SocialAuthService
 {
@@ -35,7 +36,11 @@ class SocialAuthService
         }
 
         if($provider == 'google'){
-            return User::create([
+            $role = Role::where('name', 'student')->first();
+            if(!$role){
+                $role = Role::create(['name' => 'student', 'guard_name' => 'web']);
+            }
+            $user =  User::create([
                 'first_name' => $socialUser['given_name'] ?: 'User',
                 'second_name' => $socialUser['family_name'] ?: 'User',
                 'email' => $socialUser['email'] ?: 'Useremail',
@@ -45,8 +50,14 @@ class SocialAuthService
                 'email_verified_at' => now(),
                 'password' => Hash::make(Str::random(16)), 
             ]);
+            $user->assignRole($role);
+            return $user;
         }elseif($provider == 'facebook'){
-            return User::create([
+            $role = Role::where('name', 'student')->first();
+            if(!$role){
+                $role = Role::create(['name' => 'student', 'guard_name' => 'web']);
+            }
+            $user = User::create([
                 'first_name' => $socialUser->name ?: 'User',
                 'second_name' => $socialUser->name ?: 'User',
                 'email' => $socialUser->email ?: 'Useremail',
@@ -54,8 +65,10 @@ class SocialAuthService
                 'provider_id' => $socialUser->id,
                 'avatar' => $socialUser->avatar ?: 'User',
                 'email_verified_at' => now(),
-                'password' => Hash::make(Str::random(16)), // Random password for social users
+                'password' => Hash::make(Str::random(16)), 
             ]);
+            $user->assignRole($role);
+            return $user;
         };
 
 
@@ -63,10 +76,6 @@ class SocialAuthService
 
     public function generateTokenResponse($user, $tokenName = 'api-token', $abilities = ['*'])
     {
-        // Revoke existing tokens (optional - for single session)
-        // $user->tokens()->delete();
-
-        // Create new token
         $token = $user->createToken($tokenName, $abilities);
 
         return [

@@ -8,7 +8,7 @@
 
     <div class="mt-5 md:mt-0 md:col-span-2">
 
-        <form method="{{ $method === 'GET' ? 'GET' : 'POST' }}" action="{{ $action }}" enctype="multipart/form-data">
+        <form method="{{ $method === 'GET' ? 'GET' : 'POST' }}" action="{{ $action }}" enctype="multipart/form-data" novalidate>
             @if (! in_array(strtoupper($method), ['GET', 'POST']))
                 @method($method)
             @endif
