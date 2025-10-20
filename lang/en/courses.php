@@ -30,6 +30,18 @@ return [
     'course_details' => 'Course Details',
     'days_to_complete' => 'Days to complete',
     'capacity' => 'Capacity',
+    'prerequisite_courses' => 'Prerequisite Courses',
+    'status' => 'Status',
+    'accessibility' => 'Accessibility',
+    'progression' => 'Progression',
+    'show_in_index' => 'Show in Index',
+    'tags' => 'Tags',
+    'hours' => 'hours',
+    'description' => 'Description',
+    'no_instructors' => 'No instructors assigned',
+    'no_categories' => 'No categories assigned',
+    'confirm_delete' => 'Are you sure you want to delete this course?',
+    'course_preview' => 'Course Preview',
 
     // Form Stepper
     'review_course' => 'Review Your Course',

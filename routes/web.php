@@ -138,6 +138,7 @@ Route::prefix('roles')->group(function () {
     Route::put('/update/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::get('/{role}', [RoleController::class, 'show'])->name('roles.show');
     Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    Route::delete('/{role}/force', [RoleController::class, 'forceDestroy'])->name('roles.force-destroy');
 });
 
 Route::middleware('auth')->group(function () {

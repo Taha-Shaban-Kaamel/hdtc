@@ -10,7 +10,7 @@ class RoleController extends Controller
     public function index()
     {
         $this->authorize('viewAny',Role::class);
-        $roles = Role::whereNotIn('name', ['super admin' , 'student'])->get();
+        $roles = Role::whereNotIn('name', ['super admin'])->get();
         return view('roles.index', compact('roles'));
     }
 
@@ -24,9 +24,14 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create',Role::class);
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name',
+            'permissions' => 'required|array',
+        ]);
+
         $role = Role::create(['name' => $request->name , 'guard_name' => 'web']);
 
-        $role->givePermissionTo($request->permissions);
+        $role->syncPermissions($request->permissions);
         return redirect()->route('roles.index');
     }
 
@@ -52,7 +57,38 @@ class RoleController extends Controller
     {
         $this->authorize('delete',Role::class);
         $role = Role::findOrFail($id);
+        
+        $usersCount = $role->users()->count();
+        
+        if ($usersCount > 0) {
+            return redirect()
+                ->route('roles.index')
+                ->with('error', "Cannot delete role '{$role->name}'. {$usersCount} user(s) are currently assigned to this role. Please remove all users from this role before deleting it.");
+        }
+        
         $role->delete();
-        return redirect()->route('roles.index');
+        return redirect()
+            ->route('roles.index')
+            ->with('success', "Role '{$role->name}' has been deleted successfully.");
+    }
+
+    public function forceDestroy($id)
+    {
+        $this->authorize('delete',Role::class);
+        $role = Role::findOrFail($id);
+        
+        $usersCount = $role->users()->count();
+        
+        if ($usersCount > 0) {
+            $role->users()->each(function ($user) {
+                $user->delete();
+            });
+        }
+        
+        $role->delete();
+        
+        return redirect()
+            ->route('roles.index')
+            ->with('success', "Role '{$role->name}' and {$usersCount} user(s) have been deleted successfully.");
     }
 }

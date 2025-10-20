@@ -3,26 +3,25 @@
 @props(['course' => null, 'currentStep' => 1, 'totalSteps' => 3, 'instructors' => null, 'categories' => null])
 <div x-data="{
     formData: {
-        title_ar: '{{ old('title_ar', $course?->getTranslation('title', 'ar') ?? '') }}',
-        title_en: '{{ old('title_en', $course?->getTranslation('title', 'en') ?? '') }}',
-        name_ar: '{{ old('name_ar', $course?->getTranslation('name', 'ar') ?? '') }}',
-        name_en: '{{ old('name_en', $course?->getTranslation('name', 'en') ?? '') }}',
-        'days_to_complete': '{{ old('days_to_complete', $course?->days_to_complete ?? '') }}' ,
-        description_ar: `{{ old('description_ar', $course?->getTranslation('description', 'ar') ?? '') }}`,
-        description_en: `{{ old('description_en', $course?->getTranslation('description', 'en') ?? '') }}`,
-        objectives_ar: `{{ is_array(old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) ? implode("\n", old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) : old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? '') }}`,
-        objectives_en: `{{ is_array(old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) ? implode("\n", old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) : old('objectives_en', $course?->getTranslation('objectives', 'en') ?? '') }}`,
-        difficulty_degree: '{{ old('difficulty_degree', $course?->difficulty_degree ?? '') }}',
-        price: {{ old('price', $course?->price ?? 0) }},
-        duration: {{ old('duration', $course?->duration ?? 1) }},
-        video_url: '{{ old('video_url', $course?->video ?? '') }}',
+        title_ar: @js(old('title_ar', $course?->getTranslation('title', 'ar') ?? '')),
+        title_en: @js(old('title_en', $course?->getTranslation('title', 'en') ?? '')),
+        name_ar: @js(old('name_ar', $course?->getTranslation('name', 'ar') ?? '')),
+        name_en: @js(old('name_en', $course?->getTranslation('name', 'en') ?? '')),
+        days_to_complete: @js(old('days_to_complete', $course?->days_to_complete ?? '')),
+        description_ar: @js(old('description_ar', $course?->getTranslation('description', 'ar') ?? '')),
+        description_en: @js(old('description_en', $course?->getTranslation('description', 'en') ?? '')),
+        objectives_ar: @js(is_array(old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) ? implode("\n", old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? [])) : old('objectives_ar', $course?->getTranslation('objectives', 'ar') ?? '')),
+        objectives_en: @js(is_array(old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) ? implode("\n", old('objectives_en', $course?->getTranslation('objectives', 'en') ?? [])) : old('objectives_en', $course?->getTranslation('objectives', 'en') ?? '')),
+        difficulty_degree: @js(old('difficulty_degree', $course?->difficulty_degree ?? '')),
+        price: @js(old('price', $course?->price ?? 0)),
+        duration: @js(old('duration', $course?->duration ?? 1)),
+        video_url: @js(old('video_url', $course?->video ?? '')),
         instructors: @json(old('instructors', $course ? $course->instructors->pluck('id') : [])),
         categories: @json(old('categories', $course ? $course->categories->pluck('id') : [])),
         thumbnail: null,
-        'capacity': '{{ old('capacity', $course?->capacity ?? '') }}',
-        thumbnailPreview: '{{ $course?->thumbnail ? Storage::url($course->thumbnail) : '' }}',
-        {{-- availability: '{{ old('availability', $course?->availability ?? '') }}', --}}
-        progression: '{{ old('progression', $course?->progression ?? '') }}',
+        capacity: @js(old('capacity', $course?->capacity ?? '')),
+        thumbnailPreview: @js($course?->thumbnail ? Storage::url($course->thumbnail) : ''),
+        progression: @js(old('progression', $course?->progression ?? ''))
     },
     currentStep: {{ $currentStep }},
     totalSteps: {{ $totalSteps }},
@@ -52,6 +51,17 @@
         <div class="bg-blue-600 h-2.5 rounded-full" :style="'width: ' + stepProgress() + '%'"></div>
     </div>
 
+    @if ($errors->any())
+    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
     <div class="flex justify-between mb-8">
         @for ($i = 1; $i <= $totalSteps; $i++)
             <div class="flex flex-col items-center">
@@ -80,18 +90,9 @@
         @endfor
     </div>
 
-    @if ($errors->any())
-        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
     <form method="POST" action="{{ isset($course) ? route('courses.update', $course) : route('courses.store') }}"
-        class="space-y-6" enctype="multipart/form-data">
+        class="space-y-6" enctype="multipart/form-data" novalidate>
         @csrf
         @if (isset($course))
             @method('PUT')
@@ -133,11 +134,10 @@
                     <label for="tags" class="block font-medium text-sm text-gray-700">Tags</label>
                     @php
                         $tagsValue = $course ? $course?->tags()?->pluck('name')->implode(',') : '';
-                        $tagsValue = is_array(old('tags')) ? implode(',', old('tags')) : (old('tags', $tagsValue));
+                        $tagsValue = is_array(old('tags')) ? implode(',', old('tags')) : old('tags', $tagsValue);
                     @endphp
-                    <input id="tags" name="tags[]"
-                        value="{{ $tagsValue }}"
-                        class="tagify mt-1 block w-full" placeholder="Enter tags..." >
+                    <input id="tags" name="tags[]" value="{{ $tagsValue }}" class="tagify mt-1 block w-full"
+                        placeholder="Enter tags...">
                 </div>
 
 
@@ -288,18 +288,12 @@
                     <p class="mt-1 text-sm text-gray-500">{{ __('courses.objectives_help_text') }}</p>
                     <x-input-error for="objectives_en" :messages="$errors->get('objectives_en')" class="mt-2" />
                 </div>
-
-
-
             </div>
         </div>
 
 
         <div x-show="currentStep === 3" x-transition>
             <div class="grid grid-cols-6 gap-6">
-
-
-
                 <div class="col-span-6 sm:col-span-3">
                     <x-label for="capacity" value="{{ __('courses.capacity') }}" />
                     <x-input id="capacity" name="capacity" type="number" min="1" class="mt-1 block w-full"
@@ -347,7 +341,9 @@
                 <div class="col-span-3">
                     <x-label for="video_url" value="{{ __('courses.video_url') }}" />
                     <x-input type="text" name="video_url" x-model="formData.video_url" />
-                    <x-input-error for="video_url" :messages="$errors->get('video_url')" class="mt-2" />
+                    @if ($errors->has('video_url'))
+                        <x-input-error for="video_url" :messages="$errors->get('video_url')" class="mt-2" />
+                    @endif
                 </div>
 
 
@@ -370,6 +366,12 @@
                     @endif
                 </div>
 
+                <div class="col-span-3">
+                    <x-label for="prerequisite_courses" value="{{ __('courses.prerequisite_courses') }}" />
+                    <x-input id="prerequisite_courses" type="text" name="prerequisite_courses[]"
+                        class="tagify mt-1 block w-full" />
+                    <x-input-error for="prerequisite_courses" :messages="$errors->get('prerequisite_courses')" class="mt-2" />
+                </div>
 
             </div>
         </div>
@@ -513,7 +515,10 @@
     <script>
         document.addEventListener('alpine:init', () => {
             window.tagWhitelist = @json(\App\Models\Tag::pluck('name')->toArray());
-
+            window.PrerequisiteCourses = @json(
+                \App\Models\Course::all()->mapWithKeys(function ($course) {
+                        return [$course->getTranslation('title', app()->getLocale()) => $course->id];
+                    })->toArray());
         });
     </script>
     @vite(['resources/js/tagify.js'])
