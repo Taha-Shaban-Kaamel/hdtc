@@ -98,9 +98,14 @@ class Course extends Model
         return $this->hasMany(Chapter::class);
     }
 
-    public function prerequisites()
+    public function prerequisiteCourses()
     {
-        return $this->belongsToMany(CoursePrerequisite::class);
+        return $this->belongsToMany(
+            Course::class,
+            'course_prerequisites',
+            'course_id',
+            'course_prerequisite_id'
+        )->withTimestamps();
     }
 
     public function requiredBy()

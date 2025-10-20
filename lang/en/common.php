@@ -57,6 +57,7 @@ return [
     'maintenance' => 'Maintenance Mode',
     'be_right_back' => 'We\'ll be right back',
     'hour' => 'Hour',
+    'days' => 'Days',
     'courses' => 'Courses',
     'select_items' => 'Select items...',
     'edit' => 'Edit',
