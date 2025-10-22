@@ -113,7 +113,7 @@ return [
     'uploaded' => 'فشل في تحميل :attribute.',
     'url' => 'صيغة حقل :attribute غير صالحة.',
     'uuid' => 'حقل :attribute يجب أن يكون بصيغة UUID صالحة.',
-
+    'phone' => 'رقم الهاتف :attribute غير صحيح',
     'attributes' => [
         'name' => 'الاسم',
         'email' => 'البريد الإلكتروني',

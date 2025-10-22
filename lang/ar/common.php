@@ -85,4 +85,5 @@ return [
     'account_status' => 'حالة الحساب',
     'registered_at' => 'تاريخ التسجيل',
     'admins' => 'المشرفون',
+    'validation_errors' => 'الرسائل التحقق من الصحة',
 ];

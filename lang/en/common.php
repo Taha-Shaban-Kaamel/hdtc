@@ -84,4 +84,5 @@ return [
     'account_status' => 'Account Status' ,
     'registered_at' => 'Registered At' ,
     'admins' => 'admins' ,
+    'validation_errors' => 'Validation Errors',
 ];

@@ -82,6 +82,7 @@ return [
     'json' => 'The :attribute field must be a valid JSON string.',
     'list' => 'The :attribute field must be a list.',
     'lowercase' => 'The :attribute field must be lowercase.',
+    'phone' => 'The :attribute field contains an invalid phone number.',
     'lt' => [
         'array' => 'The :attribute field must have less than :value items.',
         'file' => 'The :attribute field must be less than :value kilobytes.',

@@ -41,7 +41,7 @@ class AdminController extends Controller
       
         $request->validate([
             'email' => 'required|email|max:255|unique:users,email',
-            'phone' => 'required|string|max:255|unique:users,phone',
+            'phone' => 'nullable|phone:EG,BE',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
             'first_name_ar' => 'required|string|max:255',
@@ -127,7 +127,7 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($id);
         $validatedData = $request->validate([
             'email' => 'nullable|email|max:255|unique:users,email,' . $admin->user->id,
-            'phone' => 'nullable|string|max:255|unique:users,phone,' . $admin->user->id,
+            'phone' => 'nullable|phone:EG,BE',
             'first_name_ar' => 'nullable|string|max:255',
             'first_name_en' => 'nullable|string|max:255',
             'second_name_ar' => 'nullable|string|max:255',
