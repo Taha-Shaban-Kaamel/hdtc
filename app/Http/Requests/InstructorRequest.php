@@ -41,7 +41,7 @@ class InstructorRequest extends FormRequest
             'email' => 'required|string|unique:users,email|max:255',
             'bio_ar' => 'nullable|string',
             'bio_en' => 'nullable|string',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|phone:EG',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'company' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:255',

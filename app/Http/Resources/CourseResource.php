@@ -52,7 +52,7 @@ class CourseResource extends JsonResource
             ],
 
             'enrollments_count' => $this->enrollments()->count(),
-
+            'rating' => $this->rating ?? 0,
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
         ];
