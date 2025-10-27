@@ -28,8 +28,6 @@ Route::group(['prefix' => 'auth/'], function () {
         Route::post('{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
     });
 
-    
-
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [authController::class, 'logout']);
         Route::get('profile', [authController::class, 'getUserProfile']);
@@ -47,21 +45,21 @@ Route::group(['prefix' => 'auth/'], function () {
 Route::match(['get', 'post'], 'pay/callback', [PaymentController::class, 'callback']);
 Route::get('pay/status', [PaymentController::class, 'getStatus']);
 
-Route::apiResource('instructors', InstructorController::class);
-
-Route::prefix('categories')
-    ->controller(CategorieController::class)
-    ->group(function(){
-        Route::get('/', 'index');
-        Route::get('/{id}', 'show');
-        Route::get('/{id}/courses', 'courses');
-    });
-Route::prefix('courses')
-    ->controller(CourseController::class)
-    ->group(function () {
-    Route::get('/', 'index');
-    Route::get('/{id}', 'show');
+Route::prefix('instructors')->group(function () {
+    Route::get('/', [InstructorController::class, 'index']);
+    Route::get('/{id}', [InstructorController::class, 'show']);
+    Route::get('/{id}/courses', [InstructorController::class, 'courses']);
 });
+
+
+Route::prefix('courses')->group(function () {
+    Route::get('/', [CourseController::class, 'index']);
+    Route::get('/top_rated', [CourseController::class, 'topRated']);
+    Route::get('/last_added', [CourseController::class, 'lastAdded']);
+    Route::get('/{id}', [CourseController::class, 'show']);
+});
+
+
 Route::prefix('plans')->group(function () {
     Route::get('/', [PlansController::class, 'index']);
     Route::get('/{id}', [PlansController::class, 'show']);

@@ -97,6 +97,72 @@ class CourseController extends Controller
         ]);
     }
 
+    public function lastAdded()
+    {
+        try {
+            $courses = Course::with(['instructors', 'categories', 'chapters', 'tags'])
+                ->where('status', 'active')
+                ->where('show_index', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            if ($courses->isEmpty()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'No courses found',
+                    'data' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Courses found',
+                'data' => CourseResource::collection($courses),
+                'count' => $courses->count()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching courses',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function topRated()
+    {
+        try {
+            $courses = Course::with(['instructors', 'categories', 'chapters', 'tags'])
+                ->where('status', 'active')
+                ->where('show_index', 1)
+                ->orderBy('rating', 'desc')
+                ->take(10)
+                ->get();
+
+            if ($courses->isEmpty()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'No courses found',
+                    'data' => []
+                ], 200);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Courses found',
+                'data' => CourseResource::collection($courses),
+                'count' => $courses->count()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching courses',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -115,4 +181,4 @@ class CourseController extends Controller
             ], 404);
         }
     }
-}
+};
