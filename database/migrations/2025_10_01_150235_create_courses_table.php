@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('thumbnail');
             $table->string('capacity')->nullable();
             $table->string('video');
+            $table->string('rating')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });

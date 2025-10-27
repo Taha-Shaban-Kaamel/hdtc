@@ -50,6 +50,7 @@ class CategorieController extends Controller
     {
         try {
             $categorie = CourseCategorie::find($id);
+            $courses = $categorie->courses()->with('categories','instructors','tags','chapters','enrollments')->get();
             if(!$categorie){
                 return response()->json([
                     'message' => 'Category not found',
@@ -66,8 +67,8 @@ class CategorieController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Courses found',
-                'data' => CourseResource::collection($categorie->courses),
-                'count' => $categorie->courses->count()
+                'data' => CourseResource::collection($courses),
+                'count' => $courses->count()
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

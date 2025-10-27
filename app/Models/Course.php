@@ -33,6 +33,7 @@ class Course extends Model
         'tags',
         'capacity',
         'days_to_complete',
+        'rating',
         'show_index'
     ];
 
