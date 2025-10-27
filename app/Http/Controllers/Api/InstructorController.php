@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\InstructorResource;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
+use App\Http\Resources\CourseResource;
 
 class InstructorController extends Controller
 {
@@ -39,6 +40,37 @@ class InstructorController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Instructor not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+
+    public function courses($id){
+        try {
+            $instructor = Instructor::find($id);
+            $courses = $instructor->courses()->with('categories','instructors','tags','chapters','enrollments')->get();
+            if(!$instructor){
+                return response()->json([
+                    'message' => 'Instructor not found',
+                    'error' => 'Instructor not found'
+                ], 404);
+            }
+            if ($instructor->courses()->count() == 0) {
+                return response()->json([
+                    'message' => 'Courses not found',
+                    'error' => 'Courses not found'
+                ], 404);
+            };
+            return response()->json([
+                'status' => true,
+                'message' => 'Courses found',
+                'data' => CourseResource::collection($courses),
+                'count' => $courses->count()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Courses not found',
                 'error' => $e->getMessage()
             ], 404);
         }
