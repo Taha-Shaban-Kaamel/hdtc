@@ -52,6 +52,13 @@ Route::prefix('instructors')->group(function () {
 });
 
 
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategorieController::class, 'index']);
+    Route::get('/{id}', [CategorieController::class, 'show']);
+    Route::get('/{id}/courses', [CategorieController::class, 'courses']);
+});
+
+
 Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index']);
     Route::get('/top_rated', [CourseController::class, 'topRated']);
