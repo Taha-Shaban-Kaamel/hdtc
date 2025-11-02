@@ -19,6 +19,9 @@ class ChapterResource extends JsonResource
             'name' => $this->name,
             'order' => $this->order,
             'course_id' => $this->course_id,
+            'lectures' => $this->whenLoaded('lectures', function () use ($request) {
+                return LectureResource::collection($this->lectures)->toArray($request);
+            }),
         ];
     }
 }

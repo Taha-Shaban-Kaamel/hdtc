@@ -63,7 +63,9 @@ Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index']);
     Route::get('/top_rated', [CourseController::class, 'topRated']);
     Route::get('/last_added', [CourseController::class, 'lastAdded']);
-    Route::get('/{id}', [CourseController::class, 'show']);
+    Route::get('/{id}', [CourseController::class, 'syllabus']);
+    Route::get('/{id}/enroll', [CourseController::class, 'show']);
+    Route::get('/{id}/lesson/{lesson_id}', [CourseController::class, 'getLecture']);
 });
 
 
@@ -80,5 +82,5 @@ Route::prefix('enrollments')
         Route::get('/{enrollment}', 'show');
         Route::post('/{enrollment}', 'update');
         Route::delete('/{enrollment}', 'destroy');
-        Route::post('/{course}/enroll', 'enroll');
+        Route::post('/{course_id}/enroll', 'store');
     });

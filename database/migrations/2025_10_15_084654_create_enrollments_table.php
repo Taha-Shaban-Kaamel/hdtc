@@ -18,7 +18,11 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->decimal('progress')->default(0);
             $table->decimal('grade')->default(0);
+            $table->unsignedBigInteger('payment_id')->nullable();
+            $table->string('payment_status')->nullable();
             $table->date('completion_date')->nullable();
+            $table->date('start_at');
+            $table->date('last_accessed_at')->nullable();
             $table->timestamps();
         });
     }

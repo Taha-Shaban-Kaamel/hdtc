@@ -29,7 +29,6 @@ class Lecture extends Model
         'lecture_views' => 'integer',
     ];
 
-
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
@@ -39,7 +38,6 @@ class Lecture extends Model
     {
         return $this->belongsTo(Chapter::class);
     }
-
 
     public function isAccessibleBy($user = null)
     {
@@ -64,5 +62,19 @@ class Lecture extends Model
 
         return false;
     }
-}
 
+    public function getProgressForUser($userId)
+    {
+        $enrollment = Enrollment::where('user_id', $userId)
+            ->where('course_id', $this->course_id)
+            ->first();
+
+        if (!$enrollment) {
+            return null;
+        }
+
+        return LectureProgress::where('enrollment_id', $enrollment->enrollment_id)
+            ->where('lecture_id', $this->lecture_id)
+            ->first();
+    }
+}
