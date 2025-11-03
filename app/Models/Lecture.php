@@ -29,6 +29,7 @@ class Lecture extends Model
         'lecture_views' => 'integer',
     ];
 
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
