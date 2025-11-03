@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use App\Http\Resources\EnrollmentResource;
+use App\Services\EnrollmentService;
 use App\Models\Enrollment;
 use App\Models\Course;
 use Illuminate\Http\JsonResponse;
@@ -14,6 +15,14 @@ use Illuminate\Http\Response;
 
 class EnrollmentController extends Controller
 {
+    protected EnrollmentService $enrollmentService;
+    public function __construct(EnrollmentService $enrollmentService)
+    {
+        $this->middleware('auth:sanctum');
+
+        $this->enrollmentService = $enrollmentService;
+    }
+
     /**
      * Display a listing of enrollments.
      */
@@ -30,14 +39,16 @@ class EnrollmentController extends Controller
     /**
      * Store a newly created enrollment in storage.
      */
-    public function store(StoreEnrollmentRequest $request): JsonResponse
+    public function store($course_id): JsonResponse
     {
-        
-        $enrollment = Enrollment::create($request->validated());
-        
+    //   $validated = $request->validated();
+      $user = auth('sanctum')->user();
+    //   $course = Course::findOrFail($course_id);
+      $enrollment = $this->enrollmentService->enroll($user->id, $course_id);
+
         return response()->json([
             'message' => 'Enrollment created successfully',
-            'data' => new EnrollmentResource($enrollment->load('user', 'course'))
+            'data' => $enrollment
         ], Response::HTTP_CREATED);
     }
 

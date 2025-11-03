@@ -41,8 +41,9 @@ class CourseResource extends JsonResource
                 return $tags->pluck('name');
             }),
             'chapters' => $this->whenLoaded('chapters', function () use ($request) {
-                return ChapterResource::collection($this->chapters)->toArray($request);
+                return ChapterResource::collection($this->chapters->load('lectures'))->toArray($request);
             }),
+
             'preview' => $this->when($this->getPreviewContent()->isNotEmpty(), function () {
                 return  LectureResource::collection($this->getPreviewContent());
             }),

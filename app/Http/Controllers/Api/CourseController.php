@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CoursePreviewResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\EnrolledCourseResource;
+use App\Http\Resources\LessonDetailResource;
 use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Lecture;
+use App\Models\LectureProgress;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-
     public function index(Request $request)
     {
         $query = Course::with(['instructors', 'categories'])
@@ -63,7 +67,7 @@ class CourseController extends Controller
         ], 200);
     }
 
-    public function syllabus($id)
+    public function syllabuss($id)
     {
         $course = Course::with(['lectures' => function ($query) {
             $query
@@ -163,7 +167,7 @@ class CourseController extends Controller
         }
     }
 
-    public function show($id)
+    public function syllabus($id)
     {
         try {
             $course = new CourseResource(Course::find($id)->load('categories', 'instructors', 'chapters'));
@@ -181,4 +185,114 @@ class CourseController extends Controller
             ], 404);
         }
     }
+
+    public function show($id)
+    {
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'have to be logged in',
+            ], 401);
+        };
+
+        $enrollment = Enrollment::where('user_id', $user->id)
+            ->where('course_id', $id)
+            ->with(['course.instructors', 'course.lectures'])
+            ->firstOrFail();
+
+        if ($enrollment->status == 'active') {
+            $lectures = $enrollment->course->lectures->map(function ($lecture) use ($enrollment) {
+                $progress = LectureProgress::where('enrollment_id', $enrollment->id)
+                    ->where('lecture_id', $lecture->id)
+                    ->first();
+                return [
+                    'id' => $lecture->id,
+                    'title' => $lecture->title,
+                    'description' => $lecture->description,
+                    'objectives' => $lecture->objectives,
+                    'order' => $lecture->order,
+                    'is_completed' => $progress?->is_completed ?? false,
+                    'progress_percentage' => $progress?->progress_percentage ?? 0,
+                ];
+            });
+            $course = new EnrolledCourseResource($enrollment);
+            return response()->json([
+                'status' => true,
+                'message' => 'Course found',
+                'course' => $course,
+                'lectures' => $lectures,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Course not found',
+            ], 404);
+        }
+    }
+
+    public function getLecture($course_id , $lecture_id){
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'have to be logged in',
+            ], 401);
+        };
+
+        $enrollment = Enrollment::where('user_id', $user->id)->where('course_id', $course_id)->first();
+
+        if (!$enrollment) {
+            return response()->json([
+                'status' => false,
+                'message' => 'you are not enrolled in this course',
+            ], 404);
+        }
+
+        $lecture = Lecture::where('id', $lecture_id)->where('course_id', $course_id)->first();
+
+        if (!$lecture) {
+            return response()->json([
+                'status' => false,
+                'message' => 'lecture not found',
+            ], 404);
+        }
+
+        $progress = LectureProgress::firstOrCreate([
+            'enrollment_id' => $enrollment->id,
+            'lecture_id' => $lecture->id,
+        ], [
+            'is_completed' => false,
+            'progress_percentage' => 0,
+        ]);
+
+        $progress->markAsStarted();
+
+        $enrollment->updateLastAccess();
+
+        $next_lecture = $enrollment->course->lectures->where('order', '>', $lecture->order)->first();
+
+        $previous_lecture = $enrollment->course->lectures->where('order', '<', $lecture->order)->last();
+
+        return response()->json([
+            'status' => true,
+            'lecture' => new LessonDetailResource($lecture, $progress),
+             'navigation' => [
+                'has_next' => $next_lecture !== null,
+                'next_lesson' => $next_lecture ? [
+                    'id' => $next_lecture->id,
+                    'title' => $next_lecture->title,
+                ] : null,
+                'has_previous' => $previous_lecture !== null,
+                'previous_lesson' => $previous_lecture ? [
+                    'id' => $previous_lecture->id,
+                    'title' => $previous_lecture->title,
+                ] : null,
+            ],
+        ], 200);
+
+    }
+
 };

@@ -22,7 +22,7 @@ class StoreEnrollmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
             'course_id' => ['required', 'exists:courses,id', 'unique:enrollments,course_id,NULL,id,user_id,' . $this->user_id],
             'status' => ['sometimes', 'string', 'in:active,completed,dropped'],
             'progress' => ['sometimes', 'numeric', 'min:0', 'max:100'],
