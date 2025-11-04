@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup('api', [setLocal::class]);
     })
+    
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (AuthorizationException $e, $request) {
             if ($request->expectsJson()) {
@@ -31,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'You are not authorized to access this resource.'
                 ], 403);
             }
-    
+
             return response()->view('errors.403', [], 403);
         });
     })
