@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'first_name'=> $this->resource->first_name,
             'second_name'=> $this->resource->second_name,
             'email'=> $this->resource->email,
-            'avatar'=> str_starts_with($this->resource->avatar, 'http') ? $this->resource->avatar : asset('storage/'.$this->resource->avatar),
+            'avatar'=> str_starts_with($this->resource->avatar, 'http') ? $this->resource->avatar : '',
             'provider'=> $this->resource->provider,
             'user_type'=> $this->whenLoaded('userType',fn()=> $this->resource->userType->name),
             'gender'=> $this->resource->gender,

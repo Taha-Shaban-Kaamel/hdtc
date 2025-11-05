@@ -1,12 +1,13 @@
 <?php
 namespace App\Services;
 
+use App\Http\Resources\EnrolledCourseResource;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Exception;
-use App\Http\Resources\EnrolledCourseResource;
+
 class EnrollmentService
 {
     public function enroll($user_id, $course_id, array $options = [])
@@ -21,7 +22,6 @@ class EnrollmentService
                 return $validation;
             }
             \Log::info('Enrollment successful!');
-
 
             $enrollment = Enrollment::create([
                 'user_id' => $student->id,
