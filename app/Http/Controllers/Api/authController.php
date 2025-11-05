@@ -47,10 +47,8 @@ class authController extends Controller
         ]);
 
         $user = User::create([
-            'first_name_ar' => $validated['first_name_ar'],
-            'first_name_en' => $validated['first_name_en'],
-            'second_name_ar' => $validated['second_name_ar'],
-            'second_name_en' => $validated['second_name_en'],
+            'first_name' => ['ar' => $validated['first_name_ar'], 'en' => $validated['first_name_en']],
+            'second_name' => ['ar' => $validated['second_name_ar'], 'en' => $validated['second_name_en']],
             'gender' => $validated['gender'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
@@ -64,6 +62,7 @@ class authController extends Controller
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
+  
         return response()->json([
             'success' => true,
             'data' => [
